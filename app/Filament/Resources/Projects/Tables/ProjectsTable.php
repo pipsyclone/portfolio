@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Filament\Resources\Projects\Tables;
+
+use Filament\Tables\Table;
+
+// Table Columns
+use Filament\Tables\Columns\TextColumn;
+
+// Table Actions
+use Filament\Actions\ActionGroup;
+use Filament\Actions\ViewAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\Action;
+
+// Bulk Actions
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+
+class ProjectsTable
+{
+    public static function configure(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('title')
+                    ->label('Project Title')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('url')
+                    ->label('Project URL')
+                    ->sortable(),
+                TextColumn::make('created_at')
+                    ->label('Created At')
+                    ->dateTime('d M Y H:i')
+                    ->sortable(),
+                TextColumn::make('updated_at')
+                    ->label('Updated At')
+                    ->dateTime('d M Y H:i')
+                    ->sortable(),
+            ])
+            ->filters([
+                //
+            ])
+            ->recordActions([
+                ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make(),
+                ]),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ])
+            ->emptyStateHeading('Tidak ada Projects')
+            ->emptyStateDescription('Silakan tambahkan Projects baru.')
+            ->emptyStateIcon('heroicon-o-bookmark')
+            ->emptyStateActions([
+                Action::make('create')
+                    ->label('Tambah Projects')
+                    ->icon('heroicon-o-plus')
+                    ->url(route('filament.admin.resources.projects.create')),
+            ])
+            ->deferLoading();
+    }
+}
