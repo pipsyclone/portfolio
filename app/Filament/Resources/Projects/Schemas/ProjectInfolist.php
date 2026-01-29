@@ -27,6 +27,10 @@ class ProjectInfolist
                             ->label('Tech Stacks')
                             ->badge()
                             ->default('-'),
+                        TextEntry::make('skills.name')
+                            ->label('Keahlian')
+                            ->badge()
+                            ->default('-'),
                         TextEntry::make('description')
                             ->label('Project Description')
                             ->default('-'),

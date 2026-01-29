@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Portfolio')</title>
+    <title>@yield('title', $appSetting->app_name ?? 'Portfolio')</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
                         'heading': ['Sora', 'Plus Jakarta Sans', 'sans-serif'],
                     },
                     colors: {
-                        'primary': '#6366f1',
+                        'primary': '{{ $appSetting->theme_color ?? '#6366f1' }}',
                         'primary-dark': '#4f46e5',
                         'secondary': '#0f172a',
                         'accent': '#f59e0b',
@@ -34,7 +34,7 @@
     <!-- Header -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-b border-black/5 transition-all duration-300">
         <nav class="max-w-7xl mx-auto flex justify-between items-center py-4 lg:py-5 px-4 sm:px-6">
-            <a href="#home" class="font-heading text-2xl sm:text-3xl font-bold text-primary">Portfolio</a>
+            <a href="#home" class="font-heading text-2xl sm:text-3xl font-bold text-primary">{{ $appSetting->app_name ?? config('app.name') }}</a>
             
             <!-- Desktop Navigation -->
             <ul class="hidden lg:flex list-none gap-8 xl:gap-10">
@@ -75,7 +75,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-16 mb-16">
                 <!-- Brand -->
                 <div class="lg:col-span-1">
-                    <a href="#" class="font-heading text-3xl font-bold text-primary inline-block mb-5">Portfolio</a>
+                    <a href="#" class="font-heading text-3xl font-bold text-primary inline-block mb-5">{{ $appSetting->app_name ?? config('app.name') }}</a>
                     <p class="text-white/70 mb-6 leading-relaxed">Membuat pengalaman digital dengan penuh semangat dan presisi. Mari bangun sesuatu yang luar biasa bersama.</p>
                     <div class="flex gap-3">
                         <a href="#" aria-label="GitHub" class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-300 hover:bg-primary hover:-translate-y-1">
@@ -126,7 +126,7 @@
             
             <!-- Footer Bottom -->
             <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-white/50 text-sm">
-                <p>&copy; 2026 Portfolio. All rights reserved.</p>
+                <p>&copy; 2026 {{ $appSetting->app_name ?? config('app.name') }}. All rights reserved.</p>
                 <p>Designed with <i class="fas fa-heart text-red-500"></i> by Me</p>
             </div>
         </div>

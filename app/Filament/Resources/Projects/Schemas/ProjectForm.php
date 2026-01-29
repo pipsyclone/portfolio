@@ -3,13 +3,17 @@
 namespace App\Filament\Resources\Projects\Schemas;
 
 use App\Models\Projects;
+use App\Models\Skills;
+// Form Component
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-// Form Component
+// Schema Components
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\HtmlString;
 
 class ProjectForm
 {
@@ -32,12 +36,32 @@ class ProjectForm
                             ->label('Project URL')
                             ->url()
                             ->maxLength(255),
-                        Select::make('techStacks')
-                            ->label('Tech Stacks')
-                            ->multiple()
-                            ->relationship('techStacks', 'name')
-                            ->preload()
-                            ->searchable(),
+                        Grid::make()
+                            ->schema([
+                                Select::make('techStacks')
+                                    ->label('Tech Stacks')
+                                    ->multiple()
+                                    ->relationship('techStacks', 'name')
+                                    ->preload()
+                                    ->searchable()
+                                    ->noSearchResultsMessage('Tidak ada data ditemukan')
+                                    ->noOptionsMessage('Tidak ada data'),
+                                Select::make('skills')
+                                    ->label('Keahlian')
+                                    ->multiple()
+                                    ->relationship('skills', 'name')
+                                    ->getOptionLabelFromRecordUsing(fn (Skills $record): HtmlString => new HtmlString(
+                                        $record->icon
+                                            ? "<span class='flex items-center gap-2'><i class='{$record->icon}'></i> {$record->name}</span>"
+                                            : $record->name
+                                    ))
+                                    ->allowHtml()
+                                    ->preload()
+                                    ->searchable()
+                                    ->noSearchResultsMessage('Tidak ada data ditemukan')
+                                    ->noOptionsMessage('Tidak ada data'),
+                            ])
+                            ->columns(2),
                         Textarea::make('description')
                             ->label('Project Description')
                             ->maxLength(65535),
