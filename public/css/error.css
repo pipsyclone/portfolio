@@ -1,0 +1,386 @@
+/* Error Page Styles */
+/* Modern, elegant error page styling */
+
+/* ===================================
+   Animations
+   =================================== */
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(2deg); }
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.3); }
+    50% { box-shadow: 0 0 80px rgba(99, 102, 241, 0.5); }
+}
+
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes bounce-subtle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* ===================================
+   Animation Classes
+   =================================== */
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-slide-up {
+    animation: slide-up 0.8s ease-out forwards;
+}
+
+.animate-slide-up-delay-1 {
+    animation: slide-up 0.8s ease-out 0.1s forwards;
+    opacity: 0;
+}
+
+.animate-slide-up-delay-2 {
+    animation: slide-up 0.8s ease-out 0.2s forwards;
+    opacity: 0;
+}
+
+.animate-slide-up-delay-3 {
+    animation: slide-up 0.8s ease-out 0.3s forwards;
+    opacity: 0;
+}
+
+.animate-fade-in {
+    animation: fade-in 1s ease-out forwards;
+}
+
+.animate-bounce-subtle {
+    animation: bounce-subtle 2s ease-in-out infinite;
+}
+
+/* ===================================
+   Gradient Text
+   =================================== */
+
+.gradient-text {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 4s ease infinite;
+}
+
+.gradient-text-red {
+    background: linear-gradient(135deg, #ef4444 0%, #f97316 50%, #f59e0b 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 4s ease infinite;
+}
+
+.gradient-text-amber {
+    background: linear-gradient(135deg, #f59e0b 0%, #eab308 50%, #84cc16 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 4s ease infinite;
+}
+
+.gradient-text-orange {
+    background: linear-gradient(135deg, #f97316 0%, #ef4444 50%, #dc2626 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 4s ease infinite;
+}
+
+.gradient-text-rose {
+    background: linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #d946ef 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 4s ease infinite;
+}
+
+.gradient-text-sky {
+    background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 50%, #6366f1 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 4s ease infinite;
+}
+
+.gradient-text-violet {
+    background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 50%, #d946ef 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 4s ease infinite;
+}
+
+/* ===================================
+   Decorative Elements
+   =================================== */
+
+.error-decoration {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+.error-decoration-1 {
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    top: -100px;
+    right: -100px;
+}
+
+.error-decoration-2 {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, #f59e0b, #f97316);
+    bottom: -50px;
+    left: -50px;
+}
+
+.error-decoration-3 {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, #10b981, #14b8a6);
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+}
+
+/* ===================================
+   Glass Card Effect
+   =================================== */
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* ===================================
+   Pattern Background
+   =================================== */
+
+.pattern-bg {
+    background-image: 
+        radial-gradient(circle at 25px 25px, rgba(99, 102, 241, 0.03) 2px, transparent 0),
+        radial-gradient(circle at 75px 75px, rgba(99, 102, 241, 0.03) 2px, transparent 0);
+    background-size: 100px 100px;
+}
+
+/* ===================================
+   Custom Scrollbar
+   =================================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #6366f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4f46e5;
+}
+
+/* ===================================
+   Icon Container Gradients
+   =================================== */
+
+.icon-gradient-primary {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+}
+
+.icon-gradient-red {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(249, 115, 22, 0.1));
+}
+
+.icon-gradient-amber {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(234, 179, 8, 0.1));
+}
+
+.icon-gradient-orange {
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(239, 68, 68, 0.1));
+}
+
+.icon-gradient-rose {
+    background: linear-gradient(135deg, rgba(244, 63, 94, 0.1), rgba(236, 72, 153, 0.1));
+}
+
+.icon-gradient-sky {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(59, 130, 246, 0.1));
+}
+
+.icon-gradient-violet {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(168, 85, 247, 0.1));
+}
+
+/* ===================================
+   Floating Decorations
+   =================================== */
+
+.floating-decoration {
+    position: absolute;
+    pointer-events: none;
+}
+
+.floating-decoration-primary {
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+}
+
+.floating-decoration-red {
+    background: linear-gradient(135deg, #ef4444, #f97316);
+}
+
+.floating-decoration-amber {
+    background: linear-gradient(135deg, #f59e0b, #eab308);
+}
+
+.floating-decoration-orange {
+    background: linear-gradient(135deg, #f97316, #ef4444);
+}
+
+.floating-decoration-rose {
+    background: linear-gradient(135deg, #f43f5e, #ec4899);
+}
+
+.floating-decoration-sky {
+    background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+}
+
+.floating-decoration-violet {
+    background: linear-gradient(135deg, #8b5cf6, #a855f7);
+}
+
+.floating-decoration-emerald {
+    background: linear-gradient(135deg, #10b981, #14b8a6);
+}
+
+.floating-decoration-lime {
+    background: linear-gradient(135deg, #84cc16, #22c55e);
+}
+
+.floating-decoration-fuchsia {
+    background: linear-gradient(135deg, #d946ef, #ec4899);
+}
+
+.floating-decoration-indigo {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+}
+
+.floating-decoration-yellow {
+    background: linear-gradient(135deg, #eab308, #f59e0b);
+}
+
+.floating-decoration-pink {
+    background: linear-gradient(135deg, #ec4899, #f43f5e);
+}
+
+.floating-decoration-purple {
+    background: linear-gradient(135deg, #a855f7, #d946ef);
+}
+
+.floating-decoration-teal {
+    background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+}
+
+/* ===================================
+   Pulse Glow Variants
+   =================================== */
+
+.pulse-glow-red {
+    animation: pulse-glow-red 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow-red {
+    0%, 100% { box-shadow: 0 0 40px rgba(239, 68, 68, 0.3); }
+    50% { box-shadow: 0 0 80px rgba(239, 68, 68, 0.5); }
+}
+
+.pulse-glow-amber {
+    animation: pulse-glow-amber 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow-amber {
+    0%, 100% { box-shadow: 0 0 40px rgba(245, 158, 11, 0.3); }
+    50% { box-shadow: 0 0 80px rgba(245, 158, 11, 0.5); }
+}
+
+.pulse-glow-orange {
+    animation: pulse-glow-orange 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow-orange {
+    0%, 100% { box-shadow: 0 0 40px rgba(249, 115, 22, 0.3); }
+    50% { box-shadow: 0 0 80px rgba(249, 115, 22, 0.5); }
+}
+
+.pulse-glow-rose {
+    animation: pulse-glow-rose 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow-rose {
+    0%, 100% { box-shadow: 0 0 40px rgba(244, 63, 94, 0.3); }
+    50% { box-shadow: 0 0 80px rgba(244, 63, 94, 0.5); }
+}
+
+.pulse-glow-sky {
+    animation: pulse-glow-sky 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow-sky {
+    0%, 100% { box-shadow: 0 0 40px rgba(14, 165, 233, 0.3); }
+    50% { box-shadow: 0 0 80px rgba(14, 165, 233, 0.5); }
+}
+
+.pulse-glow-violet {
+    animation: pulse-glow-violet 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow-violet {
+    0%, 100% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.3); }
+    50% { box-shadow: 0 0 80px rgba(139, 92, 246, 0.5); }
+}
