@@ -12,12 +12,14 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::firstOrCreate([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-        ], [
-            'name' => 'Admin User',
-            'password' => bcrypt('123'),
-        ]);
+        $exists = \App\Models\User::where('email', 'admin@example.com')->exists();
+
+        if (!$exists) {
+            \App\Models\User::create([
+                'name' => 'Admin User',
+                'email' => 'admin@example.com',
+                'password' => bcrypt('123'),
+            ]);
+        }
     }
 }
