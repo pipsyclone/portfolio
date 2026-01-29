@@ -137,17 +137,19 @@ function initProjectFilter() {
         button.addEventListener('click', () => {
             // Update active button
             filterButtons.forEach(btn => {
-                btn.classList.remove('gradient-bg', 'text-white');
-                btn.classList.add('text-slate-500', 'hover:text-indigo-500');
+                btn.classList.remove('bg-primary', 'text-white');
+                btn.classList.add('text-slate-500', 'hover:text-primary');
             });
-            button.classList.add('gradient-bg', 'text-white');
-            button.classList.remove('text-slate-500', 'hover:text-indigo-500');
+            button.classList.add('bg-primary', 'text-white');
+            button.classList.remove('text-slate-500', 'hover:text-primary');
             
             // Filter projects
             const filter = button.dataset.filter;
             
             projectCards.forEach(card => {
-                if (filter === 'all' || card.dataset.category === filter) {
+                const categories = card.dataset.category ? card.dataset.category.split(' ') : [];
+                
+                if (filter === 'all' || categories.includes(filter)) {
                     card.style.display = 'block';
                     card.classList.add('animate-fade-up');
                 } else {

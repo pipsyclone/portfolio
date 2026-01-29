@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('url')->nullable();
             $table->string('image')->nullable();
+            $table->string('status')->default('ongoing');
             $table->timestamps();
         });
     }

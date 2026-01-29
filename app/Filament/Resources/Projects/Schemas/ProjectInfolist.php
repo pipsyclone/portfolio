@@ -15,6 +15,10 @@ class ProjectInfolist
             ->components([
                 Section::make('Project Details')
                     ->schema([
+                        TextEntry::make('status')
+                            ->label('Status Proyek')
+                            ->badge()
+                            ->default('-'),
                         TextEntry::make('title')
                             ->label('Project Title')
                             ->default('-'),

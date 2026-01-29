@@ -13,6 +13,7 @@ class Projects extends Model
         'description',
         'url',
         'image',
+        'status',
     ];
 
     public function techStacks()

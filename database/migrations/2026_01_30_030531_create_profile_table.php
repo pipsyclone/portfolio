@@ -15,8 +15,10 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('foto')->nullable();
             $table->string('name', 100);
+            $table->string('as');
             $table->text('bio');
             $table->integer('experience');
+            $table->text('cv')->nullable();
             $table->string('email', 100);
             $table->string('phone', 20);
             $table->string('address', 255);

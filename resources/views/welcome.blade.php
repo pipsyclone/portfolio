@@ -1,6 +1,6 @@
 @extends('layouts.landing')
 
-@section('title', 'Portfolio - Creative Developer')
+@section('title', $profile->name ?? 'Developer')
 
 @section('content')
 <!-- Hero Section -->
@@ -13,10 +13,10 @@
                     <span class="text-2xl">👋</span> Hallo, Saya
                 </div>
                 <h1 class="font-heading text-5xl md:text-6xl lg:text-7xl font-bold text-secondary leading-tight mb-6">
-                    <span class="text-primary">Web Developer</span>
+                    <span class="text-primary">{{ $profile->as ?? 'Developer' }}</span>
                 </h1>
                 <p class="text-lg text-slate-500 mb-9 leading-relaxed max-w-lg mx-auto lg:mx-0">
-                    Saya adalah seorang pengembang perangkat lunak penuh yang bersemangat dengan lebih dari 5 tahun pengalaman dalam menciptakan solusi digital yang inovatif dan menarik. Saya mengkhususkan diri dalam pengembangan web.
+                    Selamat datang di portofolio saya! Saya {{ $profile->name ?? 'seorang pengembang web' }}, seorang pengembang web yang berdedikasi dengan pengalaman lebih dari 5 tahun dalam menciptakan solusi digital inovatif dan efisien.
                 </p>
                 <div class="flex flex-wrap gap-4 mb-12 justify-center lg:justify-start">
                     <a href="#projects" class="inline-flex items-center gap-2.5 py-4 px-9 rounded-full font-semibold text-base bg-primary text-white btn-primary-shadow transition-all duration-300 hover:-translate-y-1 hover:bg-primary-dark">
@@ -29,13 +29,13 @@
                 </div>
                 <div class="flex gap-12 justify-center lg:justify-start">
                     <div class="text-center">
-                        <span class="text-4xl font-bold text-secondary block">5+</span>
+                        <span class="text-4xl font-bold text-secondary block">{{ $profile->experience . '+' ?? '0+' }}</span>
                         <span class="text-sm text-slate-500">Tahun Pengalaman</span>
                     </div>
                     <div class="text-center">
-                        <span class="text-4xl font-bold text-secondary block">100+</span>
+                        <span class="text-4xl font-bold text-secondary block">{{ $projects->where('status', 'completed')->count() . '+' ?? '0+' }}</span>
                         <span class="text-sm text-slate-500">Proyek Selesai</span>
-                    </div>\
+                    </div>
                 </div>
             </div>
             
@@ -44,7 +44,7 @@
                 <div class="relative w-80 h-80 lg:w-[450px] lg:h-[450px] mx-auto">
                     <div class="morphing-blob absolute inset-0 bg-primary"></div>
                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 lg:w-96 lg:h-96 rounded-full bg-slate-200 flex items-center justify-center text-8xl lg:text-9xl shadow-2xl">
-                        👨‍💻
+                        <img src="{{ asset('storage/' . ($profile->foto ?? 'default-profile.png')) }}" alt="{{ $profile->name ?? 'Developer' }}" class="w-full h-full object-cover rounded-full">
                     </div>
                     <!-- Floating Cards -->
                     <div class="floating hidden lg:flex absolute top-[10%] -right-5 bg-white rounded-2xl py-4 px-5 shadow-xl items-center gap-3">
@@ -78,12 +78,10 @@
             <!-- About Image -->
             <div class="relative animate-on-scroll">
                 <div class="max-w-md mx-auto lg:mx-0 rounded-3xl overflow-hidden shadow-2xl">
-                    <div class="w-full h-[500px] bg-slate-200 flex items-center justify-center text-8xl">
-                        👨‍💼
-                    </div>
+                    <img src="{{ asset('storage/' . ($profile->foto ?? 'default-profile.png')) }}" alt="{{ $profile->name ?? 'Developer' }}" class="w-full h-full object-cover">
                 </div>
                 <div class="absolute -bottom-5 right-5 lg:right-20 bg-primary text-white py-6 px-8 rounded-2xl text-center experience-badge-shadow">
-                    <span class="text-5xl font-bold block">5+</span>
+                    <span class="text-5xl font-bold block">{{ $profile->experience . '+' ?? '0+' }}</span>
                     <span class="text-sm opacity-90">Tahun Pengalaman</span>
                 </div>
             </div>
@@ -93,11 +91,11 @@
                 <span class="inline-block bg-primary/10 text-primary py-2 px-5 rounded-full text-sm font-semibold uppercase tracking-wider mb-4">Tentang Saya</span>
                 <h2 class="font-heading text-4xl lg:text-5xl font-bold text-secondary mb-6">Pengembang yang Bersemangat & Pemecah Masalah Kreatif</h2>
                 <p class="text-slate-500 text-lg leading-relaxed mb-6">
-                    I'm a passionate full-stack developer with over 5 years of experience in creating beautiful, functional, and user-centered digital experiences. My expertise spans across web development, mobile applications, and UI/UX design.
+                    {{ $profile->bio }}
                 </p>
-                <p class="text-slate-500 text-lg leading-relaxed mb-8">
+                {{-- <p class="text-slate-500 text-lg leading-relaxed mb-8">
                     I believe in writing clean, maintainable code and creating intuitive interfaces that users love. When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the developer community.
-                </p>
+                </p> --}}
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-8">
                     <div class="flex items-center gap-3">
                         <span class="w-7 h-7 bg-primary/10 text-primary rounded-full flex items-center justify-center text-xs">
@@ -124,7 +122,7 @@
                         <span class="font-medium text-secondary">Performance Optimized</span>
                     </div>
                 </div>
-                <a href="#contact" class="inline-flex items-center gap-2.5 py-4 px-9 rounded-full font-semibold text-base bg-primary text-white btn-primary-shadow transition-all duration-300 hover:-translate-y-1 hover:bg-primary-dark">
+                <a href="{{ asset('storage/' . ($profile->cv ?? 'default-cv.pdf')) }}" download class="inline-flex items-center gap-2.5 py-4 px-9 rounded-full font-semibold text-base bg-primary text-white btn-primary-shadow transition-all duration-300 hover:-translate-y-1 hover:bg-primary-dark">
                     Download CV
                     <i class="fas fa-download"></i>
                 </a>
@@ -145,69 +143,25 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Skill Cards -->
-            <div class="skill-card bg-white p-10 rounded-3xl text-center border border-slate-100 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-on-scroll">
-                <div class="skill-icon w-20 h-20 mx-auto mb-6 bg-primary/10 rounded-2xl flex items-center justify-center text-4xl transition-all duration-500">
-                    <i class="fab fa-html5 text-primary"></i>
+            @foreach ($techStacks as $tech)
+                <div class="skill-card bg-white p-10 rounded-3xl text-center border border-slate-100 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-on-scroll">
+                    <div class="skill-icon w-20 h-20 mx-auto mb-6 bg-primary/10 rounded-2xl flex items-center justify-center text-4xl transition-all duration-500">
+                        <i class="fab fa-html5 text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-secondary mb-3">{{ $tech->name }}</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Building responsive and interactive user interfaces with HTML, CSS, JavaScript, and modern frameworks</p>
                 </div>
-                <h3 class="text-xl font-semibold text-secondary mb-3">Frontend Development</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Building responsive and interactive user interfaces with HTML, CSS, JavaScript, and modern frameworks</p>
-            </div>
+            @endforeach
             
-            <div class="skill-card bg-white p-10 rounded-3xl text-center border border-slate-100 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-on-scroll">
-                <div class="skill-icon w-20 h-20 mx-auto mb-6 bg-primary/10 rounded-2xl flex items-center justify-center text-4xl transition-all duration-500">
-                    <i class="fab fa-php text-primary"></i>
+            @foreach ($skills as $skill)
+                <div class="skill-card bg-white p-10 rounded-3xl text-center border border-slate-100 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-on-scroll">
+                    <div class="skill-icon w-20 h-20 mx-auto mb-6 bg-primary/10 rounded-2xl flex items-center justify-center text-4xl transition-all duration-500">
+                        <i class="{{ $skill->icon ?? 'fa-solid fa-briefcase' }} text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-secondary mb-3">{{ $skill->name }}</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Creating robust server-side applications with PHP, Laravel, Node.js, and RESTful APIs</p>
                 </div>
-                <h3 class="text-xl font-semibold text-secondary mb-3">Backend Development</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Creating robust server-side applications with PHP, Laravel, Node.js, and RESTful APIs</p>
-            </div>
-            
-            <div class="skill-card bg-white p-10 rounded-3xl text-center border border-slate-100 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-on-scroll">
-                <div class="skill-icon w-20 h-20 mx-auto mb-6 bg-primary/10 rounded-2xl flex items-center justify-center text-4xl transition-all duration-500">
-                    <i class="fas fa-database text-primary"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-secondary mb-3">Database Design</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Designing efficient database structures with MySQL, PostgreSQL, and MongoDB</p>
-            </div>
-            
-            <div class="skill-card bg-white p-10 rounded-3xl text-center border border-slate-100 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-on-scroll">
-                <div class="skill-icon w-20 h-20 mx-auto mb-6 bg-primary/10 rounded-2xl flex items-center justify-center text-4xl transition-all duration-500">
-                    <i class="fab fa-react text-primary"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-secondary mb-3">Modern Frameworks</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Working with React, Vue.js, Next.js, and other cutting-edge technologies</p>
-            </div>
-            
-            <div class="skill-card bg-white p-10 rounded-3xl text-center border border-slate-100 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-on-scroll">
-                <div class="skill-icon w-20 h-20 mx-auto mb-6 bg-primary/10 rounded-2xl flex items-center justify-center text-4xl transition-all duration-500">
-                    <i class="fas fa-mobile-alt text-primary"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-secondary mb-3">Mobile Development</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Creating cross-platform mobile applications with React Native and Flutter</p>
-            </div>
-            
-            <div class="skill-card bg-white p-10 rounded-3xl text-center border border-slate-100 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-on-scroll">
-                <div class="skill-icon w-20 h-20 mx-auto mb-6 bg-primary/10 rounded-2xl flex items-center justify-center text-4xl transition-all duration-500">
-                    <i class="fas fa-paint-brush text-primary"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-secondary mb-3">UI/UX Design</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Designing beautiful and intuitive user experiences with Figma and Adobe XD</p>
-            </div>
-            
-            <div class="skill-card bg-white p-10 rounded-3xl text-center border border-slate-100 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-on-scroll">
-                <div class="skill-icon w-20 h-20 mx-auto mb-6 bg-primary/10 rounded-2xl flex items-center justify-center text-4xl transition-all duration-500">
-                    <i class="fab fa-git-alt text-primary"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-secondary mb-3">Version Control</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Managing code with Git, GitHub, and implementing CI/CD pipelines</p>
-            </div>
-            
-            <div class="skill-card bg-white p-10 rounded-3xl text-center border border-slate-100 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-on-scroll">
-                <div class="skill-icon w-20 h-20 mx-auto mb-6 bg-primary/10 rounded-2xl flex items-center justify-center text-4xl transition-all duration-500">
-                    <i class="fas fa-cloud text-primary"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-secondary mb-3">Cloud Services</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Deploying and managing applications on AWS, Google Cloud, and DigitalOcean</p>
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
@@ -226,162 +180,91 @@
         <!-- Filter Buttons -->
         <div class="flex flex-wrap justify-center gap-3 mb-12">
             <button class="filter-btn bg-primary text-white py-3 px-7 rounded-full text-[15px] font-medium transition-all duration-300" data-filter="all">All</button>
-            <button class="filter-btn text-slate-500 hover:text-primary py-3 px-7 rounded-full text-[15px] font-medium transition-all duration-300" data-filter="web">Web App</button>
-            <button class="filter-btn text-slate-500 hover:text-primary py-3 px-7 rounded-full text-[15px] font-medium transition-all duration-300" data-filter="mobile">Mobile</button>
-            <button class="filter-btn text-slate-500 hover:text-primary py-3 px-7 rounded-full text-[15px] font-medium transition-all duration-300" data-filter="design">UI/UX</button>
+            @foreach ($skills as $skill)
+                <button class="filter-btn text-slate-500 hover:text-primary py-3 px-7 rounded-full text-[15px] font-medium transition-all duration-300" data-filter="skill-{{ $skill->id }}">{{ $skill->name }}</button>
+            @endforeach
+            @foreach ($techStacks as $tech)
+                <button class="filter-btn text-slate-500 hover:text-primary py-3 px-7 rounded-full text-[15px] font-medium transition-all duration-300" data-filter="tech-{{ $tech->id }}">{{ $tech->name }}</button>
+            @endforeach
         </div>
         
         <!-- Projects Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- Project Card 1 -->
-            <div class="project-card bg-white rounded-3xl overflow-hidden shadow-lg transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-on-scroll" data-category="web">
-                <div class="relative h-60 overflow-hidden">
-                    <div class="w-full h-full bg-slate-200 flex items-center justify-center text-5xl text-slate-400">
-                        <i class="fas fa-shopping-cart"></i>
+            @forelse ($projects as $project)
+                @php
+                    $categories = [];
+                    foreach ($project->skills as $skill) {
+                        $categories[] = 'skill-' . $skill->id;
+                    }
+                    foreach ($project->techStacks as $tech) {
+                        $categories[] = 'tech-' . $tech->id;
+                    }
+                @endphp
+                <div class="project-card bg-white rounded-3xl overflow-hidden shadow-lg transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-on-scroll" data-category="{{ implode(' ', $categories) }}">
+                    <div class="relative h-60 overflow-hidden">
+                        <!-- Status Badge -->
+                        <div class="absolute top-4 left-4 z-10">
+                            @if($project->status === 'completed')
+                                <span class="py-1.5 px-4 bg-green-500 text-white text-xs font-semibold rounded-full shadow-lg">
+                                    <i class="fas fa-check-circle me-1"></i> Selesai
+                                </span>
+                            @elseif($project->status === 'ongoing')
+                                <span class="py-1.5 px-4 bg-yellow-500 text-white text-xs font-semibold rounded-full shadow-lg">
+                                    <i class="fas fa-spinner me-1"></i> Dalam Pengerjaan
+                                </span>
+                            @elseif($project->status === 'on-hold')
+                                <span class="py-1.5 px-4 bg-orange-500 text-white text-xs font-semibold rounded-full shadow-lg">
+                                    <i class="fas fa-wrench me-1"></i> Ditunda
+                                </span>
+                            @elseif($project->status === 'cancelled')
+                                <span class="py-1.5 px-4 bg-red-500 text-white text-xs font-semibold rounded-full shadow-lg">
+                                    <i class="fas fa-wrench me-1"></i> Dibatalkan
+                                </span>
+                            @else
+                                <span class="py-1.5 px-4 bg-slate-500 text-white text-xs font-semibold rounded-full shadow-lg">
+                                    {{ ucfirst($project->status) }}
+                                </span>
+                            @endif
+                        </div>
+                        @if($project->image)
+                            <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover">
+                        @else
+                            <div class="w-full h-full bg-slate-200 flex items-center justify-center text-5xl text-slate-400">
+                                <i class="fas fa-image"></i>
+                            </div>
+                        @endif
+                        <div class="project-overlay absolute inset-0 bg-primary/90 flex items-center justify-center gap-4">
+                            <a href="{{ $project->url }}" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary hover:bg-secondary hover:text-white transition-all duration-300">
+                                <i class="fas fa-link"></i>
+                            </a>
+                            {{-- <a href="#" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary hover:bg-secondary hover:text-white transition-all duration-300">
+                                <i class="fab fa-github"></i>
+                            </a> --}}
+                        </div>
                     </div>
-                    <div class="project-overlay absolute inset-0 bg-primary/90 flex items-center justify-center gap-4">
-                        <a href="#" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary hover:bg-secondary hover:text-white transition-all duration-300">
-                            <i class="fas fa-link"></i>
-                        </a>
-                        <a href="#" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary hover:bg-secondary hover:text-white transition-all duration-300">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="p-7">
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="py-1.5 px-4 bg-primary/10 text-primary text-xs font-semibold rounded-full">Laravel</span>
-                        <span class="py-1.5 px-4 bg-primary/10 text-primary text-xs font-semibold rounded-full">Vue.js</span>
-                    </div>
-                    <h3 class="text-xl font-semibold text-secondary mb-3">E-Commerce Platform</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed">A full-featured online shopping platform with payment integration and admin dashboard</p>
-                </div>
-            </div>
-            
-            <!-- Project Card 2 -->
-            <div class="project-card bg-white rounded-3xl overflow-hidden shadow-lg transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-on-scroll" data-category="web">
-                <div class="relative h-60 overflow-hidden">
-                    <div class="w-full h-full bg-slate-200 flex items-center justify-center text-5xl text-slate-400">
-                        <i class="fas fa-tasks"></i>
-                    </div>
-                    <div class="project-overlay absolute inset-0 bg-primary/90 flex items-center justify-center gap-4">
-                        <a href="#" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary hover:bg-secondary hover:text-white transition-all duration-300">
-                            <i class="fas fa-link"></i>
-                        </a>
-                        <a href="#" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary hover:bg-secondary hover:text-white transition-all duration-300">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="p-7">
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="py-1.5 px-4 bg-primary/10 text-primary text-xs font-semibold rounded-full">React</span>
-                        <span class="py-1.5 px-4 bg-primary/10 text-primary text-xs font-semibold rounded-full">Node.js</span>
-                    </div>
-                    <h3 class="text-xl font-semibold text-secondary mb-3">Task Management App</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed">A collaborative project management tool with real-time updates and team features</p>
-                </div>
-            </div>
-            
-            <!-- Project Card 3 -->
-            <div class="project-card bg-white rounded-3xl overflow-hidden shadow-lg transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-on-scroll" data-category="web">
-                <div class="relative h-60 overflow-hidden">
-                    <div class="w-full h-full bg-slate-200 flex items-center justify-center text-5xl text-slate-400">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <div class="project-overlay absolute inset-0 bg-primary/90 flex items-center justify-center gap-4">
-                        <a href="#" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary hover:bg-secondary hover:text-white transition-all duration-300">
-                            <i class="fas fa-link"></i>
-                        </a>
-                        <a href="#" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary hover:bg-secondary hover:text-white transition-all duration-300">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="p-7">
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="py-1.5 px-4 bg-primary/10 text-primary text-xs font-semibold rounded-full">Next.js</span>
-                        <span class="py-1.5 px-4 bg-primary/10 text-primary text-xs font-semibold rounded-full">TypeScript</span>
-                    </div>
-                    <h3 class="text-xl font-semibold text-secondary mb-3">Analytics Dashboard</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed">A comprehensive analytics platform with beautiful data visualization charts</p>
-                </div>
-            </div>
-            
-            <!-- Project Card 4 -->
-            <div class="project-card bg-white rounded-3xl overflow-hidden shadow-lg transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-on-scroll" data-category="mobile">
-                <div class="relative h-60 overflow-hidden">
-                    <div class="w-full h-full bg-slate-200 flex items-center justify-center text-5xl text-slate-400">
-                        <i class="fas fa-utensils"></i>
-                    </div>
-                    <div class="project-overlay absolute inset-0 bg-primary/90 flex items-center justify-center gap-4">
-                        <a href="#" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary hover:bg-secondary hover:text-white transition-all duration-300">
-                            <i class="fas fa-link"></i>
-                        </a>
-                        <a href="#" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary hover:bg-secondary hover:text-white transition-all duration-300">
-                            <i class="fab fa-github"></i>
-                        </a>
+                    <div class="p-7">
+                        <span class="text-xs text-slate-400 mb-3 block">
+                            <i>Kesepakatan Dibuat Pada: {{ $project->created_at->translatedFormat('l, d M Y') }}</i>
+                        </span>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            @foreach ($project->techStacks as $tech)
+                                <span class="py-1.5 px-4 bg-primary/10 text-primary text-xs font-semibold rounded-full">{{ $tech->name }}</span>
+                            @endforeach
+                            @foreach ($project->skills as $skill)
+                                <span class="py-1.5 px-4 bg-primary/10 text-primary text-xs font-semibold rounded-full">
+                                    <i class="{{ $skill->icon }} me-2"></i>
+                                    {{ $skill->name }}
+                                </span>
+                            @endforeach
+                        </div>
+                        <h3 class="text-xl font-semibold text-secondary mb-3">{{ $project->title }}</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">{{ $project->description ?? '-' }}</p>
                     </div>
                 </div>
-                <div class="p-7">
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="py-1.5 px-4 bg-primary/10 text-primary text-xs font-semibold rounded-full">Flutter</span>
-                        <span class="py-1.5 px-4 bg-primary/10 text-primary text-xs font-semibold rounded-full">Firebase</span>
-                    </div>
-                    <h3 class="text-xl font-semibold text-secondary mb-3">Food Delivery App</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed">A mobile app for food ordering with real-time tracking and payment processing</p>
-                </div>
-            </div>
-            
-            <!-- Project Card 5 -->
-            <div class="project-card bg-white rounded-3xl overflow-hidden shadow-lg transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-on-scroll" data-category="web">
-                <div class="relative h-60 overflow-hidden">
-                    <div class="w-full h-full bg-slate-200 flex items-center justify-center text-5xl text-slate-400">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <div class="project-overlay absolute inset-0 bg-primary/90 flex items-center justify-center gap-4">
-                        <a href="#" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary hover:bg-secondary hover:text-white transition-all duration-300">
-                            <i class="fas fa-link"></i>
-                        </a>
-                        <a href="#" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary hover:bg-secondary hover:text-white transition-all duration-300">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="p-7">
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="py-1.5 px-4 bg-primary/10 text-primary text-xs font-semibold rounded-full">Laravel</span>
-                        <span class="py-1.5 px-4 bg-primary/10 text-primary text-xs font-semibold rounded-full">Livewire</span>
-                    </div>
-                    <h3 class="text-xl font-semibold text-secondary mb-3">Learning Platform</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed">An educational platform with courses, quizzes, and progress tracking features</p>
-                </div>
-            </div>
-            
-            <!-- Project Card 6 -->
-            <div class="project-card bg-white rounded-3xl overflow-hidden shadow-lg transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-on-scroll" data-category="design">
-                <div class="relative h-60 overflow-hidden">
-                    <div class="w-full h-full bg-slate-200 flex items-center justify-center text-5xl text-slate-400">
-                        <i class="fas fa-comments"></i>
-                    </div>
-                    <div class="project-overlay absolute inset-0 bg-primary/90 flex items-center justify-center gap-4">
-                        <a href="#" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary hover:bg-secondary hover:text-white transition-all duration-300">
-                            <i class="fas fa-link"></i>
-                        </a>
-                        <a href="#" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary hover:bg-secondary hover:text-white transition-all duration-300">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="p-7">
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="py-1.5 px-4 bg-primary/10 text-primary text-xs font-semibold rounded-full">React</span>
-                        <span class="py-1.5 px-4 bg-primary/10 text-primary text-xs font-semibold rounded-full">Socket.io</span>
-                    </div>
-                    <h3 class="text-xl font-semibold text-secondary mb-3">Chat Application</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed">A real-time messaging app with group chats, file sharing, and video calls</p>
-                </div>
-            </div>
+            @empty
+                <p class="text-center text-slate-500 col-span-3">Tidak ada proyek untuk ditampilkan.</p>
+            @endforelse
         </div>
     </div>
 </section>
@@ -404,7 +287,7 @@
                         </div>
                         <div>
                             <h4 class="text-base font-semibold text-secondary mb-1">Email</h4>
-                            <p class="text-slate-500">hello@example.com</p>
+                            <p class="text-slate-500">{{ $profile->email ?? '-' }}</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-5">
@@ -413,7 +296,7 @@
                         </div>
                         <div>
                             <h4 class="text-base font-semibold text-secondary mb-1">Telepon</h4>
-                            <p class="text-slate-500">+62 812 3456 7890</p>
+                            <p class="text-slate-500">{{ $profile->phone ?? '-' }}</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-5">
@@ -422,7 +305,7 @@
                         </div>
                         <div>
                             <h4 class="text-base font-semibold text-secondary mb-1">Lokasi</h4>
-                            <p class="text-slate-500">Jakarta, Indonesia</p>
+                            <p class="text-slate-500">{{ $profile->address ?? 'Jakarta, Indonesia' }}</p>
                         </div>
                     </div>
                 </div>

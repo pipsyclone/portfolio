@@ -40,14 +40,19 @@ class ProjectForm
                             ->schema([
                                 Select::make('techStacks')
                                     ->label('Tech Stacks')
+                                    ->required()
                                     ->multiple()
                                     ->relationship('techStacks', 'name')
                                     ->preload()
                                     ->searchable()
                                     ->noSearchResultsMessage('Tidak ada data ditemukan')
-                                    ->noOptionsMessage('Tidak ada data'),
+                                    ->noOptionsMessage('Tidak ada data')
+                                    ->validationMessages([
+                                        'required' => 'Tech Stacks harus dipilih.',
+                                    ]),
                                 Select::make('skills')
                                     ->label('Keahlian')
+                                    ->required()
                                     ->multiple()
                                     ->relationship('skills', 'name')
                                     ->getOptionLabelFromRecordUsing(fn (Skills $record): HtmlString => new HtmlString(
@@ -59,9 +64,29 @@ class ProjectForm
                                     ->preload()
                                     ->searchable()
                                     ->noSearchResultsMessage('Tidak ada data ditemukan')
-                                    ->noOptionsMessage('Tidak ada data'),
+                                    ->noOptionsMessage('Tidak ada data')
+                                    ->validationMessages([
+                                        'required' => 'Keahlian harus dipilih.',
+                                    ]),
                             ])
                             ->columns(2),
+                        Select::make('status')
+                            ->label('Status Proyek')
+                            ->options([
+                                'ongoing' => 'Ongoing',
+                                'completed' => 'Completed',
+                                'on_hold' => 'On Hold',
+                                'cancelled' => 'Cancelled',
+                            ])
+                            ->required()
+                            ->allowHtml()
+                            ->preload()
+                            ->searchable()
+                            ->noSearchResultsMessage('Tidak ada data ditemukan')
+                            ->noOptionsMessage('Tidak ada data')
+                            ->validationMessages([
+                                'required' => 'Status Proyek harus dipilih.',
+                            ]),
                         Textarea::make('description')
                             ->label('Project Description')
                             ->maxLength(65535),

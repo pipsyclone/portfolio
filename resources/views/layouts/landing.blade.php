@@ -78,18 +78,26 @@
                     <a href="#" class="font-heading text-3xl font-bold text-primary inline-block mb-5">{{ $appSetting->app_name ?? config('app.name') }}</a>
                     <p class="text-white/70 mb-6 leading-relaxed">Membuat pengalaman digital dengan penuh semangat dan presisi. Mari bangun sesuatu yang luar biasa bersama.</p>
                     <div class="flex gap-3">
-                        <a href="#" aria-label="GitHub" class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-300 hover:bg-primary hover:-translate-y-1">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="#" aria-label="LinkedIn" class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-300 hover:bg-primary hover:-translate-y-1">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="#" aria-label="Twitter" class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-300 hover:bg-primary hover:-translate-y-1">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" aria-label="Instagram" class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-300 hover:bg-primary hover:-translate-y-1">
-                            <i class="fab fa-instagram"></i>
-                        </a>
+                        @if ($profile->github_url)
+                            <a href="{{ $profile->github_url }}" aria-label="GitHub" class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-300 hover:bg-primary hover:-translate-y-1">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        @endif
+                        @if ($profile->linkedin_url)
+                            <a href="{{ $profile->linkedin_url }}" aria-label="LinkedIn" class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-300 hover:bg-primary hover:-translate-y-1">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        @endif
+                        @if ($profile->twitter_url)
+                            <a href="{{ $profile->twitter_url }}" aria-label="Twitter" class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-300 hover:bg-primary hover:-translate-y-1">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        @endif
+                        @if ($profile->instagram_url)
+                            <a href="{{ $profile->instagram_url }}" aria-label="Instagram" class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-white transition-all duration-300 hover:bg-primary hover:-translate-y-1">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        @endif
                     </div>
                 </div>
                 
@@ -117,9 +125,9 @@
                 <div>
                     <h4 class="text-base font-semibold mb-6 text-white">Kontak</h4>
                     <ul class="space-y-3">
-                        <li><a href="mailto:hello@example.com" class="text-white/70 transition-colors duration-300 hover:text-primary">hello@example.com</a></li>
-                        <li><a href="#" class="text-white/70 transition-colors duration-300 hover:text-primary">+62 812 3456 7890</a></li>
-                        <li><a href="#" class="text-white/70 transition-colors duration-300 hover:text-primary">Jakarta, Indonesia</a></li>
+                        <li><a href="mailto:{{ $profile->email ?? '' }}" class="text-white/70 transition-colors duration-300 hover:text-primary">{{ $profile->email ?? '' }}</a></li>
+                        <li><a href="#" class="text-white/70 transition-colors duration-300 hover:text-primary">{{ $profile->phone ?? '' }}</a></li>
+                        <li><a href="#" class="text-white/70 transition-colors duration-300 hover:text-primary">{{ $profile->address ?? '' }}</a></li>
                     </ul>
                 </div>
             </div>

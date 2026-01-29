@@ -2,17 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 class Profile extends Model
 {
-    protected $table = 'profiles';
+    use HasUuids;
+
+    protected $table = 'profile';
 
     protected $fillable = [
         'foto',
         'name',
+        'as',
         'bio',
         'experience',
+        'cv',
         'email',
         'phone',
         'address',

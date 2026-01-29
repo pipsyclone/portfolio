@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Profile;
 use App\Filament\Pages\Settings;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -41,12 +42,18 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->userMenuItems([
                 MenuItem::make()
+                    ->label('Profil')
+                    ->url(fn (): string => Profile::getUrl())
+                    ->icon(Heroicon::OutlinedUser),
+                MenuItem::make()
                     ->label('Pengaturan')
                     ->url(fn (): string => Settings::getUrl())
                     ->icon(Heroicon::OutlinedCog6Tooth),
             ])
             ->sidebarCollapsibleOnDesktop()
             ->collapsibleNavigationGroups()
+            ->globalSearch()
+            ->globalSearchKeyBindings(['ctrl+k', 'command+k'])
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
                 fn (): HtmlString => new HtmlString('
