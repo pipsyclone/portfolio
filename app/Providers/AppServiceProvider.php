@@ -19,6 +19,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Untuk Railway (public URL)
+        \URL::forceScheme('https');
+
+        // Atau lebih spesifik
+        if (app()->environment('production')) {
+            \URL::forceScheme('https');
+        }
     }
 }

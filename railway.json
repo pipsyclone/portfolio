@@ -2,9 +2,11 @@
     "$schema": "https://railway.app/railway.schema.json",
     "build": {
         "builder": "nixpacks",
+        "buildCommand": "composer install --no-interaction --optimize-autoloader --no-dev && php artisan storage:link && php artisan migrate --force",
+        "startCommand": "php artisan serve --host=0.0.0.0 --port=${PORT}",
         "config": {
         "phpVersion": "8.2",
-        "phpExtensions": ["intl", "zip"]
+        "phpExtensions": ["intl", "zip", "gd", "mbstring", "pdo_mysql"]
         }
     },
     "deploy": {
@@ -13,6 +15,12 @@
         "restartPolicyMaxRetries": 10
     },
     "variables": {
-        "COMPOSER_ALLOW_SUPERUSER": "1"
+        "COMPOSER_ALLOW_SUPERUSER": "1",
+        "APP_ENV": "production",
+        "APP_DEBUG": "false",
+        "LOG_CHANNEL": "stderr",
+        "SESSION_DRIVER": "file",
+        "SESSION_LIFETIME": "120",
+        "FILESYSTEM_DISK": "public"
     }
 }
