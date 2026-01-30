@@ -11,8 +11,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // JANGAN akses database di register()
         $this->app->singleton('app.setting', function () {
-            return \App\Models\Setting::first();
+            // Defer loading sampai benar-benar diperlukan
+            return function () {
+                return Cache::remember('app_setting', 3600, function () {
+                    return \App\Models\Setting::first() ?? new \App\Models\Setting;
+                });
+            };
         });
     }
 
@@ -21,18 +27,24 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Untuk Railway (public URL)
-        // \URL::forceScheme('https');
-
-        // Atau lebih spesifik
-        if (app()->environment('production')) {
-            \URL::forceScheme('https');
+        // Force HTTPS di production
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
         }
 
-        // Load Settings globally
-        \View::composer('*', function ($view) {
-            $setting = \App\Models\Setting::first();
-            $view->with('appSetting', $setting);
+        // View composer dengan cache dan error handling
+        View::composer('*', function ($view) {
+            try {
+                // Gunakan cache untuk mencegah query berulang
+                $setting = Cache::remember('global_setting', 3600, function () {
+                    return \App\Models\Setting::first() ?? new \App\Models\Setting;
+                });
+
+                $view->with('appSetting', $setting);
+            } catch (\Exception $e) {
+                // Jika database belum siap, berikan empty setting
+                $view->with('appSetting', new \App\Models\Setting);
+            }
         });
     }
 }
