@@ -5,7 +5,7 @@
         "buildCommand": "composer install --no-interaction --optimize-autoloader --no-dev && php artisan storage:link && php artisan config:clear && php artisan cache:clear && php artisan optimize"
     },
     "deploy": {
-        "startCommand": "php artisan migrate:fresh --seed --force && php artisan serve --host=127.0.0.1 --port=$PORT",
+        "startCommand": "php artisan migrate:fresh --seed --force && php artisan serve --host=0.0.0.0 --port=$PORT",
         "restartPolicyType": "ON_FAILURE"
     }
 }
