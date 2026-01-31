@@ -26,6 +26,8 @@ class SkillsResource extends Resource
     protected static ?int $navigationSort = 2;
 
     protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $navigationLabel = 'Manajemen Keahlian';
+    protected static ?string $modelLabel = 'Keahlian';
 
     public static function form(Schema $schema): Schema
     {

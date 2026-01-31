@@ -20,8 +20,14 @@ class ProjectResource extends Resource
     protected static ?string $model = Projects::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBriefcase;
+
     protected static ?int $navigationSort = 2;
+
     protected static ?string $recordTitleAttribute = 'title';
+
+    protected static ?string $navigationLabel = 'Manajemen Proyek';
+
+    protected static ?string $modelLabel = 'Proyek';
 
     public static function form(Schema $schema): Schema
     {

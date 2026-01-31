@@ -26,6 +26,8 @@ class TechStacksResource extends Resource
     protected static ?int $navigationSort = 1;
 
     protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $navigationLabel = 'Manajemen Teknologi Stack';
+    protected static ?string $modelLabel = 'Teknologi Stack';
 
     public static function form(Schema $schema): Schema
     {

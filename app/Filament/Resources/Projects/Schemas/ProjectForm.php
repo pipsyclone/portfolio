@@ -21,10 +21,10 @@ class ProjectForm
     {
         return $schema
             ->components([
-                Section::make('Project Details')
+                Section::make('Detail Proyek')
                     ->schema([
                         TextInput::make('title')
-                            ->label('Project Title')
+                            ->label('Judul Proyek')
                             ->required()
                             ->unique(table: Projects::class, ignoreRecord: true)
                             ->maxLength(255)
@@ -33,13 +33,16 @@ class ProjectForm
                                 'unique' => 'Judul proyek sudah digunakan.',
                             ]),
                         TextInput::make('url')
-                            ->label('Project URL')
+                            ->label('URL Proyek')
                             ->url()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->validationMessages([
+                                'url' => 'URL Proyek harus berupa URL yang valid.',
+                            ]),
                         Grid::make()
                             ->schema([
                                 Select::make('techStacks')
-                                    ->label('Tech Stacks')
+                                    ->label('Teknologi Stack')
                                     ->required()
                                     ->multiple()
                                     ->relationship('techStacks', 'name')
@@ -48,7 +51,7 @@ class ProjectForm
                                     ->noSearchResultsMessage('Tidak ada data ditemukan')
                                     ->noOptionsMessage('Tidak ada data')
                                     ->validationMessages([
-                                        'required' => 'Tech Stacks harus dipilih.',
+                                        'required' => 'Teknologi Stack harus dipilih.',
                                     ]),
                                 Select::make('skills')
                                     ->label('Keahlian')
@@ -88,13 +91,13 @@ class ProjectForm
                                 'required' => 'Status Proyek harus dipilih.',
                             ]),
                         Textarea::make('description')
-                            ->label('Project Description')
+                            ->label('Deskripsi Proyek')
                             ->maxLength(65535),
                     ]),
-                Section::make('Project Image')
+                Section::make('Aset Proyek')
                     ->schema([
                         FileUpload::make('image')
-                            ->label('Project Image')
+                            ->label('Gambar Proyek')
                             ->image()
                             ->maxSize(2048)
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])

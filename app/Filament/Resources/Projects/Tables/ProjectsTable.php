@@ -25,18 +25,18 @@ class ProjectsTable
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->label('Project Title')
+                    ->label('Judul Proyek')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('url')
-                    ->label('Project URL')
+                    ->label('URL Proyek')
                     ->sortable(),
                 TextColumn::make('created_at')
-                    ->label('Created At')
+                    ->label('Dibuat Pada')
                     ->dateTime('d M Y H:i')
                     ->sortable(),
                 TextColumn::make('updated_at')
-                    ->label('Updated At')
+                    ->label('Diperbarui Pada')
                     ->dateTime('d M Y H:i')
                     ->sortable(),
             ])
@@ -55,12 +55,12 @@ class ProjectsTable
                     DeleteBulkAction::make(),
                 ]),
             ])
-            ->emptyStateHeading('Tidak ada Projects')
-            ->emptyStateDescription('Silakan tambahkan Projects baru.')
+            ->emptyStateHeading('Tidak ada Proyek')
+            ->emptyStateDescription('Silakan tambahkan Proyek baru.')
             ->emptyStateIcon('heroicon-o-bookmark')
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('Tambah Projects')
+                    ->label('Tambah Proyek')
                     ->icon('heroicon-o-plus')
                     ->url(route('filament.admin.resources.projects.create')),
             ])

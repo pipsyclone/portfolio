@@ -21,7 +21,7 @@ class TechStacksTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Nama Tech Stack')
+                    ->label('Nama Teknologi Stack')
                     ->sortable()
                     ->searchable(),
             ])
@@ -38,12 +38,12 @@ class TechStacksTable
                     DeleteBulkAction::make(),
                 ]),
             ])
-            ->emptyStateHeading('Tidak ada Tech Stack')
-            ->emptyStateDescription('Silakan tambahkan Tech Stack baru.')
+            ->emptyStateHeading('Tidak ada Teknologi Stack')
+            ->emptyStateDescription('Silakan tambahkan Teknologi Stack baru.')
             ->emptyStateIcon('heroicon-o-bookmark')
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('Tambah Tech Stack')
+                    ->label('Tambah Teknologi Stack')
                     ->icon('heroicon-o-plus')
                     ->url(route('filament.admin.resources.tech-stacks.create')),
             ])
