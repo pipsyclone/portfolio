@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pivot_profile_skills', function (Blueprint $table) {
-            $table->foreignId('profile_id')->constrained('profiles')->onDelete('cascade');
+            $table->foreignId('profile_id')->constrained('profile')->onDelete('cascade');
             $table->foreignId('skill_id')->constrained('skills')->onDelete('cascade');
             $table->timestamps();
         });
