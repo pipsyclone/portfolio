@@ -1,6 +1,6 @@
 @extends('layouts.landing')
 
-@section('title', $profile->name ?? 'Developer')
+@section('title', $profile->name ?? 'John Doe')
 
 @section('content')
 <!-- Hero Section -->
@@ -16,7 +16,7 @@
                     <span class="text-primary">{{ $profile->as ?? 'Developer' }}</span>
                 </h1>
                 <p class="text-lg text-slate-500 mb-9 leading-relaxed max-w-lg mx-auto lg:mx-0">
-                    Selamat datang di portofolio saya! Saya {{ $profile->name ?? 'seorang pengembang web' }}, seorang pengembang web yang berdedikasi dengan pengalaman lebih dari 5 tahun dalam menciptakan solusi digital inovatif dan efisien.
+                    Selamat datang di portofolio saya! Saya {{ $profile->name ?? 'John Doe' }}, seorang pengembang web yang berdedikasi dengan pengalaman lebih dari 5 tahun dalam menciptakan solusi digital inovatif dan efisien.
                 </p>
                 <div class="flex flex-wrap gap-4 mb-12 justify-center lg:justify-start">
                     <a href="#projects" class="inline-flex items-center gap-2.5 py-4 px-9 rounded-full font-semibold text-base bg-primary text-white btn-primary-shadow transition-all duration-300 hover:-translate-y-1 hover:bg-primary-dark">
@@ -29,11 +29,11 @@
                 </div>
                 <div class="flex gap-12 justify-center lg:justify-start">
                     <div class="text-center">
-                        <span class="text-4xl font-bold text-secondary block">{{ $profile->experience . '+' ?? '0+' }}</span>
+                        <span class="text-4xl font-bold text-secondary block">{{ $profile->experience ?? '0' }}+</span>
                         <span class="text-sm text-slate-500">Tahun Pengalaman</span>
                     </div>
                     <div class="text-center">
-                        <span class="text-4xl font-bold text-secondary block">{{ $projects->where('status', 'completed')->count() . '+' ?? '0+' }}</span>
+                        <span class="text-4xl font-bold text-secondary block">{{ $projects->where('status', 'completed')->count() ?? '0' }}+</span>
                         <span class="text-sm text-slate-500">Proyek Selesai</span>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                 <div class="relative w-80 h-80 lg:w-[450px] lg:h-[450px] mx-auto">
                     <div class="morphing-blob absolute inset-0 bg-primary"></div>
                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 lg:w-96 lg:h-96 rounded-full bg-slate-200 flex items-center justify-center text-8xl lg:text-9xl shadow-2xl">
-                        <img src="{{ asset('storage/' . ($profile->foto ?? 'default-profile.png')) }}" alt="{{ $profile->name ?? 'Developer' }}" class="w-full h-full object-cover rounded-full">
+                        <img src="{{ safe_image($profile->foto) }}" alt="{{ $profile->name ?? 'John Doe' }}" class="w-full h-full object-cover rounded-full">
                     </div>
                     <!-- Floating Cards -->
                     <div class="floating hidden lg:flex absolute top-[10%] -right-5 bg-white rounded-2xl py-4 px-5 shadow-xl items-center gap-3">
@@ -78,10 +78,10 @@
             <!-- About Image -->
             <div class="relative animate-on-scroll">
                 <div class="max-w-md mx-auto lg:mx-0 rounded-3xl overflow-hidden shadow-2xl">
-                    <img src="{{ asset('storage/' . ($profile->foto ?? 'default-profile.png')) }}" alt="{{ $profile->name ?? 'Developer' }}" class="w-full h-full object-cover">
+                    <img src="{{ safe_image($profile->foto) }}" alt="{{ $profile->name ?? 'John Doe' }}" class="w-full h-full object-cover">
                 </div>
                 <div class="absolute -bottom-5 right-5 lg:right-20 bg-primary text-white py-6 px-8 rounded-2xl text-center experience-badge-shadow">
-                    <span class="text-5xl font-bold block">{{ $profile->experience . '+' ?? '0+' }}</span>
+                    <span class="text-5xl font-bold block">{{ $profile->experience ?? '0' }}+</span>
                     <span class="text-sm opacity-90">Tahun Pengalaman</span>
                 </div>
             </div>
