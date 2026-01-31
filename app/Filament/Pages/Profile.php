@@ -13,7 +13,6 @@ use Filament\Pages\Page;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Storage;
 
 class Profile extends Page
@@ -41,7 +40,7 @@ class Profile extends Page
             'as' => $profile?->as,
             'bio' => $profile?->bio,
             'experience' => $profile?->experience,
-            'cv' => $profile?->cv,
+            'cv_url' => $profile?->cv_url,
             'email' => $profile?->email,
             'phone' => $profile?->phone,
             'address' => $profile?->address,
@@ -72,8 +71,8 @@ class Profile extends Page
                                     ->visibility('public')
                                     ->getUploadedFileNameForStorageUsing(fn ($file) => $file->hashName())
                                     ->afterStateHydrated(function ($component, $state) {
-                                        if ($state && !str_contains($state, '/')) {
-                                            $component->state(['portfolio/profile/' . $state]);
+                                        if ($state && ! str_contains($state, '/')) {
+                                            $component->state(['portfolio/profile/'.$state]);
                                         }
                                     }),
                                 TextInput::make('name')
@@ -181,15 +180,15 @@ class Profile extends Page
         $oldCv = $profile?->cv;
 
         // Extract filename saja untuk foto dan cv
-        if (!empty($data['foto'])) {
-            $data['foto'] = is_array($data['foto']) 
-                ? basename($data['foto'][array_key_first($data['foto'])] ?? '') 
+        if (! empty($data['foto'])) {
+            $data['foto'] = is_array($data['foto'])
+                ? basename($data['foto'][array_key_first($data['foto'])] ?? '')
                 : basename($data['foto']);
         }
-        
-        if (!empty($data['cv'])) {
-            $data['cv'] = is_array($data['cv']) 
-                ? basename($data['cv'][array_key_first($data['cv'])] ?? '') 
+
+        if (! empty($data['cv'])) {
+            $data['cv'] = is_array($data['cv'])
+                ? basename($data['cv'][array_key_first($data['cv'])] ?? '')
                 : basename($data['cv']);
         }
 
@@ -203,7 +202,7 @@ class Profile extends Page
         if ($oldFoto && $oldFoto !== $data['foto']) {
             $this->deleteFromCloudinary($oldFoto, 'profile');
         }
-        
+
         if ($oldCv && $oldCv !== $data['cv']) {
             $this->deleteFromCloudinary($oldCv, 'profile');
         }
@@ -219,7 +218,7 @@ class Profile extends Page
      */
     protected function deleteFromCloudinary(?string $filename, string $folder = 'profile'): void
     {
-        if (!$filename) {
+        if (! $filename) {
             return;
         }
 
@@ -229,7 +228,7 @@ class Profile extends Page
         } catch (\Exception $e) {
             // Log error tapi jangan gagalkan proses
             \Illuminate\Support\Facades\Log::warning("Failed to delete from Cloudinary: {$filename}", [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
     }
