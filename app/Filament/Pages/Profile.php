@@ -14,6 +14,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Storage;
 
 class Profile extends Page
 {
@@ -62,12 +63,19 @@ class Profile extends Page
                                 FileUpload::make('foto')
                                     ->label('Foto Profil')
                                     ->image()
-                                    ->disk('public')
-                                    ->directory('profile')
+                                    ->disk('cloudinary')
+                                    ->directory('portfolio/profile')
                                     ->imageEditor()
                                     ->circleCropper()
                                     ->maxSize(2048)
-                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp']),
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                                    ->visibility('public')
+                                    ->getUploadedFileNameForStorageUsing(fn ($file) => $file->hashName())
+                                    ->afterStateHydrated(function ($component, $state) {
+                                        if ($state && !str_contains($state, '/')) {
+                                            $component->state(['portfolio/profile/' . $state]);
+                                        }
+                                    }),
                                 TextInput::make('name')
                                     ->label('Nama Lengkap')
                                     ->required()
@@ -91,12 +99,14 @@ class Profile extends Page
                                     ->required()
                                     ->rows(5)
                                     ->maxLength(65535),
-                                FileUpload::make('cv')
+                                TextInput::make('cv_url')
                                     ->label('Curriculum Vitae (CV)')
-                                    ->disk('public')
-                                    ->directory('profile')
-                                    ->acceptedFileTypes(['application/pdf'])
-                                    ->maxSize(5120),
+                                    ->url()
+                                    ->placeholder('https://contoh.com/cv.pdf')
+                                    ->maxLength(255)
+                                    ->validationMessages([
+                                        'url' => 'Masukkan URL yang valid.',
+                                    ]),
                             ])
                             ->columnSpan(1),
                     ])
@@ -165,7 +175,23 @@ class Profile extends Page
     {
         $data = $this->form->getState();
 
+        // Simpan referensi file lama untuk dihapus nanti
         $profile = ProfileModel::first();
+        $oldFoto = $profile?->foto;
+        $oldCv = $profile?->cv;
+
+        // Extract filename saja untuk foto dan cv
+        if (!empty($data['foto'])) {
+            $data['foto'] = is_array($data['foto']) 
+                ? basename($data['foto'][array_key_first($data['foto'])] ?? '') 
+                : basename($data['foto']);
+        }
+        
+        if (!empty($data['cv'])) {
+            $data['cv'] = is_array($data['cv']) 
+                ? basename($data['cv'][array_key_first($data['cv'])] ?? '') 
+                : basename($data['cv']);
+        }
 
         if ($profile) {
             $profile->update($data);
@@ -173,9 +199,38 @@ class Profile extends Page
             ProfileModel::create($data);
         }
 
+        // Hapus file lama dari Cloudinary jika berbeda dengan file baru
+        if ($oldFoto && $oldFoto !== $data['foto']) {
+            $this->deleteFromCloudinary($oldFoto, 'profile');
+        }
+        
+        if ($oldCv && $oldCv !== $data['cv']) {
+            $this->deleteFromCloudinary($oldCv, 'profile');
+        }
+
         Notification::make()
             ->title('Profil berhasil disimpan')
             ->success()
             ->send();
+    }
+
+    /**
+     * Hapus file dari Cloudinary
+     */
+    protected function deleteFromCloudinary(?string $filename, string $folder = 'profile'): void
+    {
+        if (!$filename) {
+            return;
+        }
+
+        try {
+            $path = "portfolio/{$folder}/{$filename}";
+            Storage::disk('cloudinary')->delete($path);
+        } catch (\Exception $e) {
+            // Log error tapi jangan gagalkan proses
+            \Illuminate\Support\Facades\Log::warning("Failed to delete from Cloudinary: {$filename}", [
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 }

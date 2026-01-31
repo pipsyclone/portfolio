@@ -13,10 +13,12 @@
                     <span class="text-2xl">👋</span> Hallo, Saya
                 </div>
                 <h1 class="font-heading text-5xl md:text-6xl lg:text-7xl font-bold text-secondary leading-tight mb-6">
+                    <span class="">{{ $profile->name ?? 'John Doe' }}</span>
+                    <span class="">Seorang</span>
                     <span class="text-primary">{{ $profile->as ?? 'Developer' }}</span>
                 </h1>
                 <p class="text-lg text-slate-500 mb-9 leading-relaxed max-w-lg mx-auto lg:mx-0">
-                    Selamat datang di portofolio saya! Saya {{ $profile->name ?? 'John Doe' }}, seorang pengembang web yang berdedikasi dengan pengalaman lebih dari 5 tahun dalam menciptakan solusi digital inovatif dan efisien.
+                    Selamat datang di portofolio saya! Saya {{ $profile->name ?? 'John Doe' }}, seorang pengembang web yang berdedikasi dengan pengalaman lebih dari {{ $profile->experience ?? '0' }} tahun dalam menciptakan solusi digital inovatif dan efisien.
                 </p>
                 <div class="flex flex-wrap gap-4 mb-12 justify-center lg:justify-start">
                     <a href="#projects" class="inline-flex items-center gap-2.5 py-4 px-9 rounded-full font-semibold text-base bg-primary text-white btn-primary-shadow transition-all duration-300 hover:-translate-y-1 hover:bg-primary-dark">
@@ -44,7 +46,7 @@
                 <div class="relative w-80 h-80 lg:w-[450px] lg:h-[450px] mx-auto">
                     <div class="morphing-blob absolute inset-0 bg-primary"></div>
                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 lg:w-96 lg:h-96 rounded-full bg-slate-200 flex items-center justify-center text-8xl lg:text-9xl shadow-2xl">
-                        <img src="{{ safe_image($profile->foto) }}" alt="{{ $profile->name ?? 'John Doe' }}" class="w-full h-full object-cover rounded-full">
+                        <img src="{{ safe_image($profile->foto) }}" alt="{{ $profile->foto}}" class="w-full h-full object-cover rounded-full">
                     </div>
                     <!-- Floating Cards -->
                     <div class="floating hidden lg:flex absolute top-[10%] -right-5 bg-white rounded-2xl py-4 px-5 shadow-xl items-center gap-3">
@@ -122,10 +124,12 @@
                         <span class="font-medium text-secondary">Performance Optimized</span>
                     </div>
                 </div>
-                <a href="{{ asset('storage/' . ($profile->cv ?? 'default-cv.pdf')) }}" download class="inline-flex items-center gap-2.5 py-4 px-9 rounded-full font-semibold text-base bg-primary text-white btn-primary-shadow transition-all duration-300 hover:-translate-y-1 hover:bg-primary-dark">
-                    Download CV
-                    <i class="fas fa-download"></i>
-                </a>
+                @if ($profile->cv_url)
+                    <a href="{{ $profile->cv_url }}" target="_blank" class="inline-flex items-center gap-2.5 py-4 px-9 rounded-full font-semibold text-base bg-primary text-white btn-primary-shadow transition-all duration-300 hover:-translate-y-1 hover:bg-primary-dark" rel="noopener noreferrer">
+                        Download CV
+                        <i class="fas fa-download"></i>
+                    </a>
+                @endif
             </div>
         </div>
     </div>
@@ -228,7 +232,7 @@
                             @endif
                         </div>
                         @if($project->image)
-                            <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover">
+                            <img src="{{ safe_image($project->image, 'projects') }}" alt="{{ $project->title }}" class="w-full h-full object-cover">
                         @else
                             <div class="w-full h-full bg-slate-200 flex items-center justify-center text-5xl text-slate-400">
                                 <i class="fas fa-image"></i>
@@ -245,7 +249,7 @@
                     </div>
                     <div class="p-7">
                         <span class="text-xs text-slate-400 mb-3 block">
-                            <i>Kesepakatan Dibuat Pada: {{ $project->created_at->translatedFormat('l, d M Y') }}</i>
+                            <i>Kesepakatan Dibuat Pada: {{ formatted_date($project->created_at, 'l, d M Y') }}</i>
                         </span>
                         <div class="flex flex-wrap gap-2 mb-4">
                             @foreach ($project->techStacks as $tech)
@@ -287,7 +291,7 @@
                         </div>
                         <div>
                             <h4 class="text-base font-semibold text-secondary mb-1">Email</h4>
-                            <p class="text-slate-500">{{ $profile->email ?? '-' }}</p>
+                            <p class="text-slate-500">{{ $profile->email ?? 'johndoe@example.com' }}</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-5">
@@ -296,7 +300,7 @@
                         </div>
                         <div>
                             <h4 class="text-base font-semibold text-secondary mb-1">Telepon</h4>
-                            <p class="text-slate-500">{{ $profile->phone ?? '-' }}</p>
+                            <p class="text-slate-500">{{ $profile->phone ?? '+1234567890' }}</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-5">

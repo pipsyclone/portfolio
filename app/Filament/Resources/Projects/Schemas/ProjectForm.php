@@ -98,10 +98,15 @@ class ProjectForm
                             ->image()
                             ->maxSize(2048)
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
-                            ->disk('public')
-                            ->directory('project-images')
+                            ->disk('cloudinary')
+                            ->directory('portfolio/projects')
                             ->visibility('public')
-                            ->preserveFilenames()
+                            ->getUploadedFileNameForStorageUsing(fn ($file) => $file->hashName())
+                            ->afterStateHydrated(function ($component, $state) {
+                                if ($state && ! str_contains($state, '/')) {
+                                    $component->state(['portfolio/projects/'.$state]);
+                                }
+                            })
                             ->validationMessages([
                                 'image' => 'File harus berupa gambar.',
                                 'max_size' => 'Ukuran gambar tidak boleh lebih dari 2MB.',

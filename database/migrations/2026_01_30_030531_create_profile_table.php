@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('as');
             $table->text('bio');
             $table->integer('experience');
-            $table->text('cv')->nullable();
+            $table->text('cv_url')->nullable();
             $table->string('email', 100);
             $table->string('phone', 20);
             $table->string('address', 255);

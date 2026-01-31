@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ProfileSeeder extends Seeder
@@ -18,7 +17,7 @@ class ProfileSeeder extends Seeder
             'as' => 'Web Developer',
             'bio' => 'Passionate developer with experience in building web applications using Laravel and Vue.js.',
             'experience' => 3,
-            'cv' => null,
+            'cv_url' => null,
             'email' => 'john.doe@example.com',
             'phone' => '+1234567890',
             'address' => '123 Main St, Anytown, USA',

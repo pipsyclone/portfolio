@@ -17,7 +17,7 @@ class Profile extends Model
         'as',
         'bio',
         'experience',
-        'cv',
+        'cv_url',
         'email',
         'phone',
         'address',

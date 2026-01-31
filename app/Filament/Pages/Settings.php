@@ -60,10 +60,17 @@ class Settings extends Page
                         FileUpload::make('app_favicon')
                             ->label('Favicon')
                             ->image()
-                            ->disk('public')
-                            ->directory('settings')
+                            ->disk('cloudinary')
+                            ->directory('portfolio/settings')
                             ->acceptedFileTypes(['image/x-icon', 'image/png', 'image/svg+xml'])
-                            ->maxSize(512),
+                            ->maxSize(512)
+                            ->visibility('public')
+                            ->getUploadedFileNameForStorageUsing(fn ($file) => $file->hashName())
+                            ->afterStateHydrated(function ($component, $state) {
+                                if ($state && ! str_contains($state, '/')) {
+                                    $component->state(['portfolio/settings/'.$state]);
+                                }
+                            }),
                     ]),
             ])->statePath('data');
     }
@@ -80,6 +87,13 @@ class Settings extends Page
     public function save(): void
     {
         $data = $this->form->getState();
+
+        // Extract filename saja untuk app_favicon
+        if (! empty($data['app_favicon'])) {
+            $data['app_favicon'] = is_array($data['app_favicon'])
+                ? basename($data['app_favicon'][array_key_first($data['app_favicon'])] ?? '')
+                : basename($data['app_favicon']);
+        }
 
         // Gunakan query builder karena tabel tidak punya primary key
         \App\Models\Setting::query()->update($data);

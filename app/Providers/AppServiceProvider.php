@@ -2,10 +2,15 @@
 
 namespace App\Providers;
 
+use App\Services\CloudinaryStorageAdapter;
+use Cloudinary\Cloudinary;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use League\Flysystem\Filesystem;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,6 +35,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Override Cloudinary disk dengan custom adapter yang tidak memanggil Admin API untuk getUrl
+        Storage::extend('cloudinary', function ($app, $config) {
+            $cloudinary = new Cloudinary($config['url']);
+            $adapter = new CloudinaryStorageAdapter($cloudinary, null, $config['prefix'] ?? null);
+            
+            return new FilesystemAdapter(new Filesystem($adapter, $config), $adapter, $config);
+        });
+
         // Force HTTPS di production
         if ($this->app->environment('production')) {
             URL::forceScheme('https');

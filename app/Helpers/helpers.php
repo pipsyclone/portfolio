@@ -97,25 +97,45 @@ if (! function_exists('formatted_date')) {
 
 if (! function_exists('safe_image')) {
     /**
-     * Get safe image URL with fallback to default placeholder
+     * Get Cloudinary image URL from filename stored in database
+     * Database stores only filename (e.g., 'y69GfdVzJ0bu1Ih7cBmAGbapwfehoggDUSAdkMG6.jpg')
+     *
+     * @param  string|null  $fileName  Nama file dari database
+     * @param  string  $type  Jenis/folder: 'profile', 'projects', 'portfolio'
      */
-    function safe_image(?string $imagePath, string $default = 'images/default-placeholder.png'): string
-    {
-        if (! $imagePath) {
+    function safe_image(
+        ?string $fileName,
+        string $type = 'profile',
+        string $default = 'images/default-placeholder.png'
+    ): string {
+        // Jika tidak ada file
+        if (empty($fileName) || trim($fileName) === '') {
             return asset($default);
         }
 
-        // Jika path sudah berupa URL lengkap
-        if (filter_var($imagePath, FILTER_VALIDATE_URL)) {
-            return $imagePath;
+        // Jika sudah URL lengkap, langsung return
+        if (filter_var($fileName, FILTER_VALIDATE_URL)) {
+            return $fileName;
         }
 
-        // Jika menggunakan storage
-        if (str_starts_with($imagePath, 'storage/')) {
-            return asset($imagePath);
-        }
+        // Cloudinary configuration
+        $cloudName = env('CLOUDINARY_CLOUD_NAME', 'dh5tajrlv');
 
-        // Jika path dari Filament storage (tanpa prefix storage/)
-        return asset('storage/'.$imagePath);
+        // Hapus ekstensi untuk mendapatkan public_id
+        $publicId = pathinfo($fileName, PATHINFO_FILENAME);
+
+        // Mapping folder berdasarkan type (sesuai struktur Cloudinary Anda)
+        $folders = [
+            'profile' => 'portfolio/profile',
+            'projects' => 'portfolio/projects',
+            'portfolio' => 'portfolio',
+            // Tambahkan mapping lain sesuai kebutuhan
+        ];
+
+        $folder = $folders[$type] ?? 'portfolio';
+
+        // Generate Cloudinary URL
+        // Format: https://res.cloudinary.com/CLOUD_NAME/image/upload/FOLDER/PUBLIC_ID
+        return "https://res.cloudinary.com/{$cloudName}/image/upload/{$folder}/{$publicId}";
     }
 }
