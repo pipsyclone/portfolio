@@ -82,6 +82,8 @@ class DashboardPanelProvider extends PanelProvider
             ->navigationGroups([
                 NavigationGroup::make('User Management')
                     ->icon('heroicon-o-user-group'),
+                NavigationGroup::make('Master Data')
+                    ->icon('heroicon-o-circle-stack'),
                 NavigationGroup::make('System')
                     ->icon('heroicon-o-cog-6-tooth'),
             ])

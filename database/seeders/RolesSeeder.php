@@ -56,6 +56,20 @@ class RolesSeeder extends Seeder
                 'Update',
                 'Delete',
             ],
+            'Specializations' => [
+                'ViewAny',
+                'View',
+                'Create',
+                'Update',
+                'Delete',
+            ],
+            'TechStacks' => [
+                'ViewAny',
+                'View',
+                'Create',
+                'Update',
+                'Delete',
+            ],
         ];
 
         $allPermissions = collect();

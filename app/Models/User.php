@@ -5,11 +5,12 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasAvatar
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -22,9 +23,13 @@ class User extends Authenticatable
     protected $fillable = [
         'foto',
         'name',
-        'username',
         'email',
         'phone',
+        'about',
+        'experience',
+        'address',
+        'specialis',
+        'cv_file',
         'password',
     ];
 
@@ -52,6 +57,13 @@ class User extends Authenticatable
     }
 
     // Method
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->foto
+            ? asset('storage/'.$this->foto)
+            : null;
+    }
+
     public function hasRoles($roles): array
     {
         return $this->roles()->whereIn('slug', (array) $roles)->pluck('slug')->toArray();
