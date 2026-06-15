@@ -10,4 +10,9 @@ class TechStacks extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function projects()
+    {
+        return $this->belongsToMany(Projects::class, 'project_tech_stack', 'tech_stack_id', 'project_id');
+    }
 }

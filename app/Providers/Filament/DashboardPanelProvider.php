@@ -57,7 +57,7 @@ class DashboardPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('dashboard')
-            ->path('/')
+            ->path('/pipspanel')
             ->databaseNotifications()
             ->viteTheme('resources/css/filament/dashboard/theme.css')
             ->login(Login::class)

@@ -70,6 +70,13 @@ class RolesSeeder extends Seeder
                 'Update',
                 'Delete',
             ],
+            'Projects' => [
+                'ViewAny',
+                'View',
+                'Create',
+                'Update',
+                'Delete',
+            ],
         ];
 
         $allPermissions = collect();

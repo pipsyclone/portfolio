@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             SettingSeeder::class,
             SpecializationsSeeder::class,
-            TechStacksSeeder::class
+            TechStacksSeeder::class,
+            ProjectsSeeder::class
         ]);
     }
 }

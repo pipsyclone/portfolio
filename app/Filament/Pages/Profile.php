@@ -19,6 +19,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\Textarea;
 
 use Filament\Notifications\Notification;
 
@@ -41,6 +42,11 @@ class Profile extends Page
             'username' => $user?->username,
             'email' => $user?->email,
             'phone' => $user?->phone,
+            'about' => $user?->about,
+            'experience' => $user?->experience,
+            'address' => $user?->address,
+            'specialis' => $user?->specialis,
+            'cv_file' => $user?->cv_file,
         ]);
     }
 
@@ -87,6 +93,45 @@ class Profile extends Page
                                             ->tel()
                                             ->required(),
                                     ]),
+                            ]),
+                        Section::make('Information')
+                            ->icon('heroicon-o-user')
+                            ->description('Landing page profile information.')
+                            ->columnSpanFull()
+                            ->schema([
+                                Textarea::make('about')
+                                    ->label('About')
+                                    ->rows(6)
+                                    ->columnSpanFull()
+                                    ->required(),
+                                Grid::make()
+                                    ->columns(2)
+                                    ->schema([
+                                        TextInput::make('experience')
+                                            ->label('Experience (years)')
+                                            ->numeric()
+                                            ->required(),
+                                        Textinput::make('address')
+                                            ->label('Address')
+                                            ->required(),
+                                    ]),
+                                Grid::make()
+                                    ->columns(2)
+                                    ->schema([
+                                        Textinput::make('specialis')
+                                            ->label('Specialis')
+                                            ->required(),
+                                        FileUpload::make('cv_file')
+                                            ->label('Curriculum Vitae')
+                                            ->disk('public')
+                                            ->directory('cv')
+                                            ->acceptedFileTypes(['application/pdf'])
+                                            ->dehydrated(fn ($state) => filled($state))
+                                            ->maxSize(10240)
+                                            ->deleteUploadedFileUsing(function (string $file) {
+                                                Storage::disk('public')->delete($file);
+                                            }),
+                                    ])
                             ]),
                         Section::make('Security')
                             ->description('You can update your password here. Leave it empty if you don\'t want to change the password.')

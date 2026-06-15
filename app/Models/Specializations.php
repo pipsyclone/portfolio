@@ -10,4 +10,9 @@ class Specializations extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function projects()
+    {
+        return $this->belongsToMany(Projects::class, 'project_specialization', 'specialization_id', 'project_id');
+    }
 }
