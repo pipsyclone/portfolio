@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Specializations\Pages;
 use App\Filament\Resources\Specializations\SpecializationsResource;
 use Filament\Resources\Pages\CreateRecord;
 
+use Filament\Notifications\Notification;
+
 class CreateSpecializations extends CreateRecord
 {
     protected static string $resource = SpecializationsResource::class;
@@ -14,13 +16,15 @@ class CreateSpecializations extends CreateRecord
         return static::getResource()::getUrl('index');
     }
 
-    public static function afterCreate(): void
+    protected function getCreatedNotification(): ?Notification
     {
-        Notification::make()
+        return Notification::make()
             ->title('Specialization created successfully')
-            ->success()
-            ->send();
-        
-        auth()->user()->createLog(request(), 'Created Speacialization', 'Specialization ' . $record->name . ' created successfully');
+            ->success();
+    }
+
+    public function afterCreate(): void
+    {
+        auth()->user()->createLog(request(), 'Created Specialization', 'Specialization ' . $this->record->name . ' created successfully');
     }
 }

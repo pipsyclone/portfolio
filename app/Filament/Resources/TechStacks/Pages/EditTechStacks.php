@@ -6,6 +6,8 @@ use App\Filament\Resources\TechStacks\TechStacksResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
+use Filament\Notifications\Notification;
+
 class EditTechStacks extends EditRecord
 {
     protected static string $resource = TechStacksResource::class;
@@ -17,13 +19,15 @@ class EditTechStacks extends EditRecord
         ];
     }
 
-    public static function afterSave(): void
+    protected function getSavedNotification(): ?Notification
     {
-        Notification::make()
+        return Notification::make()
             ->title('Tech Stack updated successfully')
-            ->success()
-            ->send();
-        
-        auth()->user()->createLog(request(), 'Updated Tech Stack', 'Tech Stack ' . $record->name . ' updated successfully');
+            ->success();
+    }
+
+    public function afterSave(): void
+    {
+        auth()->user()->createLog(request(), 'Updated Tech Stack', 'Tech Stack ' . $this->record->name . ' updated successfully');
     }
 }

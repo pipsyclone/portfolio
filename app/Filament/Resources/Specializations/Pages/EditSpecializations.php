@@ -6,6 +6,8 @@ use App\Filament\Resources\Specializations\SpecializationsResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
+use Filament\Notifications\Notification;
+
 class EditSpecializations extends EditRecord
 {
     protected static string $resource = SpecializationsResource::class;
@@ -17,13 +19,15 @@ class EditSpecializations extends EditRecord
         ];
     }
 
-    public static function afterSave(): void
+    protected function getSavedNotification(): ?Notification
     {
-        Notification::make()
+        return Notification::make()
             ->title('Specialization updated successfully')
-            ->success()
-            ->send();
-        
-        auth()->user()->createLog(request(), 'Updated Specialization', 'Specialization ' . $record->name . ' updated successfully');
+            ->success();
+    }
+
+    public function afterSave(): void
+    {
+        auth()->user()->createLog(request(), 'Updated Specialization', 'Specialization ' . $this->record->name . ' updated successfully');
     }
 }
