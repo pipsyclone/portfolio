@@ -49,7 +49,7 @@ class DashboardPanelProvider extends PanelProvider
             $setting = Setting::first();
         }
 
-        $themeColor = $setting?->theme_color ?? '#00ff91';
+        $themeColor = $setting?->app_color ?? '#00ff91';
 
         // Set form actions alignment to the end (right side)
         BasePage::formActionsAlignment(Alignment::End);
