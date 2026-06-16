@@ -16,15 +16,21 @@
                 <div class="text-center md:text-right">
                     <h4 class="text-white font-bold mb-4">Connect</h4>
                     <div class="flex space-x-4 justify-center md:justify-end">
-                        <a href="{{ $setting->github_link }}" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-sky-500 hover:text-white transition-all duration-300 transform hover:-translate-y-1">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="{{ $setting->instagram_link }}" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-sky-500 hover:text-white transition-all duration-300 transform hover:-translate-y-1">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="{{ $setting->linkedin_link }}" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-sky-500 hover:text-white transition-all duration-300 transform hover:-translate-y-1">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
+                        @if($setting->github_link)
+                            <a href="{{ $setting->github_link }}" target="_blank" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-sky-500 hover:text-white transition-all duration-300 transform hover:-translate-y-1">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        @endif
+                        @if($setting->instagram_link)
+                            <a href="{{ $setting->instagram_link }}" target="_blank" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-sky-500 hover:text-white transition-all duration-300 transform hover:-translate-y-1">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        @endif
+                        @if($setting->linkedin_link)
+                            <a href="{{ $setting->linkedin_link }}" target="_blank" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-sky-500 hover:text-white transition-all duration-300 transform hover:-translate-y-1">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        @endif
                     </div>
                 </div>
             @endif
