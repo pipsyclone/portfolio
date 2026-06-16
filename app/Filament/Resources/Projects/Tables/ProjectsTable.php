@@ -25,7 +25,8 @@ class ProjectsTable
                     ->searchable(),
                 TextColumn::make('description')
                     ->label('Description')
-                    ->searchable(),
+                    ->searchable()
+                    ->limit(50),
                 ImageColumn::make('image')
                     ->label('Image')
                     ->disk('public')
