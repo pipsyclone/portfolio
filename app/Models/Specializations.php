@@ -9,6 +9,7 @@ class Specializations extends Model
     protected $table = 'specializations';
     protected $fillable = [
         'name',
+        'icon'
     ];
 
     public function projects()

@@ -17,7 +17,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->nullable();
-            $table->text('about')->nullable();
+            $table->string('headline')->nullable();
+            $table->string('keywords')->nullable();
+            $table->string('about_image')->nullable();
+            $table->string('about_title')->nullable();
+            $table->text('about_description')->nullable();
+            $table->json('about_extra_information')->nullable();
             $table->integer('experience')->nullable();
             $table->string('address')->nullable();
             $table->string('specialis')->nullable();

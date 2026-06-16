@@ -16,7 +16,15 @@ class TechStacksTable
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable()->sortable(),
+                TextColumn::make('icon')
+                    ->label('Icon')
+                    ->formatStateUsing(fn ($state) => '<i class="' . $state . ' fa-xl"></i>')
+                    ->html()
+                    ->width(10)
+                    ->alignCenter(),
+                TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 //

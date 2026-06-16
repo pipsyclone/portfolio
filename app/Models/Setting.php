@@ -25,5 +25,7 @@ class Setting extends Model
         'tiktok_link',
         'facebook_link',
         'x_twitter_link',
+        'github_link',
+        'linkedin_link',
     ];
 }

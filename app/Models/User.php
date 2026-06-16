@@ -25,7 +25,12 @@ class User extends Authenticatable implements HasAvatar
         'name',
         'email',
         'phone',
-        'about',
+        'headline',
+        'keywords',
+        'about_image',
+        'about_title',
+        'about_description',
+        'about_extra_information',
         'experience',
         'address',
         'specialis',
@@ -53,6 +58,7 @@ class User extends Authenticatable implements HasAvatar
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'about_extra_information' => 'array',
         ];
     }
 

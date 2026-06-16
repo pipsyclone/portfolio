@@ -12,6 +12,7 @@ class Projects extends Model
         'description',
         'image',
         'url',
+        'github_link',
     ];
 
     // Relasi dengan Tech Stacks

@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('tiktok_link')->nullable();
             $table->string('facebook_link')->nullable();
             $table->string('x_twitter_link')->nullable();
+            $table->string('github_link')->nullable();
+            $table->string('linkedin_link')->nullable();
             $table->timestamps();
         });
     }

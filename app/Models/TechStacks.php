@@ -9,6 +9,7 @@ class TechStacks extends Model
     protected $table = 'tech_stacks';
     protected $fillable = [
         'name',
+        'icon'
     ];
 
     public function projects()

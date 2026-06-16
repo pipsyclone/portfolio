@@ -8,3 +8,7 @@ Route::get('/backup/download/{file}', function ($file) {
     abort_unless(File::exists($path), 404);
     return response()->download($path);
 })->name('backup.download');
+
+Route::get('/', function () {
+    return view('index');
+})->name('index');

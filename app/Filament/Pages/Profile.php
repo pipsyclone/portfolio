@@ -13,6 +13,8 @@ use BackedEnum;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 
 use Filament\Actions\Action;
 
@@ -20,6 +22,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Repeater;
 
 use Filament\Notifications\Notification;
 
@@ -42,7 +45,12 @@ class Profile extends Page
             'username' => $user?->username,
             'email' => $user?->email,
             'phone' => $user?->phone,
-            'about' => $user?->about,
+            'headline' => $user?->headline,
+            'keywords' => $user?->keywords,
+            'about_image' => $user?->about_image,
+            'about_title' => $user?->about_title,
+            'about_description' => $user?->about_description,
+            'about_extra_information' => $user?->about_extra_information,
             'experience' => $user?->experience,
             'address' => $user?->address,
             'specialis' => $user?->specialis,
@@ -94,33 +102,71 @@ class Profile extends Page
                                             ->required(),
                                     ]),
                             ]),
-                        Section::make('Information')
-                            ->icon('heroicon-o-user')
-                            ->description('Landing page profile information.')
+                        Tabs::make()
                             ->columnSpanFull()
-                            ->schema([
-                                Textarea::make('about')
-                                    ->label('About')
-                                    ->rows(6)
-                                    ->columnSpanFull()
-                                    ->required(),
-                                Grid::make()
-                                    ->columns(2)
+                            ->tabs([
+                                Tab::make('SEO')
                                     ->schema([
-                                        TextInput::make('experience')
-                                            ->label('Experience (years)')
-                                            ->numeric()
-                                            ->required(),
-                                        Textinput::make('address')
-                                            ->label('Address')
-                                            ->required(),
+                                        Grid::make()
+                                            ->columns(2)
+                                            ->schema([
+                                                TextInput::make('headline')
+                                                    ->label('Headline')
+                                                    ->required(),
+                                                Textinput::make('keywords')
+                                                    ->label('Keywords')
+                                                    ->placeholder('Frontend Developer, Backend Developer, Fullstack Developer, UI/UX Designer, Web Developer')
+                                                    ->required()
+                                                    ->helperText('Separated by commas'),
+                                            ]),
                                     ]),
-                                Grid::make()
-                                    ->columns(2)
+                                Tab::make('General')
                                     ->schema([
+                                        Grid::make()
+                                            ->columns(2)
+                                            ->schema([
+                                                TextInput::make('experience')
+                                                    ->label('Experience (years)')
+                                                    ->numeric()
+                                                    ->required(),
+                                                Textinput::make('address')
+                                                    ->label('Address')
+                                                    ->required(),
+                                            ]),
                                         Textinput::make('specialis')
                                             ->label('Specialis')
                                             ->required(),
+                                    ]),
+                                Tab::make('About')
+                                    ->schema([
+                                        FileUpload::make('about_image')
+                                            ->label('About Image')
+                                            ->disk('public')
+                                            ->directory('about-images')
+                                            ->image()
+                                            ->imageEditor()
+                                            ->maxSize(2048)
+                                            ->required()
+                                            ->deleteUploadedFileUsing(function (string $file) {
+                                                Storage::disk('public')->delete($file);
+                                            }),
+                                        TextInput::make('about_title')
+                                            ->label('Title')
+                                            ->required(),
+                                        Textarea::make('about_description')
+                                            ->label('Description')
+                                            ->rows(6)
+                                            ->columnSpanFull()
+                                            ->required(),
+                                        Repeater::make('about_extra_information')
+                                            ->defaultItems(1)
+                                            ->schema([
+                                                TextInput::make('information')->label('Information')->required(),
+                                            ])
+                                    ]),
+                                Tab::make('CV')
+                                    ->label('CV')
+                                    ->schema([
                                         FileUpload::make('cv_file')
                                             ->label('Curriculum Vitae')
                                             ->disk('public')
@@ -131,7 +177,7 @@ class Profile extends Page
                                             ->deleteUploadedFileUsing(function (string $file) {
                                                 Storage::disk('public')->delete($file);
                                             }),
-                                    ])
+                                    ]),
                             ]),
                         Section::make('Security')
                             ->description('You can update your password here. Leave it empty if you don\'t want to change the password.')

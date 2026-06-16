@@ -56,6 +56,8 @@ class Settings extends Page
             'tiktok_link'                 => $setting?->tiktok_link ?? '',
             'facebook_link'               => $setting?->facebook_link ?? '',
             'x_twitter_link'              => $setting?->x_twitter_link ?? '',
+            'github_link'                 => $setting?->github_link ?? '',
+            'linkedin_link'               => $setting?->linkedin_link ?? '',
         ]);
     }
 
@@ -175,6 +177,20 @@ class Settings extends Page
                             ->label('Link X (Twitter)')
                             ->url()
                             ->placeholder('https://twitter.com/...')
+                            ->validationMessages([
+                                'url' => 'Format URL tidak valid.',
+                            ]),
+                        TextInput::make('github_link')
+                            ->label('Link GitHub')
+                            ->url()
+                            ->placeholder('https://github.com/...')
+                            ->validationMessages([
+                                'url' => 'Format URL tidak valid.',
+                            ]),
+                        TextInput::make('linkedin_link')
+                            ->label('Link Linkedin')
+                            ->url()
+                            ->placeholder('https://www.linkedin.com/in/...')
                             ->validationMessages([
                                 'url' => 'Format URL tidak valid.',
                             ]),

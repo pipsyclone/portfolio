@@ -166,3 +166,22 @@ if (! function_exists('get_location_from_ip')) {
         return 'Lokasi tidak diketahui';
     }
 }
+
+if (! function_exists('fa_access_token')) {
+    function fa_access_token()
+    {
+        return cache()->remember('fa-access-token', 3500, function () {
+            $response = Http::withToken(env('FONTAWESOME_API_TOKEN'))
+                ->post('https://api.fontawesome.com/token');
+
+            $json = $response->json();
+
+            if (!isset($json['access_token'])) {
+                \Log::error('FA token error', $json ?? []);
+                return null;
+            }
+
+            return $json['access_token'];
+        });
+    }
+}
