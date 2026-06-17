@@ -55,11 +55,15 @@
     @livewireStyles
 
     <style>
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #0f172a; /* Slate 900 */
             color: #f8fafc; /* Slate 50 */
-            overflow-x: hidden;
         }
         
         /* Custom scrollbar */
@@ -134,19 +138,13 @@
     </nav>
 
     <!-- Mobile Menu (Hidden by default) -->
-    <div class="fixed inset-0 z-40 bg-slate-900/95 backdrop-blur-md hidden flex-col items-center justify-center space-y-8 transition-opacity" id="mobile-menu">
-        <button class="absolute top-6 right-6 text-slate-300 hover:text-white focus:outline-none" id="mobile-close-btn">
+    <div class="fixed inset-0 z-40 bg-slate-900/95 backdrop-blur-md hidden flex-col items-center justify-center space-y-6 transition-opacity" id="mobile-menu">
+        <button class="absolute top-6 right-6 text-slate-300 hover:text-white focus:outline-none z-50" id="mobile-close-btn">
             <i class="fas fa-times text-2xl"></i>
         </button>
-        <a href="#hero" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('Home') }}</a>
-        <a href="#about" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('About') }}</a>
-        <a href="#tech" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('Skills') }}</a>
-        <a href="#specialis" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('Specialties') }}</a>
-        <a href="#projects" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('Projects') }}</a>
-        <a href="#contact" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('Contact') }}</a>
-
+        
         <!-- Toggle Bahasa Mobile (Modern Pill) -->
-        <div class="flex items-center bg-slate-800/80 rounded-full p-1.5 border border-slate-700/50 mt-4">
+        <div class="flex items-center bg-slate-800/80 rounded-full p-1.5 border border-slate-700/50 mb-4">
             <a href="{{ route('lang.switch', 'id') }}" wire:navigate
                class="px-5 py-2 text-sm font-bold rounded-full transition-all duration-300 {{ $currentLocale == 'id' ? 'text-white shadow-md' : 'text-slate-400 hover:text-white' }}"
                @if($currentLocale == 'id') style="background-color: {{ $primaryColor }};" @endif>
@@ -158,6 +156,13 @@
                 EN
             </a>
         </div>
+
+        <a href="#hero" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('Home') }}</a>
+        <a href="#about" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('About') }}</a>
+        <a href="#tech" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('Skills') }}</a>
+        <a href="#specialis" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('Specialties') }}</a>
+        <a href="#projects" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('Projects') }}</a>
+        <a href="#contact" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('Contact') }}</a>
     </div>
 
     <main>
@@ -166,7 +171,7 @@
 
     <!-- AOS JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
+    <script data-navigate-once>
         // Initialize AOS
         function initAOS() {
             AOS.init({
@@ -178,42 +183,49 @@
             setTimeout(() => AOS.refresh(), 100);
         }
 
-        initAOS();
-
         document.addEventListener('livewire:navigated', () => {
             initAOS();
-        });
 
-        // Mobile menu toggle logic
-        const mobileBtn = document.getElementById('mobile-menu-btn');
-        const closeBtn = document.getElementById('mobile-close-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileLinks = document.querySelectorAll('.mobile-link');
+            // Mobile menu toggle logic
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const closeBtn = document.getElementById('mobile-close-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
 
-        function toggleMenu() {
-            mobileMenu.classList.toggle('hidden');
-            mobileMenu.classList.toggle('flex');
-            document.body.classList.toggle('overflow-hidden');
-        }
+            function toggleMenu() {
+                if (mobileMenu) {
+                    mobileMenu.classList.toggle('hidden');
+                    mobileMenu.classList.toggle('flex');
+                    document.body.classList.toggle('overflow-hidden');
+                }
+            }
 
-        mobileBtn.addEventListener('click', toggleMenu);
-        closeBtn.addEventListener('click', toggleMenu);
-        
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', toggleMenu);
+            if (mobileBtn) {
+                // Remove old listener to prevent duplicates if any, though data-navigate-once handles it
+                mobileBtn.removeEventListener('click', toggleMenu);
+                mobileBtn.addEventListener('click', toggleMenu);
+            }
+            if (closeBtn) {
+                closeBtn.removeEventListener('click', toggleMenu);
+                closeBtn.addEventListener('click', toggleMenu);
+            }
+            
+            mobileLinks.forEach(link => {
+                link.removeEventListener('click', toggleMenu);
+                link.addEventListener('click', toggleMenu);
+            });
         });
 
         // Navbar scroll effect
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
+            if (!nav) return;
             if (window.scrollY > 50) {
-                nav.classList.add('shadow-lg', 'shadow-indigo-500/10');
+                nav.classList.add('shadow-lg', 'shadow-indigo-500/10', 'py-2');
                 nav.classList.remove('py-4');
-                nav.classList.add('py-2');
             } else {
-                nav.classList.remove('shadow-lg', 'shadow-indigo-500/10');
+                nav.classList.remove('shadow-lg', 'shadow-indigo-500/10', 'py-2');
                 nav.classList.add('py-4');
-                nav.classList.remove('py-2');
             }
         });
     </script>
