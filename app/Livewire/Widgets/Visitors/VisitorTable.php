@@ -21,7 +21,8 @@ class VisitorTable extends TableWidget
             ->query(fn (): Builder => Visitor::query()->latest('visited_date')->latest('id'))
             ->columns([
                 TextColumn::make('ip_address')
-                    ->label('IP Address')
+                    ->label('Location')
+                    ->formatStateUsing(fn (string $state): string => get_location_from_ip($state))
                     ->searchable()
                     ->copyable(),
                 TextColumn::make('user_agent')

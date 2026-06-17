@@ -48,7 +48,8 @@ class ActivityLogs extends Page implements HasTable
                     ->label('Activity')
                     ->badge()
                     ->color('info'),
-                TextColumn::make('ip_address')->label('IP Address'),
+                TextColumn::make('ip_address')
+                    ->label('IP Address'),
                 TextColumn::make('description')
                     ->label('Description')
                     ->limit(40),
@@ -64,14 +65,19 @@ class ActivityLogs extends Page implements HasTable
                     ->icon('heroicon-o-eye')
                     ->color('gray')
                     ->infolist([
-                        TextEntry::make('user.name')->label('User'),
+                        TextEntry::make('user.name')
+                            ->label('User'),
                         TextEntry::make('activity')
                             ->label('Activity')
                             ->badge()
                             ->color('info'),
-                        TextEntry::make('ip_address')->label('IP Address'),
-                        TextEntry::make('user_agent')->label('User Agent')->default('-'),
-                        TextEntry::make('description')->label('Description'),
+                        TextEntry::make('ip_address')
+                            ->label('IP Address'),
+                        TextEntry::make('user_agent')
+                            ->label('User Agent')
+                            ->default('-'),
+                        TextEntry::make('description')
+                            ->label('Description'),
                         TextEntry::make('created_at')
                             ->label('Time')
                             ->dateTime('d M Y, H:i:s'),

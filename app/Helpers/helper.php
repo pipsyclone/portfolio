@@ -121,49 +121,51 @@ if (! function_exists('get_location_from_ip')) {
             return 'Private Network';
         }
 
-        try {
-            // Use ip-api.com free service (limit: 45 requests per minute)
-            // Added fields: city, regionName, country, timezone, isp
-            $response = \Illuminate\Support\Facades\Http::timeout(5)->get("http://ip-api.com/json/{$ip}?fields=status,message,country,regionName,city,timezone,isp");
-            
-            if ($response->successful()) {
-                $data = $response->json();
+        return cache()->remember("ip_location_{$ip}", now()->addDays(30), function () use ($ip) {
+            try {
+                // Use ip-api.com free service (limit: 45 requests per minute)
+                // Added fields: city, regionName, country, timezone, isp
+                $response = \Illuminate\Support\Facades\Http::timeout(5)->get("http://ip-api.com/json/{$ip}?fields=status,message,country,regionName,city,timezone,isp");
                 
-                if (isset($data['status']) && $data['status'] === 'success') {
-                    $city = $data['city'] ?? '';
-                    $region = $data['regionName'] ?? '';
-                    $country = $data['country'] ?? '';
+                if ($response->successful()) {
+                    $data = $response->json();
                     
-                    // Format: City, Region, Country or City, Country
-                    $location = [];
-                    if ($city) $location[] = $city;
-                    if ($region && $region !== $city) $location[] = $region;
-                    if ($country) $location[] = $country;
+                    if (isset($data['status']) && $data['status'] === 'success') {
+                        $city = $data['city'] ?? '';
+                        $region = $data['regionName'] ?? '';
+                        $country = $data['country'] ?? '';
+                        
+                        // Format: City, Region, Country or City, Country
+                        $location = [];
+                        if ($city) $location[] = $city;
+                        if ($region && $region !== $city) $location[] = $region;
+                        if ($country) $location[] = $country;
+                        
+                        return !empty($location) ? implode(', ', $location) : '-';
+                    }
                     
-                    return !empty($location) ? implode(', ', $location) : '-';
-                }
-                
-                // Log error jika ada
-                if (isset($data['message'])) {
-                    \Illuminate\Support\Facades\Log::warning('IP Location API Error', [
+                    // Log error jika ada
+                    if (isset($data['message'])) {
+                        \Illuminate\Support\Facades\Log::warning('IP Location API Error', [
+                            'ip' => $ip,
+                            'message' => $data['message']
+                        ]);
+                    }
+                } else {
+                    \Illuminate\Support\Facades\Log::warning('IP Location API Failed', [
                         'ip' => $ip,
-                        'message' => $data['message']
+                        'status' => $response->status()
                     ]);
                 }
-            } else {
-                \Illuminate\Support\Facades\Log::warning('IP Location API Failed', [
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('IP Location Exception', [
                     'ip' => $ip,
-                    'status' => $response->status()
+                    'error' => $e->getMessage()
                 ]);
             }
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('IP Location Exception', [
-                'ip' => $ip,
-                'error' => $e->getMessage()
-            ]);
-        }
-        
-        return 'Lokasi tidak diketahui';
+            
+            return 'Lokasi tidak diketahui';
+        });
     }
 }
 
