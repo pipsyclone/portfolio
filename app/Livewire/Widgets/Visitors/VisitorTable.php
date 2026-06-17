@@ -12,6 +12,7 @@ use App\Models\Visitor;
 
 class VisitorTable extends TableWidget
 {
+    protected ?string $pollingInterval = '10s';
     protected int | string | array $columnSpan = 'full';
 
     public function table(Table $table): Table
