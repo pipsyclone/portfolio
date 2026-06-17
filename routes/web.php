@@ -12,3 +12,10 @@ Route::get('/backup/download/{file}', function ($file) {
 Route::get('/', function () {
     return view('index');
 })->name('index');
+
+Route::get('lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'id'])) {
+        session()->put('locale', $locale);
+    }
+    return redirect()->back();
+})->name('lang.switch');

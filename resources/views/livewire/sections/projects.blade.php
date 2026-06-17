@@ -2,9 +2,9 @@
     <div class="container mx-auto px-6 md:px-12 lg:px-24">
         <!-- Section Header -->
         <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Featured <span class="text-sky-400">Projects</span></h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">{{ __('Featured') }} <span class="text-sky-400">{{ __('Projects') }}</span></h2>
             <div class="w-24 h-1 bg-sky-500 mx-auto rounded-full"></div>
-            <p class="text-slate-400 mt-6 max-w-2xl mx-auto">Here are some of my recent works that showcase my skills and experience.</p>
+            <p class="text-slate-400 mt-6 max-w-2xl mx-auto">{{ __('Here are some of my recent works that showcase my skills and experience.') }}</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="p-6">
                     <h3 class="text-xl font-bold text-white mb-2 group-hover:text-sky-400 transition-colors">{{ $project->name }}</h3>
-                    <p class="text-slate-400 text-sm mb-4 line-clamp-3">{{ $project->description }}</p>
+                    <p class="text-slate-400 text-sm mb-4 line-clamp-3">{{ translate_text($project->description) }}</p>
                     <div class="flex flex-wrap gap-2">
                         @foreach($project->techStacks as $techIndex => $tech)
                             @php

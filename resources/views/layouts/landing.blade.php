@@ -1,5 +1,8 @@
 @php
     $user = \App\Models\User::first();
+    $settings = \App\Models\Setting::first();
+    $primaryColor = $settings ? ($settings->app_color ?? '#38bdf8') : '#38bdf8';
+    $currentLocale = app()->getLocale();
 @endphp
 
 <!DOCTYPE html>
@@ -98,13 +101,27 @@
             </a>
             
             <!-- Desktop Menu -->
-            <div class="hidden md:flex space-x-8">
-                <a href="#hero" class="text-sm font-medium text-slate-300 hover:text-sky-400 transition-colors">Home</a>
-                <a href="#about" class="text-sm font-medium text-slate-300 hover:text-sky-400 transition-colors">About</a>
-                <a href="#tech" class="text-sm font-medium text-slate-300 hover:text-sky-400 transition-colors">Skills</a>
-                <a href="#specialis" class="text-sm font-medium text-slate-300 hover:text-sky-400 transition-colors">Specialties</a>
-                <a href="#projects" class="text-sm font-medium text-slate-300 hover:text-sky-400 transition-colors">Projects</a>
-                <a href="#contact" class="text-sm font-medium text-slate-300 hover:text-sky-400 transition-colors">Contact</a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#hero" class="text-sm font-medium text-slate-300 hover:text-sky-400 transition-colors">{{ __('Home') }}</a>
+                <a href="#about" class="text-sm font-medium text-slate-300 hover:text-sky-400 transition-colors">{{ __('About') }}</a>
+                <a href="#tech" class="text-sm font-medium text-slate-300 hover:text-sky-400 transition-colors">{{ __('Skills') }}</a>
+                <a href="#specialis" class="text-sm font-medium text-slate-300 hover:text-sky-400 transition-colors">{{ __('Specialties') }}</a>
+                <a href="#projects" class="text-sm font-medium text-slate-300 hover:text-sky-400 transition-colors">{{ __('Projects') }}</a>
+                <a href="#contact" class="text-sm font-medium text-slate-300 hover:text-sky-400 transition-colors">{{ __('Contact') }}</a>
+                
+                <!-- Toggle Bahasa (Modern Pill) -->
+                <div class="flex items-center bg-slate-800/80 rounded-full p-1 border border-slate-700/50 ml-6">
+                    <a href="{{ route('lang.switch', 'id') }}" wire:navigate
+                       class="px-3 py-1 text-xs font-bold rounded-full transition-all duration-300 {{ $currentLocale == 'id' ? 'text-white shadow-md' : 'text-slate-400 hover:text-white' }}"
+                       @if($currentLocale == 'id') style="background-color: {{ $primaryColor }};" @endif>
+                        ID
+                    </a>
+                    <a href="{{ route('lang.switch', 'en') }}" wire:navigate
+                       class="px-3 py-1 text-xs font-bold rounded-full transition-all duration-300 {{ $currentLocale == 'en' ? 'text-white shadow-md' : 'text-slate-400 hover:text-white' }}"
+                       @if($currentLocale == 'en') style="background-color: {{ $primaryColor }};" @endif>
+                        EN
+                    </a>
+                </div>
             </div>
 
             <!-- Mobile Menu Button -->
@@ -121,12 +138,26 @@
         <button class="absolute top-6 right-6 text-slate-300 hover:text-white focus:outline-none" id="mobile-close-btn">
             <i class="fas fa-times text-2xl"></i>
         </button>
-        <a href="#hero" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">Home</a>
-        <a href="#about" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">About</a>
-        <a href="#tech" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">Skills</a>
-        <a href="#specialis" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">Specialties</a>
-        <a href="#projects" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">Projects</a>
-        <a href="#contact" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">Contact</a>
+        <a href="#hero" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('Home') }}</a>
+        <a href="#about" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('About') }}</a>
+        <a href="#tech" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('Skills') }}</a>
+        <a href="#specialis" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('Specialties') }}</a>
+        <a href="#projects" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('Projects') }}</a>
+        <a href="#contact" class="text-xl font-medium text-slate-300 hover:text-sky-400 transition-colors mobile-link">{{ __('Contact') }}</a>
+
+        <!-- Toggle Bahasa Mobile (Modern Pill) -->
+        <div class="flex items-center bg-slate-800/80 rounded-full p-1.5 border border-slate-700/50 mt-4">
+            <a href="{{ route('lang.switch', 'id') }}" wire:navigate
+               class="px-5 py-2 text-sm font-bold rounded-full transition-all duration-300 {{ $currentLocale == 'id' ? 'text-white shadow-md' : 'text-slate-400 hover:text-white' }}"
+               @if($currentLocale == 'id') style="background-color: {{ $primaryColor }};" @endif>
+                ID
+            </a>
+            <a href="{{ route('lang.switch', 'en') }}" wire:navigate
+               class="px-5 py-2 text-sm font-bold rounded-full transition-all duration-300 {{ $currentLocale == 'en' ? 'text-white shadow-md' : 'text-slate-400 hover:text-white' }}"
+               @if($currentLocale == 'en') style="background-color: {{ $primaryColor }};" @endif>
+                EN
+            </a>
+        </div>
     </div>
 
     <main>
@@ -137,11 +168,20 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         // Initialize AOS
-        AOS.init({
-            once: true,
-            offset: 50,
-            duration: 800,
-            easing: 'ease-in-out-cubic',
+        function initAOS() {
+            AOS.init({
+                once: true,
+                offset: 50,
+                duration: 800,
+                easing: 'ease-in-out-cubic',
+            });
+            setTimeout(() => AOS.refresh(), 100);
+        }
+
+        initAOS();
+
+        document.addEventListener('livewire:navigated', () => {
+            initAOS();
         });
 
         // Mobile menu toggle logic

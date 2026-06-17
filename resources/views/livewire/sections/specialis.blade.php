@@ -2,9 +2,9 @@
     <div class="container mx-auto px-6 md:px-12 lg:px-24">
         <!-- Section Header -->
         <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">My <span class="text-sky-400">Specialties</span></h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4"><span class="text-sky-400">{{ __('Specialties') }}</span></h2>
             <div class="w-24 h-1 bg-sky-500 mx-auto rounded-full"></div>
-            <p class="text-slate-400 mt-6 max-w-2xl mx-auto">Areas of expertise where I deliver the most value and creative solutions.</p>
+            <p class="text-slate-400 mt-6 max-w-2xl mx-auto">{{ __('Areas of expertise where I deliver the most value and creative solutions.') }}</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

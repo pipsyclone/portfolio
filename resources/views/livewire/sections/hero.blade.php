@@ -12,23 +12,23 @@
             <!-- Text Content -->
             <div class="w-full md:w-3/5 text-center md:text-left" data-aos="fade-up" data-aos-duration="1000">
                 <p class="text-sky-400 font-semibold tracking-wide uppercase mb-4 animate__animated animate__fadeInDown animate__delay-1s">
-                    <i class="fas fa-terminal mr-2"></i> Hello World, I am
+                    <i class="fas fa-terminal mr-2"></i> Hello World, {{ __('I am') }}
                 </p>
                 <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-tight animate__animated animate__fadeInLeft">
                     {{ $user->name ?? 'Jhon Doe' }} <br>
-                    <span class="text-gradient">{{ $user->specialis ?? 'Developer'}}</span>
+                    <span class="text-gradient">{{ translate_text($user->specialis ?? 'Developer') }}</span>
                 </h1>
                 <p class="text-slate-400 text-lg md:text-xl mb-10 max-w-2xl animate__animated animate__fadeInUp animate__delay-1s">
-                    {{ $user->headline ?? 'I build exceptional and accessible digital experiences for the web. Turning complex problems into beautiful, intuitive, and highly functional solutions.' }}
+                    {{ translate_text($user->headline ?? 'I build exceptional and accessible digital experiences for the web. Turning complex problems into beautiful, intuitive, and highly functional solutions.') }}
                 </p>
                 
                 <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-6 animate__animated animate__fadeInUp animate__delay-2s">
                     <a href="#projects" class="w-full sm:w-auto px-8 py-3.5 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-lg shadow-lg shadow-sky-500/30 transition-all duration-300 transform hover:-translate-y-1 text-center">
-                        View My Work
+                        {{ __('View My Work') }}
                     </a>
                     @if($setting->github_link)
                         <a href="{{ $setting->github_link }}" target="_blank" class="w-full sm:w-auto px-8 py-3.5 bg-transparent border border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white font-semibold rounded-lg transition-all duration-300 flex items-center justify-center">
-                            <i class="fab fa-github mr-2"></i> GitHub Profile
+                            <i class="fab fa-github mr-2"></i> {{ __('GitHub Profile') }}
                         </a>
                     @endif
                 </div>

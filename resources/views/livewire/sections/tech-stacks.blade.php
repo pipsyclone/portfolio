@@ -2,9 +2,9 @@
     <div class="container mx-auto px-6 md:px-12 lg:px-24">
         <!-- Section Header -->
         <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Tech <span class="text-sky-400">Stack</span></h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">{{ __('Tech') }} <span class="text-sky-400">{{ __('Stack') }}</span></h2>
             <div class="w-24 h-1 bg-sky-500 mx-auto rounded-full"></div>
-            <p class="text-slate-400 mt-6 max-w-2xl mx-auto">Tools and technologies I use to build modern applications.</p>
+            <p class="text-slate-400 mt-6 max-w-2xl mx-auto">{{ __('Tools and technologies I use to build modern applications.') }}</p>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">

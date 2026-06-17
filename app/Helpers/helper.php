@@ -185,3 +185,34 @@ if (! function_exists('fa_access_token')) {
         });
     }
 }
+
+if (! function_exists('translate_text')) {
+    /**
+     * Translate database text dynamically using Google Translate and cache it forever.
+     */
+    function translate_text($text)
+    {
+        if (blank($text)) {
+            return $text;
+        }
+
+        $locale = app()->getLocale();
+        
+        if ($locale == 'en') {
+            return $text;
+        }
+
+        $cacheKey = 'trans_' . md5($text) . '_' . $locale;
+
+        return \Illuminate\Support\Facades\Cache::rememberForever($cacheKey, function () use ($text, $locale) {
+            try {
+                $tr = new \Stichoza\GoogleTranslate\GoogleTranslate();
+                $tr->setSource('en');
+                $tr->setTarget($locale);
+                return $tr->translate($text);
+            } catch (\Exception $e) {
+                return $text;
+            }
+        });
+    }
+}
