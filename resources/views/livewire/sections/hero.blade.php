@@ -16,10 +16,10 @@
                 </p>
                 <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-tight animate__animated animate__fadeInLeft">
                     {{ $user->name ?? 'Jhon Doe' }} <br>
-                    <span class="text-gradient">{{ translate_text($user->specialis ?? 'Developer') }}</span>
+                    <span class="text-gradient">{{ $user->specialis ?? 'Developer' }}</span>
                 </h1>
                 <p class="text-slate-400 text-lg md:text-xl mb-10 max-w-2xl animate__animated animate__fadeInUp animate__delay-1s">
-                    {{ translate_text($user->headline ?? 'I build exceptional and accessible digital experiences for the web. Turning complex problems into beautiful, intuitive, and highly functional solutions.') }}
+                    {{ translate_text($user->headline ?? 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.') }}
                 </p>
                 
                 <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-6 animate__animated animate__fadeInUp animate__delay-2s">
