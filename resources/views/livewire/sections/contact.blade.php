@@ -11,23 +11,33 @@
 
         <!-- Flash Messages -->
         @if (session()->has('contact-success'))
-            <div class="max-w-3xl mx-auto mb-8">
-                <div class="flex items-center gap-3 p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
-                    <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-500/20 rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fas fa-check-circle text-emerald-500 dark:text-emerald-400"></i>
+            <div class="max-w-3xl mx-auto mb-8" x-data="{ show: true }" x-show="show" x-transition.opacity.duration.300ms>
+                <div class="flex items-center justify-between p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-300 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-500/20 rounded-xl flex items-center justify-center shrink-0">
+                            <i class="fas fa-check-circle text-emerald-500 dark:text-emerald-400"></i>
+                        </div>
+                        <p class="text-sm font-medium">{{ session('contact-success') }}</p>
                     </div>
-                    <p class="text-sm font-medium">{{ session('contact-success') }}</p>
+                    <button type="button" @click="show = false" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-emerald-200/50 dark:hover:bg-emerald-500/20 transition-colors focus:outline-none shrink-0 ml-4 text-emerald-600 dark:text-emerald-400">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             </div>
         @endif
 
         @if (session()->has('contact-error'))
-            <div class="max-w-3xl mx-auto mb-8">
-                <div class="flex items-center gap-3 p-4 rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-700 dark:text-red-300">
-                    <div class="w-10 h-10 bg-red-100 dark:bg-red-500/20 rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fas fa-exclamation-circle text-red-500 dark:text-red-400"></i>
+            <div class="max-w-3xl mx-auto mb-8" x-data="{ show: true }" x-show="show" x-transition.opacity.duration.300ms>
+                <div class="flex items-center justify-between p-4 rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-700 dark:text-red-300 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-red-100 dark:bg-red-500/20 rounded-xl flex items-center justify-center shrink-0">
+                            <i class="fas fa-exclamation-circle text-red-500 dark:text-red-400"></i>
+                        </div>
+                        <p class="text-sm font-medium">{{ session('contact-error') }}</p>
                     </div>
-                    <p class="text-sm font-medium">{{ session('contact-error') }}</p>
+                    <button type="button" @click="show = false" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-red-200/50 dark:hover:bg-red-500/20 transition-colors focus:outline-none shrink-0 ml-4 text-red-600 dark:text-red-400">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             </div>
         @endif
