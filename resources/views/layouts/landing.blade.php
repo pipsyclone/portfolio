@@ -19,9 +19,11 @@
             document.documentElement.classList.remove('dark');
         }
     </script>
+    
+    <title>{{ $user->name ?? 'Portfolio' }} | {{ $user->specialis ?? 'Fullstack Web Developer' }}</title>
+    <link rel="icon" href="{{ safe_image_url($settings->app_favicon) }}">
 
     <!-- Primary Meta Tags -->
-    <title>{{ $user->name ?? 'Portfolio' }} | {{ $user->specialis ?? 'Fullstack Web Developer' }}</title>
     <meta name="title" content="{{ $user->name ?? 'Portfolio' }} | {{ $user->specialis ?? 'Fullstack Web Developer' }}">
     <meta name="description" content="{{ $user->headline ?? 'Portfolio of John Doe, a passionate Fullstack Web Developer specializing in Laravel, Vue.js, and Tailwind CSS. Building robust, scalable, and beautifully designed web applications.' }}">
     <meta name="keywords" content="{{ $user->keywords }}">

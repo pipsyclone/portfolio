@@ -16,18 +16,27 @@
             @foreach($techStacks as $index => $stack)
                 @php
                     $colors = [
-                        'text-red-500', 'text-indigo-500', 'text-emerald-500', 'text-sky-500', 'text-amber-500', 'text-orange-500', 'text-purple-500', 'text-pink-500'
+                        ['text' => 'text-red-500', 'bg' => 'bg-red-50 dark:bg-red-500/10', 'glow' => 'hover:shadow-red-500/30', 'border' => 'hover:border-red-300 dark:hover:border-red-500/50'],
+                        ['text' => 'text-indigo-500', 'bg' => 'bg-indigo-50 dark:bg-indigo-500/10', 'glow' => 'hover:shadow-indigo-500/30', 'border' => 'hover:border-indigo-300 dark:hover:border-indigo-500/50'],
+                        ['text' => 'text-emerald-500', 'bg' => 'bg-emerald-50 dark:bg-emerald-500/10', 'glow' => 'hover:shadow-emerald-500/30', 'border' => 'hover:border-emerald-300 dark:hover:border-emerald-500/50'],
+                        ['text' => 'text-sky-500', 'bg' => 'bg-sky-50 dark:bg-sky-500/10', 'glow' => 'hover:shadow-sky-500/30', 'border' => 'hover:border-sky-300 dark:hover:border-sky-500/50'],
+                        ['text' => 'text-amber-500', 'bg' => 'bg-amber-50 dark:bg-amber-500/10', 'glow' => 'hover:shadow-amber-500/30', 'border' => 'hover:border-amber-300 dark:hover:border-amber-500/50'],
+                        ['text' => 'text-purple-500', 'bg' => 'bg-purple-50 dark:bg-purple-500/10', 'glow' => 'hover:shadow-purple-500/30', 'border' => 'hover:border-purple-300 dark:hover:border-purple-500/50'],
+                        ['text' => 'text-pink-500', 'bg' => 'bg-pink-50 dark:bg-pink-500/10', 'glow' => 'hover:shadow-pink-500/30', 'border' => 'hover:border-pink-300 dark:hover:border-pink-500/50']
                     ];
                     $color = $colors[$index % count($colors)];
                     $delay = ($index % 6 + 1) * 80;
                 @endphp
-                <div class="glass-panel rounded-2xl p-6 flex flex-col items-center justify-center space-y-3 hover:shadow-lg hover:shadow-slate-200/50 dark:hover:shadow-black/20 transition-all duration-300 transform hover:-translate-y-2 cursor-pointer group" data-aos="zoom-in" data-aos-delay="{{ $delay }}">
-                    @if($stack->icon)
-                        <i class="{{ $stack->icon }} text-4xl {{ $color }} group-hover:scale-110 transition-transform duration-300"></i>
-                    @else
-                        <i class="fas fa-code text-4xl {{ $color }} group-hover:scale-110 transition-transform duration-300"></i>
-                    @endif
-                    <span class="text-slate-600 dark:text-slate-300 font-medium text-sm text-center">{{ $stack->name }}</span>
+                <div class="glass-panel relative rounded-2xl p-6 flex flex-col items-center justify-center space-y-4 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-xl cursor-pointer group border border-transparent {{ $color['border'] }} {{ $color['glow'] }}" data-aos="zoom-in" data-aos-delay="{{ $delay }}">
+                    <div class="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent dark:from-white/5 dark:to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative w-16 h-16 flex items-center justify-center rounded-2xl {{ $color['bg'] }} group-hover:scale-110 transition-transform duration-500">
+                        @if($stack->icon)
+                            <i class="{{ $stack->icon }} text-3xl {{ $color['text'] }} transition-transform duration-500 group-hover:rotate-[360deg]"></i>
+                        @else
+                            <i class="fas fa-code text-3xl {{ $color['text'] }} transition-transform duration-500 group-hover:rotate-[360deg]"></i>
+                        @endif
+                    </div>
+                    <span class="relative text-slate-700 dark:text-slate-200 font-bold text-sm text-center tracking-wide group-hover:{{ $color['text'] }} transition-colors duration-300">{{ $stack->name }}</span>
                 </div>
             @endforeach
         </div>
