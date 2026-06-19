@@ -14,11 +14,24 @@
         <div class="flex flex-col md:flex-row items-center gap-16">
             <!-- Image Side -->
             <div class="w-full md:w-1/2" data-aos="fade-right">
-                <div class="relative rounded-3xl overflow-hidden group">
-                    <div class="absolute -inset-1 rounded-3xl opacity-20 blur-xl" style="background: linear-gradient(135deg, var(--primary), #818cf8);"></div>
+                <div class="relative rounded-3xl group mb-8 md:mb-0">
+                    <div class="absolute -inset-1 rounded-3xl opacity-20 blur-xl transition-opacity duration-700 group-hover:opacity-40" style="background: linear-gradient(135deg, var(--primary), #818cf8);"></div>
                     <div class="relative glass-panel rounded-3xl p-2">
                         <img src="{{ safe_image_url($user->about_image) }}" alt="Coding workspace" class="w-full h-auto rounded-2xl object-cover group-hover:scale-[1.02] transition-transform duration-700">
                     </div>
+
+                    <!-- Experience Card -->
+                    @if($user->experience)
+                    <div class="absolute -bottom-6 -right-2 md:-right-6 bg-white dark:bg-slate-800/90 backdrop-blur-sm border border-slate-100 dark:border-slate-700/50 p-4 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-black/20 flex items-center gap-4 z-20 animate-bounce" style="animation-duration: 4s;">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg" style="background: linear-gradient(135deg, var(--primary), #818cf8);">
+                            {{ $user->experience }}+
+                        </div>
+                        <div class="text-left">
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-0.5">{{ __('Years of') }}</p>
+                            <p class="text-sm font-bold text-slate-800 dark:text-slate-200 leading-none">{{ __('Experience') }}</p>
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
 

@@ -105,7 +105,7 @@ class Profile extends Page
                         Tabs::make()
                             ->columnSpanFull()
                             ->tabs([
-                                Tab::make('SEO')
+                                Tab::make('Hero / SEO')
                                     ->schema([
                                         Grid::make()
                                             ->columns(2)
@@ -118,27 +118,17 @@ class Profile extends Page
                                                     ->placeholder('Frontend Developer, Backend Developer, Fullstack Developer, UI/UX Designer, Web Developer')
                                                     ->required()
                                                     ->helperText('Separated by commas'),
-                                            ]),
-                                    ]),
-                                Tab::make('General')
-                                    ->schema([
-                                        Grid::make()
-                                            ->columns(2)
-                                            ->schema([
-                                                TextInput::make('experience')
-                                                    ->label('Experience (years)')
-                                                    ->numeric()
-                                                    ->required(),
-                                                Textinput::make('address')
-                                                    ->label('Address')
+                                                Textinput::make('specialis')
+                                                    ->label('Specialis')
                                                     ->required(),
                                             ]),
-                                        Textinput::make('specialis')
-                                            ->label('Specialis')
-                                            ->required(),
                                     ]),
                                 Tab::make('About')
                                     ->schema([
+                                        TextInput::make('experience')
+                                            ->label('Experience (years)')
+                                            ->numeric()
+                                            ->required(),
                                         FileUpload::make('about_image')
                                             ->label('About Image')
                                             ->disk('public')
@@ -164,8 +154,13 @@ class Profile extends Page
                                                 TextInput::make('information')->label('Information')->required(),
                                             ])
                                     ]),
-                                Tab::make('CV')
-                                    ->label('CV')
+                                Tab::make('Contact')
+                                    ->schema([
+                                        Textinput::make('address')
+                                            ->label('Address')
+                                            ->required(),
+                                    ]),
+                                Tab::make('Files')
                                     ->schema([
                                         FileUpload::make('cv_file')
                                             ->label('Curriculum Vitae')

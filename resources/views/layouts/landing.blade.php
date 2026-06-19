@@ -215,6 +215,12 @@
                     <button id="theme-toggle" class="theme-toggle-btn bg-slate-100/80 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 hover:text-amber-500 dark:hover:text-amber-400 border border-slate-200/50 dark:border-slate-700/30 focus:outline-none">
                         <i class="fas fa-moon text-sm theme-icon" id="theme-icon-desktop"></i>
                     </button>
+
+                    <a href="{{ route('download.cv') }}"
+                        class="hidden lg:flex items-center gap-2 px-5 py-2 rounded-xl text-white shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 focus:outline-none" style="background: linear-gradient(135deg, var(--primary), #818cf8);">
+                        <i class="fas fa-download text-sm"></i>
+                        <span class="text-sm font-bold">{{ __('Download CV') }}</span>
+                    </a>
                 </div>
 
                 <!-- Mobile Actions -->
@@ -256,6 +262,12 @@
         <a href="#specialis" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('Specialties') }}</a>
         <a href="#projects" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('Projects') }}</a>
         <a href="#contact" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('Contact') }}</a>
+
+        <a href="{{ route('download.cv') }}"
+            class="flex items-center gap-2 px-8 py-3.5 mt-2 text-white font-bold rounded-xl shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl focus:outline-none" style="background: linear-gradient(135deg, var(--primary), #818cf8);">
+            <i class="fas fa-download text-sm"></i>
+            <span>{{ __('Download CV') }}</span>
+        </a>
     </div>
 
     <main>
