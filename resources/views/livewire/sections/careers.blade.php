@@ -46,24 +46,28 @@
                                     <div class="absolute -top-8 -right-8 w-28 h-28 rounded-full blur-2xl opacity-20" style="background: var(--primary);"></div>
 
                                     <!-- Header: Logo + Info + Date -->
-                                    <div class="flex items-start gap-4 relative z-10">
-                                        @if(!empty($career['logo']))
-                                            <div class="w-14 h-14 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center shadow-sm p-2 border border-slate-100 dark:border-slate-700/80 flex-shrink-0">
-                                                <img src="{{ asset('storage/' . $career['logo']) }}" alt="{{ $career['company'] ?? '' }}" class="max-w-full max-h-full object-contain rounded-md">
-                                            </div>
-                                        @else
-                                            <div class="w-14 h-14 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0 border border-slate-100 dark:border-slate-700/80" style="background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 15%, white), color-mix(in srgb, var(--primary) 5%, white));">
-                                                <i class="fas fa-building text-xl" style="color: var(--primary);"></i>
-                                            </div>
-                                        @endif
+                                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 relative z-10">
+                                        
+                                        <!-- Logo & Info -->
+                                        <div class="flex items-center sm:items-start gap-4">
+                                            @if(!empty($career['logo']))
+                                                <div class="w-14 h-14 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center shadow-sm p-2 border border-slate-100 dark:border-slate-700/80 flex-shrink-0">
+                                                    <img src="{{ asset('storage/' . $career['logo']) }}" alt="{{ $career['company'] ?? '' }}" class="max-w-full max-h-full object-contain rounded-md">
+                                                </div>
+                                            @else
+                                                <div class="w-14 h-14 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0 border border-slate-100 dark:border-slate-700/80" style="background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 15%, white), color-mix(in srgb, var(--primary) 5%, white));">
+                                                    <i class="fas fa-building text-xl" style="color: var(--primary);"></i>
+                                                </div>
+                                            @endif
 
-                                        <div class="min-w-0 flex-1">
-                                            <h3 class="text-lg font-bold text-slate-800 dark:text-white leading-snug">{{ $career['position'] ?? '' }}</h3>
-                                            <p class="text-sm font-semibold mt-0.5" style="color: var(--primary);">{{ $career['company'] ?? '' }}</p>
+                                            <div class="min-w-0 flex-1">
+                                                <h3 class="text-lg font-bold text-slate-800 dark:text-white leading-snug">{{ $career['position'] ?? '' }}</h3>
+                                                <p class="text-sm font-semibold mt-0.5" style="color: var(--primary);">{{ $career['company'] ?? '' }}</p>
+                                            </div>
                                         </div>
 
-                                        <!-- Date badge (top right) -->
-                                        <div class="flex flex-col items-end gap-1.5 flex-shrink-0">
+                                        <!-- Date badge (top right on sm+, bottom on mobile) -->
+                                        <div class="flex flex-wrap sm:flex-col items-center sm:items-end gap-2 sm:gap-1.5 flex-shrink-0">
                                             <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold {{ $isOngoing ? 'bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 border border-green-100 dark:border-green-500/20' : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 border border-slate-200/50 dark:border-slate-700/50' }}">
                                                 <i class="far fa-calendar-alt"></i>
                                                 <span>{{ $startDate }} — {{ $endDate }}</span>
