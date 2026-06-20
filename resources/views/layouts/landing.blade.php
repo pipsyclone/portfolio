@@ -191,6 +191,7 @@
                     <a href="#about" class="nav-link text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-3 py-2 rounded-lg hover:bg-slate-100/60 dark:hover:bg-white/5 transition-all">{{ __('About') }}</a>
                     <a href="#tech" class="nav-link text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-3 py-2 rounded-lg hover:bg-slate-100/60 dark:hover:bg-white/5 transition-all">{{ __('Skills') }}</a>
                     <a href="#specialis" class="nav-link text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-3 py-2 rounded-lg hover:bg-slate-100/60 dark:hover:bg-white/5 transition-all">{{ __('Specialties') }}</a>
+                    <a href="#careers" class="nav-link text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-3 py-2 rounded-lg hover:bg-slate-100/60 dark:hover:bg-white/5 transition-all">{{ __('Careers') }}</a>
                     <a href="#projects" class="nav-link text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-3 py-2 rounded-lg hover:bg-slate-100/60 dark:hover:bg-white/5 transition-all">{{ __('Projects') }}</a>
                     <a href="#contact" class="nav-link text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-3 py-2 rounded-lg hover:bg-slate-100/60 dark:hover:bg-white/5 transition-all">{{ __('Contact') }}</a>
 
@@ -260,6 +261,7 @@
         <a href="#about" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('About') }}</a>
         <a href="#tech" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('Skills') }}</a>
         <a href="#specialis" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('Specialties') }}</a>
+        <a href="#careers" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('Careers') }}</a>
         <a href="#projects" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('Projects') }}</a>
         <a href="#contact" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('Contact') }}</a>
 
