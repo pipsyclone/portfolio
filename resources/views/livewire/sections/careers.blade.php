@@ -79,7 +79,9 @@
 
                                     <!-- Description -->
                                     @if(!empty($career['description']))
-                                        <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mt-4 relative z-10 whitespace-pre-line">{{ translate_text($career['description']) }}</p>
+                                        <div class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mt-4 relative z-10 [&>p]:mb-2 [&>p:last-child]:mb-0 [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:mb-2 [&>ol]:list-decimal [&>ol]:pl-5 [&>ol]:mb-2 [&_li]:mb-1">
+                                            {!! translate_text($career['description']) !!}
+                                        </div>
                                     @endif
                                 </div>
                             </div>

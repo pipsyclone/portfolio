@@ -23,6 +23,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
@@ -184,9 +185,13 @@ class Profile extends Page
                                                             ->label('Position')
                                                             ->required(),
                                                     ]),
-                                                Textarea::make('description')
+                                                RichEditor::make('description')
                                                     ->label('Description')
-                                                    ->rows(2)
+                                                    ->toolbarButtons([
+                                                        ['bold', 'italic', 'underline', 'strike', 'subscript', 'superscript', 'link'],
+                                                        ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
+                                                        ['undo', 'redo'],
+                                                    ])
                                                     ->required(),
                                                 Grid::make()
                                                     ->columns(2)
