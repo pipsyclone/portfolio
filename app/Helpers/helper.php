@@ -199,17 +199,14 @@ if (! function_exists('translate_text')) {
         }
 
         $locale = app()->getLocale();
-        
-        if ($locale == 'en') {
-            return $text;
-        }
 
         $cacheKey = 'trans_' . md5($text) . '_' . $locale;
 
         return \Illuminate\Support\Facades\Cache::rememberForever($cacheKey, function () use ($text, $locale) {
             try {
                 $tr = new \Stichoza\GoogleTranslate\GoogleTranslate();
-                $tr->setSource('en');
+                // Set source to auto-detect
+                $tr->setSource(); 
                 $tr->setTarget($locale);
                 return $tr->translate($text);
             } catch (\Exception $e) {

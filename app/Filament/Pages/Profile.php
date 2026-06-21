@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use Filament\Schemas\Components\Utilities\Get;
 
 use App\Models\User;
 
@@ -22,7 +23,10 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\DatePicker;
 
 use Filament\Notifications\Notification;
 
@@ -52,6 +56,7 @@ class Profile extends Page
             'about_description' => $user?->about_description,
             'about_extra_information' => $user?->about_extra_information,
             'experience' => $user?->experience,
+            'careers' => $user?->careers,
             'address' => $user?->address,
             'specialis' => $user?->specialis,
             'cv_file' => $user?->cv_file,
@@ -111,24 +116,20 @@ class Profile extends Page
                                             ->columns(2)
                                             ->schema([
                                                 TextInput::make('headline')
-                                                    ->label('Headline')
-                                                    ->required(),
+                                                    ->label('Headline'),
                                                 Textinput::make('keywords')
                                                     ->label('Keywords')
                                                     ->placeholder('Frontend Developer, Backend Developer, Fullstack Developer, UI/UX Designer, Web Developer')
-                                                    ->required()
                                                     ->helperText('Separated by commas'),
                                                 Textinput::make('specialis')
-                                                    ->label('Specialis')
-                                                    ->required(),
+                                                    ->label('Specialis'),
                                             ]),
                                     ]),
                                 Tab::make('About')
                                     ->schema([
                                         TextInput::make('experience')
                                             ->label('Experience (years)')
-                                            ->numeric()
-                                            ->required(),
+                                            ->numeric(),
                                         FileUpload::make('about_image')
                                             ->label('About Image')
                                             ->disk('public')
@@ -136,29 +137,90 @@ class Profile extends Page
                                             ->image()
                                             ->imageEditor()
                                             ->maxSize(2048)
-                                            ->required()
                                             ->deleteUploadedFileUsing(function (string $file) {
                                                 Storage::disk('public')->delete($file);
                                             }),
                                         TextInput::make('about_title')
-                                            ->label('Title')
-                                            ->required(),
+                                            ->label('Title'),
                                         Textarea::make('about_description')
                                             ->label('Description')
                                             ->rows(6)
-                                            ->columnSpanFull()
-                                            ->required(),
+                                            ->columnSpanFull(),
                                         Repeater::make('about_extra_information')
                                             ->defaultItems(1)
                                             ->schema([
                                                 TextInput::make('information')->label('Information')->required(),
                                             ])
                                     ]),
+                                Tab::make('Careers')
+                                    ->schema([
+                                        Repeater::make('careers')
+                                            ->defaultItems(1)
+                                            ->reorderable()
+                                            ->deleteAction(
+                                                fn ($action) => $action->after(function (array $state) {
+                                                    if (! empty($state['logo'])) {
+                                                        Storage::disk('public')->delete($state['logo']);
+                                                    }
+                                                }),
+                                            )
+                                            ->schema([
+                                                FileUpload::make('logo')
+                                                    ->label('Logo')
+                                                    ->disk('public')
+                                                    ->directory('careers-logo')
+                                                    ->image()
+                                                    ->imageEditor()
+                                                    ->maxSize(2048)
+                                                    ->deleteUploadedFileUsing(function (string $file) {
+                                                        Storage::disk('public')->delete($file);
+                                                    }),
+                                                Grid::make()
+                                                    ->columns(2)
+                                                    ->schema([
+                                                        TextInput::make('company')
+                                                            ->label('Company')
+                                                            ->required(),
+                                                        TextInput::make('position')
+                                                            ->label('Position')
+                                                            ->required(),
+                                                    ]),
+                                                RichEditor::make('description')
+                                                    ->label('Description')
+                                                    ->toolbarButtons([
+                                                        ['bold', 'italic', 'underline', 'strike', 'subscript', 'superscript', 'link'],
+                                                        ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
+                                                        ['undo', 'redo'],
+                                                    ])
+                                                    ->required(),
+                                                Grid::make()
+                                                    ->columns(2)
+                                                    ->schema([
+                                                        DatePicker::make('start_date')
+                                                            ->label('Start Date')
+                                                            ->required(),
+                                                        Grid::make()
+                                                            ->columns(1)
+                                                            ->schema([
+                                                                DatePicker::make('end_date')
+                                                                    ->label('End Date')
+                                                                    ->disabled(fn (Get $get) => $get('on_going')),
+                                                                Checkbox::make('on_going')
+                                                                    ->label('On Going')
+                                                                    ->live()
+                                                                    ->afterStateUpdated(function ($state, $set) {
+                                                                        if ($state) {
+                                                                            $set('end_date', null);
+                                                                        }
+                                                                    }),
+                                                            ])
+                                                    ])
+                                            ])
+                                    ]),
                                 Tab::make('Contact')
                                     ->schema([
                                         Textinput::make('address')
-                                            ->label('Address')
-                                            ->required(),
+                                            ->label('Address'),
                                     ]),
                                 Tab::make('Files')
                                     ->schema([

@@ -32,6 +32,7 @@ class User extends Authenticatable implements HasAvatar
         'about_description',
         'about_extra_information',
         'experience',
+        'careers',
         'address',
         'specialis',
         'cv_file',
@@ -59,6 +60,7 @@ class User extends Authenticatable implements HasAvatar
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'about_extra_information' => 'array',
+            'careers' => 'array',
         ];
     }
 

@@ -6,6 +6,7 @@
     <livewire:sections.about />
     <livewire:sections.tech-stacks />
     <livewire:sections.specialis />
+    <livewire:sections.careers />
     <livewire:sections.projects />
     <livewire:sections.contact />
     <livewire:sections.footer />
