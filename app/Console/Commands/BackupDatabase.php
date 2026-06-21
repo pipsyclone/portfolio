@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class BackupDatabase extends Command
 {
-    protected $signature = 'db:me';
+    protected $signature = 'db:backup';
 
     protected $description = 'Backup database ke file .sql.gz';
 
