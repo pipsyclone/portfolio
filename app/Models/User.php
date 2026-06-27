@@ -69,10 +69,10 @@ class User extends Authenticatable implements HasAvatar, FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         // Ganti dengan email Anda atau aturan spesifik lainnya
-        return str_ends_with($this->email, '@gmail.com');
+        // return str_ends_with($this->email, );
 
         // ATAU jika Anda ingin mengizinkan semua user yang login (untuk sementara):
-        // return true;
+        return true;
     }
 
     // Method

@@ -19,6 +19,9 @@ class ProjectsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function ($query) {
+                return $query->orderBy('created_at', 'desc');
+            })
             ->columns([
                 TextColumn::make('name')
                     ->label('Name')
@@ -65,11 +68,15 @@ class ProjectsTable
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make(),
+                DeleteAction::make()
+                    ->successNotification(null)
+                    ->failureNotification(null)
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->successNotification(null)
+                        ->failureNotification(null),
                 ]),
             ]);
     }

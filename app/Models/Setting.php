@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\LogActivityTrait;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
+    use LogActivityTrait;
     protected $table = 'settings';
 
     protected $casts = [
@@ -28,4 +31,43 @@ class Setting extends Model
         'github_link',
         'linkedin_link',
     ];
+
+    // Model Events
+    protected static function booted() {
+        static::created(function ($model) {
+            try {
+                Notification::make()
+                    ->title('Setting created!')
+                    ->body('Setting has been created successfully.')
+                    ->success()
+                    ->send();
+                $model->logActivity('Created Setting', 'membuat setting baru : ' . $model->app_name);
+            } catch (\Exception $e) {
+                Notification::make()
+                    ->title('Error, failed created setting!')
+                    ->body($e->getMessage())
+                    ->danger()
+                    ->send();
+                \Log::error($e->getMessage());
+            }
+        });
+
+        static::updated(function ($model) {
+            try {
+                Notification::make()
+                    ->title('Setting updated!')
+                    ->body('Setting has been updated successfully.')
+                    ->success()
+                    ->send();
+                $model->logActivity('Updated Setting', 'mengupdate setting : ' . $model->app_name);
+            } catch (\Exception $e) {
+                Notification::make()
+                    ->title('Error, failed updated setting!')
+                    ->body($e->getMessage())
+                    ->danger()
+                    ->send();
+                \Log::error($e->getMessage());
+            }
+        });
+    }
 }

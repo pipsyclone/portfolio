@@ -15,19 +15,14 @@ class EditTechStacks extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            DeleteAction::make()
+                ->successNotification(null)
+                ->failureNotification(null),
         ];
     }
 
     protected function getSavedNotification(): ?Notification
     {
-        return Notification::make()
-            ->title('Tech Stack updated successfully')
-            ->success();
-    }
-
-    public function afterSave(): void
-    {
-        auth()->user()->createLog(request(), 'Updated Tech Stack', 'Tech Stack ' . $this->record->name . ' updated successfully');
+        return null;
     }
 }

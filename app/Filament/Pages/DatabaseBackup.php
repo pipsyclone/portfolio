@@ -95,7 +95,26 @@ class DatabaseBackup extends Page implements HasTable
                 ->icon('heroicon-o-cloud-arrow-down')
                 ->requiresConfirmation()
                 ->visible(fn () => auth()->user()->can('create', static::class))
-                ->action(fn () => $this->backupDatabase()),
+                ->action(function () {
+                    try {
+                        $this->backupDatabase();
+
+                        Notification::make()
+                            ->title('Successfully backup database!')
+                            ->body('Backup database successfully created!')
+                            ->success()
+                            ->send();
+                        $this->logActivity('Backup database', 'Successfully backup database: ' . date('Y-m-d H:i:s') . '!');
+                    } catch (\Throwable $e) {
+                        Notification::make()
+                            ->title('Failed to backup database!')
+                            ->body('Backup database failed, error: ' . $e->getMessage())
+                            ->danger()
+                            ->send();
+
+                        \Log::error($e->getMessage());
+                    }
+                }),
         ];
     }
 

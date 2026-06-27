@@ -6,6 +6,7 @@ use App\Filament\Resources\Roles\RolesResource;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Notifications\Notification;
 
 class EditRoles extends EditRecord
 {
@@ -15,17 +16,14 @@ class EditRoles extends EditRecord
     {
         return [
             ViewAction::make(),
-            DeleteAction::make(),
+            DeleteAction::make()
+                ->successNotification(null)
+                ->failureNotification(null),
         ];
     }
 
-    public function getRedirectUrl(): string
+    protected function getSavedNotification(): ?Notification
     {
-        return request()->header('Referer') ?? static::getResource()::getUrl('index');
-    }
-
-    public function afterSave(): void
-    {
-        auth()->user()->createLog(request(), 'Update Role', 'Successfully updated role: ' . $this->record->name);
+        return null;
     }
 }

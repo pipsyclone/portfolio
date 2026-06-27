@@ -18,13 +18,6 @@ class CreateProjects extends CreateRecord
 
     protected function getCreatedNotification(): ?Notification
     {
-        return Notification::make()
-            ->title('Project created successfully')
-            ->success();
-    }
-
-    public function afterCreate(): void
-    {
-        auth()->user()->createLog(request(), 'Created Project', 'Project ' . $this->record->name . ' created successfully.');
+        return null;
     }
 }

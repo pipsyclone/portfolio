@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Roles\Pages;
 
 use App\Filament\Resources\Roles\RolesResource;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Notifications\Notification;
 
 class CreateRoles extends CreateRecord
 {
@@ -14,8 +15,8 @@ class CreateRoles extends CreateRecord
         return $this->getResource()::getUrl('index');
     }
 
-    public function afterCreate(): void
+    protected function getSavedNotification(): ?Notification
     {
-        auth()->user()->createLog(request(), 'Created Role', 'Successfully created a new role: ' . $this->record->name);
+        return null;
     }
 }

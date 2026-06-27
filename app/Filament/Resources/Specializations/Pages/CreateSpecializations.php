@@ -18,13 +18,6 @@ class CreateSpecializations extends CreateRecord
 
     protected function getCreatedNotification(): ?Notification
     {
-        return Notification::make()
-            ->title('Specialization created successfully')
-            ->success();
-    }
-
-    public function afterCreate(): void
-    {
-        auth()->user()->createLog(request(), 'Created Specialization', 'Specialization ' . $this->record->name . ' created successfully');
+        return null;
     }
 }

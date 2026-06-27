@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Actions\DeleteAction;
 
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
@@ -32,10 +33,15 @@ class RolesTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                DeleteAction::make()
+                    ->successNotification(null)
+                    ->failureNotification(null),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->successNotification(null)
+                        ->failureNotification(null),
                 ]),
             ]);
     }

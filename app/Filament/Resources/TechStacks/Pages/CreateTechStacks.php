@@ -18,13 +18,6 @@ class CreateTechStacks extends CreateRecord
 
     protected function getCreatedNotification(): ?Notification
     {
-        return Notification::make()
-            ->title('Tech Stack created successfully')
-            ->success();
-    }
-
-    public function afterCreate(): void
-    {
-        auth()->user()->createLog(request(), 'Created Tech Stack', 'Tech Stack ' . $this->record->name . ' created successfully');
+        return null;
     }
 }

@@ -15,19 +15,14 @@ class EditSpecializations extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            DeleteAction::make()
+                ->successNotification(null)
+                ->failureNotification(null),
         ];
     }
 
     protected function getSavedNotification(): ?Notification
     {
-        return Notification::make()
-            ->title('Specialization updated successfully')
-            ->success();
-    }
-
-    public function afterSave(): void
-    {
-        auth()->user()->createLog(request(), 'Updated Specialization', 'Specialization ' . $this->record->name . ' updated successfully');
+        return null;
     }
 }

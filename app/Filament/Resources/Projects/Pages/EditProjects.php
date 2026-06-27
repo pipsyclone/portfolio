@@ -21,13 +21,6 @@ class EditProjects extends EditRecord
 
     protected function getSavedNotification(): ?Notification
     {
-        return Notification::make()
-            ->title('Project updated successfully')
-            ->success();
-    }
-
-    public function afterSave(): void
-    {
-        auth()->user()->createLog(request(), 'Updated Project', 'Project ' . $this->record->name . ' updated successfully.');
+        return null;
     }
 }

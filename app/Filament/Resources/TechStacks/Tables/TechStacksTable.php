@@ -31,11 +31,15 @@ class TechStacksTable
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make(),
+                DeleteAction::make()
+                    ->successNotification(null)
+                    ->failureNotification(null),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->successNotification(null)
+                        ->failureNotification(null),
                 ]),
             ]);
     }

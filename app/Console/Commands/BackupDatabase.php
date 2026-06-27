@@ -6,9 +6,11 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
+use App\LogActivityTrait;
 
 class BackupDatabase extends Command
 {
+    use LogActivityTrait;
     protected $signature = 'db:backup';
 
     protected $description = 'Backup database ke file .sql.gz';
@@ -71,12 +73,14 @@ class BackupDatabase extends Command
             $this->cleanOldBackups($backupDir);
 
             $this->info('Backup berhasil: ' . basename($backupFile));
+            $this->logActivity('Automatic Backup database', 'Automatic backup database berhasil: ' . basename($backupFile));
 
             return self::SUCCESS;
 
         } catch (\Throwable $e) {
 
             $this->error('Error: ' . $e->getMessage());
+            $this->logActivity('Automatic Backup database', 'Automatic backup database gagal: ' . $e->getMessage());
 
             return self::FAILURE;
         }
@@ -95,5 +99,7 @@ class BackupDatabase extends Command
             ->each(fn ($file) =>
                 File::delete($file->getRealPath())
             );
+        
+        $this->logActivity('Automatic clean old backup database', 'Automatic clean old backup database berhasil');
     }
 }
