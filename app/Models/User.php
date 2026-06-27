@@ -64,6 +64,15 @@ class User extends Authenticatable implements HasAvatar
         ];
     }
 
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // Ganti dengan email Anda atau aturan spesifik lainnya
+        return str_ends_with($this->email, '@gmail.com');
+
+        // ATAU jika Anda ingin mengizinkan semua user yang login (untuk sementara):
+        // return true;
+    }
+
     // Method
     public function getFilamentAvatarUrl(): ?string
     {
