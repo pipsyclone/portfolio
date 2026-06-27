@@ -37,8 +37,13 @@ class DatabaseBackup extends Page implements HasTable
 
     public function table(Table $table): Table
     {
+        $backupDir = storage_path('app/backups');
+        if (! File::exists($backupDir)) {
+            File::makeDirectory($backupDir, 0755, true);
+        }
+
         return $table
-            ->records(fn () => collect(File::files(storage_path('app/backups')))
+            ->records(fn () => collect(File::files($backupDir))
             ->sortByDesc(fn ($file) => $file->getCTime())
             ->map(fn ($file) => [
                 'name' => $file->getFilename(),
