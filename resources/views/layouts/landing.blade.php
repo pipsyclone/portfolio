@@ -281,7 +281,7 @@
 
     <!-- Vanta.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
 
     <script data-navigate-once>
         let vantaEffect = null;
@@ -309,8 +309,8 @@
                 return parseInt(hex.replace('#', ''), 16);
             }
 
-            vantaEffect = VANTA.NET({
-                el: '#vanta-bg',
+            vantaEffect = VANTA.GLOBE({
+                el: "#vanta-bg",
                 mouseControls: true,
                 touchControls: true,
                 gyroControls: false,
@@ -319,12 +319,13 @@
                 scale: 1.00,
                 scaleMobile: 1.00,
                 color: hexToInt(primaryColor),
+                color2: hexToInt(isDark ? "fafbff" : "0c111b"),
                 backgroundColor: isDark ? 0x0c111b : 0xfafbff,
                 points: 8.00,
                 maxDistance: 22.00,
                 spacing: 18.00,
                 showDots: true,
-            });
+            })
         }
 
         // Sync icon toggle (satu icon bergantian)

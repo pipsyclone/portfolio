@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b19b7e8e88583a2f320eab4a47ac1d00",
+    "content-hash": "9fc353b58c3370e619b540c430ed6d99",
     "packages": [
         {
             "name": "abanoubnassem/filament-grecaptcha-field",
@@ -143,6 +143,82 @@
                 "source": "https://github.com/anhskohbo/no-captcha/tree/3.8.0"
             },
             "time": "2026-02-23T15:53:24+00:00"
+        },
+        {
+            "name": "azgasim/filament-unsaved-changes-modal",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/AzGasim/filament-unsaved-changes-modal.git",
+                "reference": "1df30efe2f964e0a11f35306e24fdb27e8feba47"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/AzGasim/filament-unsaved-changes-modal/zipball/1df30efe2f964e0a11f35306e24fdb27e8feba47",
+                "reference": "1df30efe2f964e0a11f35306e24fdb27e8feba47",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^5.3.5",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.0",
+                "orchestra/testbench": "^9.0|^10.0",
+                "pestphp/pest": "^3.7|^4.0",
+                "pestphp/pest-plugin-laravel": "^3.0|^4.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "AzGasim\\FilamentUnsavedChangesModal\\FilamentUnsavedChangesModalServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AzGasim\\FilamentUnsavedChangesModal\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aziz Gasim",
+                    "email": "104441723+AzGasim@users.noreply.github.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Filament plugin: unsaved-changes prompts as Filament modals instead of browser confirm dialogs.",
+            "homepage": "https://github.com/AzGasim/filament-unsaved-changes-modal",
+            "keywords": [
+                "AzGasim",
+                "filament",
+                "filament-plugin",
+                "filament-unsaved-changes-modal",
+                "filamentphp",
+                "laravel",
+                "livewire",
+                "modal",
+                "unsaved-changes",
+                "unsaved-changes-alert"
+            ],
+            "support": {
+                "issues": "https://github.com/AzGasim/filament-unsaved-changes-modal/issues",
+                "source": "https://github.com/AzGasim/filament-unsaved-changes-modal"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/AzGasim",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-04-14T21:01:12+00:00"
         },
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -584,6 +660,71 @@
                 }
             ],
             "time": "2026-03-20T21:10:52+00:00"
+        },
+        {
+            "name": "craft-forge/filament-language-switcher",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/craft-forge/filament-language-switcher.git",
+                "reference": "235421f4b8ce7cd89b3c16af3c9f54e464c3ca53"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/craft-forge/filament-language-switcher/zipball/235421f4b8ce7cd89b3c16af3c9f54e464c3ca53",
+                "reference": "235421f4b8ce7cd89b3c16af3c9f54e464c3ca53",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0|^4.0|^5.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.16",
+                "stijnvanouplines/blade-country-flags": "^1.0.6"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^9.0",
+                "phpunit/phpunit": "^11.5.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "CraftForge\\FilamentLanguageSwitcher\\FilamentLanguageSwitcherServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CraftForge\\FilamentLanguageSwitcher\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taras Koval",
+                    "email": "taraskovaldev@gmail.com",
+                    "homepage": "https://github.com/taras-koval"
+                }
+            ],
+            "description": "Zero-config language switcher for Filament admin panels. Automatically scans available translations, renders dropdown with country flags, persists selection via sessions.",
+            "homepage": "https://github.com/craft-forge/filament-language-switcher",
+            "keywords": [
+                "admin",
+                "filament",
+                "i18n",
+                "language",
+                "laravel",
+                "localization",
+                "switcher"
+            ],
+            "support": {
+                "issues": "https://github.com/craft-forge/filament-language-switcher/issues",
+                "source": "https://github.com/craft-forge/filament-language-switcher"
+            },
+            "time": "2026-03-04T15:40:02+00:00"
         },
         {
             "name": "danharrin/date-format-converter",
@@ -3583,6 +3724,87 @@
             "time": "2025-07-25T09:04:22+00:00"
         },
         {
+            "name": "moataz-01/filament-notification-sound",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moataz-01/filament-notification-sound.git",
+                "reference": "4a1ed8c87b80a78a3c8bd8b28ecdcb0070bff53c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moataz-01/filament-notification-sound/zipball/4a1ed8c87b80a78a3c8bd8b28ecdcb0070bff53c",
+                "reference": "4a1ed8c87b80a78a3c8bd8b28ecdcb0070bff53c",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^4.0|^5.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/framework": "^12.0",
+                "laravel/pint": "^1.0",
+                "nesbot/carbon": "^3.0",
+                "nunomaduro/collision": "^8.8",
+                "orchestra/testbench": "^10.0",
+                "pestphp/pest": "^3.8|^4.0",
+                "pestphp/pest-plugin-arch": "^3.2|^4.0",
+                "pestphp/pest-plugin-laravel": "^3.2|^4.0",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "spatie/laravel-ray": "^1.43"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "FilamentNotificationSound": "Moataz01\\FilamentNotificationSound\\Facades\\FilamentNotificationSound"
+                    },
+                    "providers": [
+                        "Moataz01\\FilamentNotificationSound\\FilamentNotificationSoundServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Moataz01\\FilamentNotificationSound\\": "src/",
+                    "Moataz01\\FilamentNotificationSound\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Moataz",
+                    "email": "moatazsayed119@gmail.com",
+                    "role": "Software Developer"
+                }
+            ],
+            "description": "Add sound notifications to Filament database notifications",
+            "homepage": "https://github.com/moataz-01/filament-notification-sound",
+            "keywords": [
+                "filament-notification-sound",
+                "laravel",
+                "moataz-01"
+            ],
+            "support": {
+                "issues": "https://github.com/moataz-01/filament-notification-sound/issues",
+                "source": "https://github.com/moataz-01/filament-notification-sound"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/moataz-01",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-02-11T13:15:21+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "3.10.0",
             "source": {
@@ -5633,6 +5855,60 @@
                 }
             ],
             "time": "2025-11-01T22:45:28+00:00"
+        },
+        {
+            "name": "stijnvanouplines/blade-country-flags",
+            "version": "1.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stijnvanouplines/blade-country-flags.git",
+                "reference": "06b53f8ae58238c30a5eaa35fd199ffd772a83f8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stijnvanouplines/blade-country-flags/zipball/06b53f8ae58238c30a5eaa35fd199ffd772a83f8",
+                "reference": "06b53f8ae58238c30a5eaa35fd199ffd772a83f8",
+                "shasum": ""
+            },
+            "require": {
+                "blade-ui-kit/blade-icons": "^1.0",
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.18|^8.0|^9.0|^10.0|^11.0",
+                "pestphp/pest": "^1.4|^2.34|^3.0|^4.4",
+                "spatie/pest-plugin-snapshots": "^1.0|^2.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "StijnVanouplines\\BladeCountryFlags\\BladeCountryFlagsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "StijnVanouplines\\BladeCountryFlags\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A package to easily make use of country flags in your Laravel Blade views.",
+            "homepage": "https://github.com/stijnvanouplines/blade-country-flags",
+            "keywords": [
+                "blade",
+                "country flags",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/stijnvanouplines/blade-country-flags/issues",
+                "source": "https://github.com/stijnvanouplines/blade-country-flags/tree/1.0.9"
+            },
+            "time": "2026-03-03T13:15:47+00:00"
         },
         {
             "name": "symfony/clock",

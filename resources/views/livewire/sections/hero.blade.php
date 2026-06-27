@@ -1,10 +1,10 @@
 <section id="hero" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden">
     <!-- Background blobs -->
-    <div class="absolute inset-0 z-0">
+    <!-- <div class="absolute inset-0 z-0">
         <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-sky-400/10 dark:bg-sky-500/10 rounded-full filter blur-[100px] animate-blob"></div>
         <div class="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-indigo-400/10 dark:bg-indigo-500/10 rounded-full filter blur-[100px] animate-blob animation-delay-2000"></div>
         <div class="absolute -bottom-32 left-1/2 w-[500px] h-[500px] bg-purple-400/8 dark:bg-purple-500/8 rounded-full filter blur-[100px] animate-blob animation-delay-4000"></div>
-    </div>
+    </div> -->
 
     <!-- Grid pattern overlay for light mode -->
     <div class="absolute inset-0 z-0 opacity-[0.03] dark:opacity-[0.02]" style="background-image: radial-gradient(circle, #64748b 1px, transparent 1px); background-size: 24px 24px;"></div>
@@ -45,17 +45,17 @@
             </div>
 
             <!-- Avatar -->
-            <div class="w-full md:w-2/5 flex justify-center mt-8 md:mt-0" data-aos="zoom-in" data-aos-duration="1200">
+            <!-- <div class="w-full md:w-2/5 flex justify-center mt-8 md:mt-0" data-aos="zoom-in" data-aos-duration="1200">
                 <div class="relative w-64 h-64 md:w-80 md:h-80 group">
-                    <!-- Glow -->
+                    
                     <div class="absolute -inset-4 rounded-3xl opacity-20 dark:opacity-30 group-hover:opacity-40 transition-opacity duration-700 blur-2xl" style="background: linear-gradient(135deg, var(--primary), #818cf8, #c084fc);"></div>
 
-                    <!-- Image -->
+                    
                     <div class="relative w-full h-full rounded-3xl p-1 bg-gradient-to-tr from-sky-400/20 via-indigo-400/20 to-purple-400/20 dark:from-sky-500/30 dark:via-indigo-500/30 dark:to-purple-500/30 shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
                         <img src="{{ safe_image_url($user->foto) }}" alt="Profile" class="w-full h-full rounded-[1.35rem] object-cover">
                     </div>
 
-                    <!-- Floating badges -->
+                    
                     <div class="absolute -right-3 top-10 bg-white dark:bg-slate-800 backdrop-blur-sm border border-slate-100 dark:border-slate-700/50 p-3 rounded-2xl shadow-lg shadow-slate-200/50 dark:shadow-black/20 animate-bounce" style="animation-duration: 3s;">
                         <i class="fab fa-laravel text-red-500 text-2xl"></i>
                     </div>
@@ -63,7 +63,7 @@
                         <i class="fa-solid fa-database text-emerald-500 text-2xl"></i>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
         </div>
     </div>

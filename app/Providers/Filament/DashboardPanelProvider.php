@@ -34,6 +34,9 @@ use Illuminate\Support\HtmlString;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 use DiogoGPinto\AuthUIEnhancer\AuthUIEnhancerPlugin;
+use CraftForge\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
+use AzGasim\FilamentUnsavedChangesModal\FilamentUnsavedChangesModalPlugin;
+use Moataz01\FilamentNotificationSound\FilamentNotificationSoundPlugin;
 use Lunaweb\RecaptchaV3\Facades\RecaptchaV3;
 
 class DashboardPanelProvider extends PanelProvider
@@ -120,6 +123,9 @@ class DashboardPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+
+            // Plugins
+            ->unsavedChangesAlerts()
             ->plugins([
                 AuthUIEnhancerPlugin::make()
                     ->showEmptyPanelOnMobile(false)
@@ -127,6 +133,13 @@ class DashboardPanelProvider extends PanelProvider
                     ->formPanelWidth('50%')
                     ->emptyPanelBackgroundImageOpacity('80%')
                     ->emptyPanelBackgroundImageUrl(safe_image_url($setting?->app_background_login_image)),
+                FilamentUnsavedChangesModalPlugin::make(),
+                FilamentNotificationSoundPlugin::make(),
+                FilamentLanguageSwitcherPlugin::make()
+                    ->locales([
+                        ['code' => 'id', 'name' => 'Indonesia', 'flag' => 'id'],
+                        ['code' => 'en', 'name' => 'English', 'flag' => 'us'],
+                    ]),
             ])
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
