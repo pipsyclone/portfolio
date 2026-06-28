@@ -4,6 +4,8 @@ namespace App\Livewire\Sections;
 
 use App\Mail\ContactMail;
 use App\Models\User;
+use App\Models\Contacts;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
@@ -54,6 +56,23 @@ class Contact extends Component
                 subject: $this->subject,
                 messageBody: $this->message,
             ));
+
+            $superAdmins = User::whereHas('roles', function ($query) {
+                $query->where('slug', 'superadmin');
+            })->get();
+
+            Notification::make()
+                ->title('New Message From ' . $this->name)
+                ->body($this->message)
+                ->success()
+                ->sendToDatabase($superAdmins);
+
+            Contacts::create([
+                'name' => $this->name,
+                'email' => $this->senderEmail,
+                'subject' => $this->subject,
+                'message' => $this->message,
+            ]);
 
             $this->reset(['name', 'senderEmail', 'subject', 'message']);
 

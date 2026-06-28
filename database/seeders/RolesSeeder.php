@@ -41,6 +41,11 @@ class RolesSeeder extends Seeder
                 'View',
                 'Delete'
             ],
+            'Contacts' => [
+                'ViewAny',
+                'View',
+                'Delete'
+            ],
 
             // CRUD
             'User',
@@ -97,31 +102,6 @@ class RolesSeeder extends Seeder
                 'description' => 'Superadministrator dengan akses penuh',
                 // Superadmin mendapatkan semua permission
                 'permissions' => $allPermissions->pluck('id')->toArray(),
-            ],
-            [
-                'name' => 'User',
-                'slug' => 'user',
-                'description' => 'User biasa dengan akses terbatas',
-                // Contoh custom permission untuk User
-                'permissions' => $allPermissions->filter(function ($permission) {
-                    return in_array($permission->slug, [
-                        'view_any_user', 'view_user',
-                        'view_any_role', 'view_role',
-                        'view_any_log_aktivitas',
-                    ]);
-                })->pluck('id')->toArray(),
-            ],
-            [
-                'name' => 'Guest',
-                'slug' => 'guest',
-                'description' => 'Guest hanya bisa melihat',
-                // Contoh custom permission untuk Guest
-                'permissions' => $allPermissions->filter(function ($permission) {
-                    return in_array($permission->slug, [
-                        'view_any_user',
-                        'view_any_role',
-                    ]);
-                })->pluck('id')->toArray(),
             ],
         ];
 

@@ -75,7 +75,7 @@ class User extends Authenticatable implements HasAvatar, FilamentUser
         return true;
     }
 
-    // Method
+    // Methods
     public function getFilamentAvatarUrl(): ?string
     {
         return $this->foto
