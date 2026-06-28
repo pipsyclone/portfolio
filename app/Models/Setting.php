@@ -41,7 +41,7 @@ class Setting extends Model
                     ->body('Setting has been created successfully.')
                     ->success()
                     ->send();
-                $model->logActivity('Created Setting', 'membuat setting baru : ' . $model->app_name);
+                $model->logActivity('Created Setting', 'successfully created setting: ' . $model->app_name);
             } catch (\Exception $e) {
                 Notification::make()
                     ->title('Error, failed created setting!')
@@ -59,7 +59,7 @@ class Setting extends Model
                     ->body('Setting has been updated successfully.')
                     ->success()
                     ->send();
-                $model->logActivity('Updated Setting', 'mengupdate setting : ' . $model->app_name);
+                $model->logActivity('Updated Setting', 'successfully updated setting: ' . $model->app_name);
             } catch (\Exception $e) {
                 Notification::make()
                     ->title('Error, failed updated setting!')

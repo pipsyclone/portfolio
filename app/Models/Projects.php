@@ -28,7 +28,7 @@ class Projects extends Model
                     ->success()
                     ->send();
 
-                $model->logActivity('Created Project', 'membuat project baru : ' . $model->name);
+                $model->logActivity('Created Project', 'successfully created project: ' . $model->name);
             } catch (\Exception $e) {
                 Notification::make()
                     ->title('Error, failed created project!')
@@ -48,7 +48,7 @@ class Projects extends Model
                     ->success()
                     ->send();
 
-                $model->logActivity('Updated Project', 'mengupdate project : ' . $model->name);
+                $model->logActivity('Updated Project', 'successfully updated project: ' . $model->name);
             } catch (\Exception $e) {
                 Notification::make()
                     ->title('Error, failed updated!')
@@ -58,8 +58,6 @@ class Projects extends Model
                 
                 \Log::error($e->getMessage());
             }
-
-            $model->logActivity('Updated Project', 'mengupdate project : ' . $model->name);
         });
 
         static::deleted(function ($model) {
@@ -70,7 +68,7 @@ class Projects extends Model
                     ->success()
                     ->send();
 
-                $model->logActivity('Deleted Project', 'menghapus project : ' . $model->name);
+                $model->logActivity('Deleted Project', 'successfully deleted project : ' . $model->name);
             } catch (\Exception $e) {
                 Notification::make()
                     ->title('Error, failed deleted project!')

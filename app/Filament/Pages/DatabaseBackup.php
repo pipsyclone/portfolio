@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Filament\Pages;
+use App\LogActivityTrait;
+
 use BackedEnum;
 use UnitEnum;
 use Filament\Support\Icons\Heroicon;
@@ -23,7 +25,7 @@ use Filament\Actions\DeleteBulkAction;
 
 class DatabaseBackup extends Page implements HasTable
 {
-    use InteractsWithTable;
+    use InteractsWithTable, LogActivityTrait;
 
     protected string $view = 'filament.pages.database-backup';
     protected static ?string $navigationLabel = 'Database Backup';
@@ -86,8 +88,25 @@ class DatabaseBackup extends Page implements HasTable
                     ->color('danger')
                     ->visible(fn ($record) => auth()->user()->can('delete', static::class))
                     ->action(function ($record) {
-                        File::delete($record['path']);
-                        $this->redirect(request()->header('Referer') ?? url()->current()); // refresh table
+                        try {
+                            File::delete($record['path']);
+
+                            Notification::make()
+                                ->title('Successfully deleted backup!')
+                                ->body('Backup database successfully deleted!')
+                                ->success()
+                                ->send();
+                            $this->logActivity('Backup database', 'Successfully deleted backup database: ' . date('Y-m-d H:i:s') . '!');
+                            return $this->redirect(request()->header('Referer') ?? url()->current());
+                        } catch (\Throwable $e) {
+                            Notification::make()
+                                ->title('Error, failed to delete backup!')
+                                ->body('Backup database failed, error: ' . $e->getMessage())
+                                ->danger()
+                                ->send();
+                            return $this->redirect(request()->header('Referer') ?? url()->current());
+                            \Log::error($e->getMessage());
+                        }
                     }),
             ]);
     }
@@ -100,26 +119,7 @@ class DatabaseBackup extends Page implements HasTable
                 ->icon('heroicon-o-cloud-arrow-down')
                 ->requiresConfirmation()
                 ->visible(fn () => auth()->user()->can('create', static::class))
-                ->action(function () {
-                    try {
-                        $this->backupDatabase();
-
-                        Notification::make()
-                            ->title('Successfully backup database!')
-                            ->body('Backup database successfully created!')
-                            ->success()
-                            ->send();
-                        $this->logActivity('Backup database', 'Successfully backup database: ' . date('Y-m-d H:i:s') . '!');
-                    } catch (\Throwable $e) {
-                        Notification::make()
-                            ->title('Failed to backup database!')
-                            ->body('Backup database failed, error: ' . $e->getMessage())
-                            ->danger()
-                            ->send();
-
-                        \Log::error($e->getMessage());
-                    }
-                }),
+                ->action(fn () => $this->backupDatabase()),
         ];
     }
 
@@ -158,7 +158,8 @@ class DatabaseBackup extends Page implements HasTable
             if ($result !== 0 || ! File::exists($gzFile)) {
 
                 Notification::make()
-                    ->title('Backup database gagal')
+                    ->title('Error, failed to backup database!')
+                    ->body('Please make sure that the database connection is correct and the backup directory exists!')
                     ->danger()
                     ->send();
 
@@ -168,17 +169,18 @@ class DatabaseBackup extends Page implements HasTable
             $this->cleanOldBackups($backupDir);
 
             Notification::make()
-                ->title('Backup database berhasil dibuat')
+                ->title('Successfully backup database!')
+                ->body('Backup database successfully created!')
                 ->success()
                 ->send();
-
+            $this->logActivity('Backup database', 'Successfully backup database: ' . date('Y-m-d H:i:s') . '!');
         } catch (\Throwable $e) {
-
             Notification::make()
-                ->title('Error backup database')
+                ->title('Error, failed to backup database!')
                 ->body($e->getMessage())
                 ->danger()
                 ->send();
+            \Log::error($e->getMessage());
         }
     }
 

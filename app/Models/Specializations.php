@@ -24,7 +24,7 @@ class Specializations extends Model
                     ->body('Specialization has been created successfully.')
                     ->success()
                     ->send();
-                $model->logActivity('Created Specialization', 'membuat specialization baru : ' . $model->name);
+                $model->logActivity('Created Specialization', 'successfully created specialization: ' . $model->name);
             } catch (\Exception $e) {
                 Notification::make()
                     ->title('Error, failed created specialization!')
@@ -42,7 +42,7 @@ class Specializations extends Model
                     ->body('Specialization has been updated successfully.')
                     ->success()
                     ->send();
-                $model->logActivity('Updated Specialization', 'mengupdate specialization : ' . $model->name);
+                $model->logActivity('Updated Specialization', 'successfully updated specialization: ' . $model->name);
             } catch (\Exception $e) {
                 Notification::make()
                     ->title('Error, failed updated specialization!')
@@ -60,7 +60,7 @@ class Specializations extends Model
                     ->body('Specialization has been deleted successfully.')
                     ->success()
                     ->send();
-                $model->logActivity('Deleted Specialization', 'menghapus specialization : ' . $model->name);
+                $model->logActivity('Deleted Specialization', 'successfully deleted specialization: ' . $model->name);
             } catch (\Exception $e) {
                 Notification::make()
                     ->title('Error, failed deleted specialization!')

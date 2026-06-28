@@ -26,7 +26,7 @@ class Roles extends Model
                     ->body('Role has been created successfully.')
                     ->success()
                     ->send();
-                $model->logActivity('Created Role', 'membuat role baru : ' . $model->name);
+                $model->logActivity('Created Role', 'successfully created role: ' . $model->name);
             } catch (\Exception $e) {
                 Notification::make()
                     ->title('Error, failed created role!')
@@ -44,7 +44,7 @@ class Roles extends Model
                     ->body('Role has been updated successfully.')
                     ->success()
                     ->send();
-                $model->logActivity('Updated Role', 'mengupdate role : ' . $model->name);
+                $model->logActivity('Updated Role', 'successfully updated role: ' . $model->name);
             } catch (\Exception $e) {
                 Notification::make()
                     ->title('Error, failed updated role!')
@@ -62,7 +62,7 @@ class Roles extends Model
                     ->body('Role has been deleted successfully.')
                     ->success()
                     ->send();
-                $model->logActivity('Deleted Role', 'menghapus role : ' . $model->name);
+                $model->logActivity('Deleted Role', 'successfully deleted role: ' . $model->name);
             } catch (\Exception $e) {
                 Notification::make()
                     ->title('Error, failed deleted role!')

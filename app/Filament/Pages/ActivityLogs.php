@@ -21,6 +21,8 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Placeholder;
 use Filament\Infolists\Components\TextEntry;
 
+use Filament\Notifications\Notification;
+
 class ActivityLogs extends Page implements HasTable
 {
     use InteractsWithTable;
@@ -35,10 +37,43 @@ class ActivityLogs extends Page implements HasTable
         return auth()->user()->can('viewAny', static::class);
     }
 
+    public function getHeaderActions(): array
+    {
+        return [
+            Action::make('reset')
+                ->label('Reset Activity Logs')
+                ->icon('heroicon-o-trash')
+                ->requiresConfirmation()
+                ->color('danger')
+                ->visible(fn () => auth()->user()->can('delete', static::class))
+                ->action(function () {
+                    try {
+                        ActivityLogsModel::truncate();
+                        Notification::make()
+                            ->title('Successfully deleted all!')
+                            ->body('All activity logs have been deleted successfully!')
+                            ->success()
+                            ->send();
+                        return $this->redirect(request()->header('Referer') ?? url()->current());
+                    } catch (\Throwable $e) {
+                        Notification::make()
+                            ->title('Error, failed to delete all!')
+                            ->body('Failed to delete all activity logs, error: ' . $e->getMessage())
+                            ->danger()
+                            ->send();
+                        return $this->redirect(request()->header('Referer') ?? url()->current());
+                    }
+                })
+        ];
+    }
+
     public function table(Table $table): Table
     {
         return $table
             ->query(ActivityLogsModel::with('user')->latest())
+            ->defaultSort('created_at', 'desc')
+            ->poll('10s')
+            ->deferloading()
             ->columns([
                 TextColumn::make('user.name')
                     ->label('User')
@@ -86,7 +121,6 @@ class ActivityLogs extends Page implements HasTable
                     ->modalWidth('lg')
                     ->modalSubmitAction(false)
                     ->modalCancelActionLabel('Close'),
-            ])
-            ->defaultSort('created_at', 'desc');
+            ]);
     }
 }

@@ -18,4 +18,9 @@ class ActivityLogsPolicy
     {
         return auth()->check() && $user->hasPermission('View:ActivityLogs');
     }
+
+    public function delete(User $user): bool
+    {
+        return auth()->check() && $user->hasPermission('Delete:ActivityLogs');
+    }
 }

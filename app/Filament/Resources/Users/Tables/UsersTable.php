@@ -17,9 +17,8 @@ class UsersTable
     public static function configure(Table $table): Table
     {
         return $table
-            // ->modifyQueryUsing(function ($query) {
-            //     return $query->with('roles');
-            // })
+            ->defaultSort('created_at', 'desc')
+            ->deferLoading()
             ->columns([
                 TextColumn::make('name')->label('Name')->searchable()->sortable(),
                 TextColumn::make('email')->label('Email')->searchable()->sortable(),
@@ -37,7 +36,6 @@ class UsersTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ])
-            ->deferLoading();
+            ]);
     }
 }

@@ -24,7 +24,7 @@ class TechStacks extends Model
                     ->body('Tech Stack has been created successfully.')
                     ->success()
                     ->send();
-                $model->logActivity('Created Tech Stack', 'membuat tech stack baru : ' . $model->name);
+                $model->logActivity('Created Tech Stack', 'successfully created tech stack: ' . $model->name);
             } catch (\Exception $e) {
                 Notification::make()
                     ->title('Error, failed created tech stack!')
@@ -42,7 +42,7 @@ class TechStacks extends Model
                     ->body('Tech Stack has been updated successfully.')
                     ->success()
                     ->send();
-                $model->logActivity('Updated Tech Stack', 'mengupdate tech stack : ' . $model->name);
+                $model->logActivity('Updated Tech Stack', 'successfully updated tech stack: ' . $model->name);
             } catch (\Exception $e) {
                 Notification::make()
                     ->title('Error, failed updated tech stack!')
@@ -60,7 +60,7 @@ class TechStacks extends Model
                     ->body('Tech Stack has been deleted successfully.')
                     ->success()
                     ->send();
-                $model->logActivity('Deleted Tech Stack', 'menghapus tech stack : ' . $model->name);
+                $model->logActivity('Deleted Tech Stack', 'successfully deleted tech stack: ' . $model->name);
             } catch (\Exception $e) {
                 Notification::make()
                     ->title('Error, failed deleted tech stack!')

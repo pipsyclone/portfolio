@@ -145,26 +145,59 @@ class Settings extends Page
                     ]),
                 Section::make('Media Sosial')
                     ->schema([
-                        TextInput::make('youtube_link')
-                            ->label('Link YouTube')
-                            ->url()
-                            ->placeholder('https://www.youtube.com/channel/...')
-                            ->validationMessages([
-                                'url' => 'Format URL tidak valid.',
+                        Grid::make()
+                            ->columns(2)
+                            ->schema([
+                                TextInput::make('youtube_link')
+                                    ->label('Link YouTube')
+                                    ->url()
+                                    ->placeholder('https://www.youtube.com/channel/...')
+                                    ->validationMessages([
+                                        'url' => 'Format URL tidak valid.',
+                                    ]),
+                                TextInput::make('instagram_link')
+                                    ->label('Link Instagram')
+                                    ->url()
+                                    ->placeholder('https://www.instagram.com/...')
+                                    ->validationMessages([
+                                        'url' => 'Format URL tidak valid.',
+                                    ]),
                             ]),
-                        TextInput::make('instagram_link')
-                            ->label('Link Instagram')
-                            ->url()
-                            ->placeholder('https://www.instagram.com/...')
-                            ->validationMessages([
-                                'url' => 'Format URL tidak valid.',
+                        Grid::make()
+                            ->columns(2)
+                            ->schema([
+                                TextInput::make('tiktok_link')
+                                    ->label('Link TikTok')
+                                    ->url()
+                                    ->placeholder('https://www.tiktok.com/@...')
+                                    ->validationMessages([
+                                        'url' => 'Format URL tidak valid.',
+                                    ]),
+                                TextInput::make('x_twitter_link')
+                                    ->label('Link X (Twitter)')
+                                    ->url()
+                                    ->placeholder('https://twitter.com/...')
+                                    ->validationMessages([
+                                        'url' => 'Format URL tidak valid.',
+                                    ]),
                             ]),
-                        TextInput::make('tiktok_link')
-                            ->label('Link TikTok')
-                            ->url()
-                            ->placeholder('https://www.tiktok.com/@...')
-                            ->validationMessages([
-                                'url' => 'Format URL tidak valid.',
+                        Grid::make()
+                            ->columns(2)
+                            ->schema([
+                                TextInput::make('github_link')
+                                    ->label('Link GitHub')
+                                    ->url()
+                                    ->placeholder('https://github.com/...')
+                                    ->validationMessages([
+                                        'url' => 'Format URL tidak valid.',
+                                    ]),
+                                TextInput::make('linkedin_link')
+                                    ->label('Link Linkedin')
+                                    ->url()
+                                    ->placeholder('https://www.linkedin.com/in/...')
+                                    ->validationMessages([
+                                        'url' => 'Format URL tidak valid.',
+                                    ]),
                             ]),
                         TextInput::make('facebook_link')
                             ->label('Link Facebook')
@@ -172,28 +205,8 @@ class Settings extends Page
                             ->placeholder('https://www.facebook.com/...')
                             ->validationMessages([
                                 'url' => 'Format URL tidak valid.',
-                            ]),
-                        TextInput::make('x_twitter_link')
-                            ->label('Link X (Twitter)')
-                            ->url()
-                            ->placeholder('https://twitter.com/...')
-                            ->validationMessages([
-                                'url' => 'Format URL tidak valid.',
-                            ]),
-                        TextInput::make('github_link')
-                            ->label('Link GitHub')
-                            ->url()
-                            ->placeholder('https://github.com/...')
-                            ->validationMessages([
-                                'url' => 'Format URL tidak valid.',
-                            ]),
-                        TextInput::make('linkedin_link')
-                            ->label('Link Linkedin')
-                            ->url()
-                            ->placeholder('https://www.linkedin.com/in/...')
-                            ->validationMessages([
-                                'url' => 'Format URL tidak valid.',
-                            ]),
+                            ])
+                            ->columnSpanFull(),
                     ]),
             ]);
     }

@@ -38,50 +38,28 @@ class RolesSeeder extends Seeder
             ],
             'ActivityLogs' => [
                 'ViewAny',
-                'View'
+                'View',
+                'Delete'
             ],
 
             // CRUD
-            'User' => [
-                'ViewAny',
-                'View',
-                'Create',
-                'Update',
-                'Delete',
-            ],
-            'Roles' => [
-                'ViewAny',
-                'View',
-                'Create',
-                'Update',
-                'Delete',
-            ],
-            'Specializations' => [
-                'ViewAny',
-                'View',
-                'Create',
-                'Update',
-                'Delete',
-            ],
-            'TechStacks' => [
-                'ViewAny',
-                'View',
-                'Create',
-                'Update',
-                'Delete',
-            ],
-            'Projects' => [
-                'ViewAny',
-                'View',
-                'Create',
-                'Update',
-                'Delete',
-            ],
+            'User',
+            'Roles',
+            'Projects',
+            'TechStacks',
+            'Specializations',
         ];
 
         $allPermissions = collect();
 
-        foreach ($resources as $resource => $resourceActions) {
+        foreach ($resources as $key => $value) {
+            if (is_numeric($key)) {
+                $resource = $value;
+                $resourceActions = array_keys($actions);
+            } else {
+                $resource = $key;
+                $resourceActions = $value;
+            }
             
             // Buat Policy otomatis jika belum ada
             $policyName = "{$resource}Policy";

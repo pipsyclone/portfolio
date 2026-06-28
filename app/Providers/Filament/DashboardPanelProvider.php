@@ -83,10 +83,10 @@ class DashboardPanelProvider extends PanelProvider
                     ->emptyPanelBackgroundImageUrl(safe_image_url($setting?->app_background_login_image)),
             ])
             ->navigationGroups([
-                NavigationGroup::make('User Management')
-                    ->icon('heroicon-o-user-group'),
                 NavigationGroup::make('Master Data')
                     ->icon('heroicon-o-circle-stack'),
+                NavigationGroup::make('User Management')
+                    ->icon('heroicon-o-user-group'),
                 NavigationGroup::make('System')
                     ->icon('heroicon-o-cog-6-tooth'),
             ])
