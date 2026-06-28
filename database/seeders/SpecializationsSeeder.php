@@ -27,7 +27,9 @@ class SpecializationsSeeder extends Seeder
         ];
 
         foreach ($data as $item) {
-            Specializations::create($item);
+            Specializations::firstOrCreate([
+                'name' => $item['name']
+            ], $item);
         }
     }
 }

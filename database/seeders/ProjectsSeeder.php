@@ -35,7 +35,10 @@ class ProjectsSeeder extends Seeder
         $specializationIds = Specializations::pluck('id');
 
         foreach ($projects as $projectData) {
-            $project = Projects::create($projectData);
+            $project = Projects::firstOrCreate(
+                ['name' => $projectData['name']],
+                $projectData
+            );
 
             // Attach random tech stacks (if any exist)
             if ($techStackIds->isNotEmpty()) {

@@ -12,7 +12,9 @@ class SettingSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Setting::create([
+        \App\Models\Setting::firstOrCreate(
+            ['id' => 1],
+            [
             'app_name' => 'Dashboard Starter',
             'app_name_short' => 'DS',
             'app_color' => '#6366f1',

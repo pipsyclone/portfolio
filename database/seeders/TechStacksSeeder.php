@@ -47,7 +47,9 @@ class TechStacksSeeder extends Seeder
         ];
 
         foreach ($data as $item) {
-            TechStacks::create($item);
+            TechStacks::firstOrCreate([
+                'name' => $item['name']
+            ], $item);
         }
     }
 }
