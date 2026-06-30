@@ -37,7 +37,8 @@ class Login extends BaseLogin
                 ->label('Password')
                 ->required()
                 ->password()
-                ->autocomplete(),
+                ->autocomplete()
+                ->revealable(),
             ViewField::make('recaptcha')
                 ->view('filament.components.recaptchav3')
                 ->dehydrated(false),
@@ -76,6 +77,8 @@ class Login extends BaseLogin
         $score = RecaptchaV3::verify($token, 'login');
 
         if ($score === false || $score < (float) config('recaptchav3.threshold', 0.5)) {
+            $this->dispatch('reset-captcha');
+            
             Notification::make()
                 ->title('Recaptcha verification failed. Please try again.')
                 ->danger()
@@ -103,6 +106,8 @@ class Login extends BaseLogin
 
     protected function throwFailureValidationException(): never
     {
+        $this->dispatch('reset-captcha');
+
         Notification::make()
             ->title('Invalid email or password.')
             ->danger()

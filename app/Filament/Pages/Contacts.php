@@ -7,6 +7,8 @@ use UnitEnum;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Support\Icons\Heroicon;
 use App\Models\Contacts as ContactsModel;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ContactReply;
 
 use Filament\Pages\Page;
 use Filament\Tables\Contracts\HasTable;
@@ -16,6 +18,7 @@ use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 
 use Filament\Schemas\Components\Grid;
 
@@ -71,39 +74,76 @@ class Contacts extends Page implements HasTable
                     ->dateTime('d F Y H:i:s'),
             ])
             ->actions([
-                Action::make('view')
-                    ->icon(Heroicon::Eye)
-                    ->infolist([
-                        Grid::make()
-                            ->columns(3)
-                            ->schema([
-                                TextEntry::make('name')
-                                    ->label('Nama'),
-                                TextEntry::make('email')
-                                    ->label('Email'),
-                                TextEntry::make('created_at')
-                                    ->label('Tanggal')
-                                    ->dateTime('d F Y H:i:s'),
-                            ]),
-                        TextEntry::make('subject')
-                            ->label('Subjek'),
-                        TextEntry::make('message')
-                            ->label('Pesan'),
-                    ]),
-                Action::make('delete')
-                    ->icon(Heroicon::Trash)
-                    ->color('danger')
-                    ->requiresConfirmation()
-                    ->modalHeading('Konfirmasi Hapus')
-                    ->modalDescription('Apakah Anda yakin ingin menghapus kontak ini?')
-                    ->modalSubmitActionLabel('Hapus')
-                    ->action(function (ContactsModel $record) {
-                        $record->delete();
-                        Notification::make()
-                            ->title('Kontak berhasil dihapus')
-                            ->success()
-                            ->send();
-                    }),
+                ActionGroup::make([
+                    Action::make('view')
+                        ->icon(Heroicon::Eye)
+                        ->infolist([
+                            Grid::make()
+                                ->columns(3)
+                                ->schema([
+                                    TextEntry::make('name')
+                                        ->label('Nama'),
+                                    TextEntry::make('email')
+                                        ->label('Email'),
+                                    TextEntry::make('created_at')
+                                        ->label('Tanggal')
+                                        ->dateTime('d F Y H:i:s'),
+                                ]),
+                            TextEntry::make('subject')
+                                ->label('Subjek'),
+                            TextEntry::make('message')
+                                ->label('Pesan'),
+                        ]),
+                    Action::make('delete')
+                        ->icon(Heroicon::Trash)
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->action(function (ContactsModel $record) {
+                            $record->delete();
+                            Notification::make()
+                                ->title('Success')
+                                ->body('Successfully deleted contact ' . $record->name)
+                                ->success()
+                                ->send();
+                        }),
+                    Action::make('reply')
+                        ->label('Reply this message')
+                        ->icon(Heroicon::PaperAirplane)
+                        ->color('info')
+                        ->form([
+                            Placeholder::make('title')
+                                ->label('Message will sent to : '),
+                            Grid::make()
+                                ->columns(2)
+                                ->schema([
+                                    Placeholder::make('name'),
+                                    Placeholder::make('email'),
+                                ]),
+                            Grid::make()
+                                ->columns(2)
+                                ->schema([
+                                    Placeholder::make('subject'),
+                                    Placeholder::make('message'),
+                                ]),
+                            Textarea::make('message')
+                                ->label('Message')
+                                ->placeholder('Type message here')
+                                ->rows(5)
+                                ->required(),
+                        ])
+                        ->action(function (ContactsModel $record, array $data) {
+                            Mail::to($record->email)
+                                ->send(new ContactReply(
+                                    $data['message'], 
+                                    $record->subject));
+
+                            Notification::make()
+                                ->title('Success')
+                                ->body('Successfully sent message to ' . $record->email)
+                                ->success()
+                                ->send();
+                        }),
+                ])
             ]);
     }
 }
