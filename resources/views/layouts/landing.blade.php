@@ -109,12 +109,9 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
         }
 
-        /* Text gradient */
+        /* Text primary color */
         .text-gradient {
-            background: linear-gradient(135deg, var(--primary) 0%, #818cf8 50%, #c084fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--primary);
         }
 
         /* Vanta background container */
@@ -217,10 +214,10 @@
                         <i class="fas fa-moon text-sm theme-icon" id="theme-icon-desktop"></i>
                     </button>
 
-                    <a href="{{ route('download.cv') }}"
-                        class="hidden lg:flex items-center gap-2 px-5 py-2 rounded-xl text-white shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 focus:outline-none" style="background: linear-gradient(135deg, var(--primary), #818cf8);">
-                        <i class="fas fa-download text-sm"></i>
-                        <span class="text-sm font-bold">{{ __('Download CV') }}</span>
+                    <a href="{{ route('view.cv') }}" target="_blank"
+                        class="hidden lg:flex items-center gap-2 px-5 py-2 rounded-xl text-white shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 focus:outline-none" style="background-color: var(--primary);">
+                        <i class="fas fa-file-pdf text-sm"></i>
+                        <span class="text-sm font-bold">{{ __('View CV') }}</span>
                     </a>
                 </div>
 
@@ -265,10 +262,10 @@
         <a href="#projects" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('Projects') }}</a>
         <a href="#contact" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('Contact') }}</a>
 
-        <a href="{{ route('download.cv') }}"
-            class="flex items-center gap-2 px-8 py-3.5 mt-2 text-white font-bold rounded-xl shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl focus:outline-none" style="background: linear-gradient(135deg, var(--primary), #818cf8);">
-            <i class="fas fa-download text-sm"></i>
-            <span>{{ __('Download CV') }}</span>
+        <a href="{{ route('view.cv') }}" target="_blank"
+            class="flex items-center gap-2 px-8 py-3.5 mt-2 text-white font-bold rounded-xl shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl focus:outline-none" style="background-color: var(--primary);">
+            <i class="fas fa-file-pdf text-sm"></i>
+            <span>{{ __('View CV') }}</span>
         </a>
     </div>
 

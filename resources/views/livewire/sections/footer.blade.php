@@ -63,8 +63,7 @@
         <div class="border-t border-slate-100 dark:border-slate-800/50 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-slate-400 dark:text-slate-500">
             <p>&copy; {{ date('Y') }} {{ $user->name }}. {{ __('All Rights Reserved.') }}</p>
             <div class="flex space-x-6 mt-4 md:mt-0">
-                <a href="#" class="hover:text-slate-600 dark:hover:text-slate-300 transition-colors">{{ __('Privacy Policy') }}</a>
-                <a href="#" class="hover:text-slate-600 dark:hover:text-slate-300 transition-colors">{{ __('Terms of Service') }}</a>
+                <span>{{ __('Thanks for checking out my portfolio!') }}</span>
             </div>
         </div>
     </div>

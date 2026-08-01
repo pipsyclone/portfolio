@@ -32,7 +32,7 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4 animate__animated animate__fadeInUp animate__delay-2s">
-                    <a href="#projects" class="w-full sm:w-auto px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-1 text-center hover:shadow-xl" style="background: linear-gradient(135deg, var(--primary), #818cf8); box-shadow: 0 8px 30px rgba(56, 189, 248, 0.25);">
+                    <a href="#projects" class="w-full sm:w-auto px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-1 text-center hover:shadow-xl" style="background-color: var(--primary); box-shadow: 0 8px 30px rgba(56, 189, 248, 0.25);">
                         {{ __('View My Work') }}
                         <i class="fas fa-arrow-right ml-2"></i>
                     </a>
