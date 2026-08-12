@@ -10,17 +10,21 @@ Route::get('/backup/download/{file}', function ($file) {
     return response()->download($path);
 })->name('backup.download');
 
-Route::get('/download/cv', function () {
+Route::get('/view/cv', function () {
     $user = \App\Models\User::first();
     if (!$user || !$user->cv_file) {
         abort(404);
     }
-    
-    $path = storage_path('app/public/' . $user->cv_file);
-    abort_unless(File::exists($path), 404);
-    
-    return response()->download($path, 'CV_' . str_replace(' ', '_', $user->name) . '.' . pathinfo($path, PATHINFO_EXTENSION));
-})->name('download.cv');
+
+    abort_unless(\Illuminate\Support\Facades\Storage::disk('public')->exists($user->cv_file), 404);
+
+    $filename = 'CV_' . str_replace(' ', '_', $user->name) . '.' . pathinfo($user->cv_file, PATHINFO_EXTENSION);
+
+    return response(\Illuminate\Support\Facades\Storage::disk('public')->get($user->cv_file), 200, [
+        'Content-Type'        => 'application/pdf',
+        'Content-Disposition' => 'inline; filename="' . $filename . '"',
+    ]);
+})->name('view.cv');
 
 Route::get('/', function (\Illuminate\Http\Request $request) {
     Visitor::create([

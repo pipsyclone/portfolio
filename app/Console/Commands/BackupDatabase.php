@@ -74,14 +74,14 @@ class BackupDatabase extends Command
             $this->cleanOldBackups($backupDir);
 
             $this->info('Backup success: ' . basename($backupFile));
-            $this->logActivity('System', 'Automatic backup database success: ' . basename($backupFile));
+            $this->logActivity('Backup Database', 'Automatic backup database success: ' . basename($backupFile), 'System');
 
             return self::SUCCESS;
 
         } catch (\Throwable $e) {
 
             $this->error('Error: ' . $e->getMessage());
-            $this->logActivity('System', 'Automatic backup database failed: ' . $e->getMessage());
+            $this->logActivity('Backup Database', 'Automatic backup database failed: ' . $e->getMessage(), 'System');
 
             return self::FAILURE;
         }
@@ -101,6 +101,6 @@ class BackupDatabase extends Command
                 File::delete($file->getRealPath())
             );
         
-        $this->logActivity('System', 'Automatic clean old backup database success');
+        $this->logActivity('Backup Database', 'Automatic clean old backup database success', 'System');
     }
 }

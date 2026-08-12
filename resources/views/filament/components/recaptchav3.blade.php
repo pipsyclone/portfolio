@@ -21,6 +21,7 @@
         }
     }"
     x-init="init()"
+    x-on:reset-captcha.window="execute()"
     wire:ignore
 >
 </div>
