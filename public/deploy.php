@@ -18,6 +18,7 @@ $node = '/usr/bin/node';
 $npm = '/usr/bin/npm';
 
 $output = shell_exec("cd $dir && git pull 2>&1");
+$output .= shell_exec("cd $dir && chown -R www:www $dir; chmod -R 775 storage bootstrap/cache 2>&1");
 $output .= shell_exec("cd $dir && $composer install --no-dev --optimize-autoloader 2>&1");
 $output .= shell_exec("cd $dir && $npm install 2>&1");
 $output .= shell_exec("cd $dir && $npm run build 2>&1");
