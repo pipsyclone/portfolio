@@ -11,7 +11,7 @@
 
         <!-- Flash Messages -->
         @if (session()->has('contact-success'))
-            <div class="max-w-3xl mb-8" x-data="{ show: true }" x-show="show" x-transition.opacity.duration.300ms>
+            <div class="max-w-3xl mb-8 mx-auto" x-data="{ show: true }" x-show="show" x-transition.opacity.duration.300ms>
                 <div class="flex items-center justify-between p-4 rounded-2xl" style="background-color: color-mix(in srgb, #10b981 10%, transparent); border: 1px solid color-mix(in srgb, #10b981 25%, transparent);">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style="background-color: color-mix(in srgb, #10b981 18%, transparent);">
