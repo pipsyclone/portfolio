@@ -7,7 +7,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Grid;
 
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 
@@ -27,8 +27,13 @@ class ProjectsForm
                             ->label('Name')
                             ->required()
                             ->maxLength(255),
-                        Textarea::make('description')
+                        RichEditor::make('description')
                             ->label('Description')
+                            ->toolbarButtons([
+                                ['bold', 'italic', 'underline', 'strike', 'link'],
+                                ['bulletList', 'orderedList'],
+                                ['undo', 'redo'],
+                            ])
                             ->required(),
                         FileUpload::make('image')
                             ->label('Image')

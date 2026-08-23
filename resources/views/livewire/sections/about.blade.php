@@ -1,8 +1,8 @@
-<section id="about" class="py-24 md:py-28" style="background-color: var(--surface-alt);">
+<section id="about" class="py-24 md:py-28">
     <div class="container mx-auto px-6 md:px-12 lg:px-24">
         <!-- Section Header -->
         <div class="mb-14" data-aos="fade-up">
-            <p class="eyebrow mb-2">{!! bt('About') !!}</p>
+            <p class="eyebrow mb-2"><span class="section-num">01</span> {!! bt('About') !!}</p>
             <h2 class="text-3xl md:text-4xl font-semibold" style="color: var(--ink);">
                 {!! bt('About') !!} {!! bt('Me') !!}
             </h2>
@@ -34,9 +34,9 @@
             <!-- Content Side -->
             <div class="w-full md:w-1/2 space-y-6" data-aos="fade-up" data-aos-delay="100">
                 <h3 class="text-2xl font-semibold" style="color: var(--ink);">{!! bt_dynamic($user->about_title) !!}</h3>
-                <p class="leading-relaxed text-lg whitespace-pre-line" style="color: var(--ink-soft);">
-                    {!! bt_dynamic(str_replace('"', ' ', (string) $user->about_description)) !!}
-                </p>
+                <div class="prose-content text-lg">
+                    {!! bt_dynamic($user->about_description, html: true) !!}
+                </div>
 
                 <div class="grid grid-cols-2 gap-4 pt-4">
                     @if(!empty($user->about_extra_information) && is_array($user->about_extra_information))

@@ -50,10 +50,10 @@
     <meta property="twitter:description" content="{{ $user->headline ?? 'Portfolio of John Doe, a passionate Fullstack Web Developer specializing in Laravel, Vue.js, and Tailwind CSS.' }}">
     <meta property="twitter:image" content="{{ safe_image_url($user->foto ?? 'images/seo-banner.jpg') }}">
 
-    <!-- Google Fonts: Inter -->
+    <!-- Google Fonts: Inter (UI) + JetBrains Mono (tech/security accents) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -70,18 +70,23 @@
     <style>
         :root {
             --primary: {{ $primaryColor }};
-            --ink: #222222;
-            --ink-soft: #6a6a6a;
-            --hairline: #e8e8e8;
+            --ink: #1a1f2b;
+            --ink-soft: #5b6472;
+            --hairline: #e2e5eb;
             --surface: #ffffff;
-            --surface-alt: #f7f7f7;
+            --surface-alt: #f2f4f8;
+            --glass-bg: rgba(255, 255, 255, 0.62);
+            --glass-border: rgba(15, 23, 42, 0.09);
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
         }
         .dark {
-            --ink: #f5f5f5;
-            --ink-soft: #a3a3a3;
-            --hairline: #2c2c2c;
-            --surface: #161616;
-            --surface-alt: #1e1e1e;
+            --ink: #e7ecf3;
+            --ink-soft: #8b95a8;
+            --hairline: #232a38;
+            --surface: #0a0e16;
+            --surface-alt: #10151f;
+            --glass-bg: rgba(255, 255, 255, 0.045);
+            --glass-border: rgba(255, 255, 255, 0.09);
         }
 
         html, body { overflow-x: hidden; width: 100%; }
@@ -93,7 +98,23 @@
             transition: background-color 0.25s ease, color 0.25s ease;
         }
 
-        section { position: relative; }
+        section { position: relative; z-index: 1; }
+
+        /* Fixed "blueprint" grid texture behind everything — a quiet nod to the
+           engineering/security theme. Fixed (not scrolled) and radially masked so
+           it reads as ambient depth near the top of the viewport, never noisy. */
+        #bg-grid {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 1px),
+                linear-gradient(90deg, color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 1px);
+            background-size: 44px 44px;
+            -webkit-mask-image: radial-gradient(ellipse 75% 55% at 50% 0%, black, transparent 75%);
+            mask-image: radial-gradient(ellipse 75% 55% at 50% 0%, black, transparent 75%);
+        }
 
         /* ---- Language switch: both variants are rendered server-side, CSS just
            toggles visibility, so switching is instant with zero network/render
@@ -109,30 +130,43 @@
         .dark ::-webkit-scrollbar-thumb { background: #3a3a3a; }
         .dark ::-webkit-scrollbar-thumb:hover { background: #4d4d4d; }
 
-        /* Flat card system used across every section — replaces the old blurred
-           glassmorphism panels with plain surfaces + a hairline border, closer to
-           how Airbnb builds cards: white, bordered, quiet shadow that only grows
-           on hover/interaction. */
+        /* Glassmorphism card system — translucent surface + blur so the grid
+           backdrop reads through, with a hairline border that turns into a soft
+           accent-colored glow on hover/interaction instead of a generic shadow. */
         .card {
-            background-color: var(--surface);
-            border: 1px solid var(--hairline);
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+            border: 1px solid var(--glass-border);
             transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
         }
         .card-hover:hover {
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            border-color: color-mix(in srgb, var(--primary) 40%, var(--glass-border));
+            box-shadow: 0 10px 30px color-mix(in srgb, var(--primary) 12%, transparent), 0 4px 14px rgba(0, 0, 0, 0.06);
             transform: translateY(-3px);
         }
         .dark .card-hover:hover {
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary) 30%, transparent), 0 10px 34px color-mix(in srgb, var(--primary) 18%, transparent);
         }
 
         .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             color: var(--primary);
+            font-family: var(--font-mono);
             font-weight: 600;
             font-size: 0.8125rem;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.03em;
             text-transform: uppercase;
         }
+        .eyebrow .section-num {
+            color: var(--ink-soft);
+            opacity: 0.7;
+        }
+        .eyebrow .section-num::after { content: '/'; margin-left: 0.4em; opacity: 0.6; }
+
+        .mono { font-family: var(--font-mono); }
 
         .btn-primary {
             background-color: var(--primary);
@@ -153,9 +187,9 @@
 
         /* Nav */
         #navbar {
-            background-color: color-mix(in srgb, var(--surface) 92%, transparent);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background-color: color-mix(in srgb, var(--surface) 78%, transparent);
+            backdrop-filter: blur(14px) saturate(160%);
+            -webkit-backdrop-filter: blur(14px) saturate(160%);
             border-bottom: 1px solid transparent;
             transition: border-color 0.3s ease, background-color 0.3s ease;
         }
@@ -203,9 +237,73 @@
             transition: color 0.2s ease, border-color 0.2s ease;
         }
         .theme-toggle-btn:hover { color: #f59e0b; }
+
+        .project-filter-chip {
+            background-color: var(--surface);
+            border: 1px solid var(--hairline);
+            color: var(--ink-soft);
+            transition: all 0.2s ease;
+        }
+        .project-filter-chip:hover { border-color: var(--ink-soft); color: var(--ink); }
+        .project-filter-chip.active {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        /* Scroll progress bar */
+        #scroll-progress {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            width: 0%;
+            background-color: var(--primary);
+            z-index: 70;
+        }
+
+        /* Scrollspy active nav link (persistent, on top of the hover state) */
+        .nav-link.active { color: var(--ink); }
+        .nav-link.active::after { transform: scaleX(1); }
+
+        /* Magnetic buttons: JS drives the transform, CSS just eases it */
+        .magnetic { transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1); will-change: transform; }
+
+        /* Rich text rendered from RichEditor fields (about description, project
+           description, career description) — one shared style so formatted
+           content (bold, links, lists, quotes) looks native to the design instead
+           of raw browser defaults. */
+        .prose-content { color: var(--ink-soft); line-height: 1.75; }
+        .prose-content > *:first-child { margin-top: 0; }
+        .prose-content > *:last-child { margin-bottom: 0; }
+        .prose-content p { margin: 0 0 0.85em; }
+        .prose-content strong { color: var(--ink); font-weight: 600; }
+        .prose-content a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
+        .prose-content ul, .prose-content ol { margin: 0.5em 0 0.85em 1.25em; }
+        .prose-content ul { list-style: disc; }
+        .prose-content ol { list-style: decimal; }
+        .prose-content li { margin-bottom: 0.35em; }
+        .prose-content blockquote { border-left: 3px solid var(--primary); padding-left: 1em; margin: 0.85em 0; font-style: italic; }
+        .prose-content h2, .prose-content h3 { color: var(--ink); font-weight: 700; margin: 0.9em 0 0.4em; }
+        .prose-content h2 { font-size: 1.3em; }
+        .prose-content h3 { font-size: 1.1em; }
+        .prose-content code { background-color: var(--surface-alt); padding: 0.15em 0.4em; border-radius: 0.35em; font-size: 0.9em; }
+
+        /* Fades out clamped rich-text previews (project cards) instead of an
+           abrupt cut — line-clamp doesn't handle multi-block HTML reliably.
+           Masking the content's own opacity (rather than painting a solid/tinted
+           gradient on top) means it blends correctly on any background — glass,
+           dark mode, whatever — with no color to keep in sync. */
+        .fade-clip {
+            overflow: hidden;
+            -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+        }
     </style>
 </head>
 <body class="antialiased">
+
+    <div id="bg-grid" aria-hidden="true"></div>
+    <div id="scroll-progress"></div>
 
     <!-- Navbar -->
     <nav class="fixed w-full z-50" id="navbar">
@@ -238,7 +336,7 @@
                     </button>
 
                     <a href="{{ route('view.cv') }}" target="_blank"
-                        class="btn-primary flex items-center gap-2 px-5 py-2.5 rounded-xl">
+                        class="magnetic btn-primary flex items-center gap-2 px-5 py-2.5 rounded-xl">
                         <i class="fas fa-file-pdf text-sm"></i>
                         <span class="text-sm">{!! bt('View CV') !!}</span>
                     </a>
@@ -366,6 +464,11 @@
             syncThemeIcon();
             syncLangButtons();
             syncPlaceholders();
+            initScrollProgress();
+            initScrollSpy();
+            initMagnetic();
+            initHeroSpotlight();
+            initCountUp();
 
             // Mobile menu
             const mobileBtn = document.getElementById('mobile-menu-btn');
@@ -414,6 +517,106 @@
             if (!nav) return;
             nav.classList.toggle('is-scrolled', window.scrollY > 20);
         });
+
+        // Thin progress bar reflecting how far down the page the visitor is.
+        function initScrollProgress() {
+            const bar = document.getElementById('scroll-progress');
+            if (!bar) return;
+            const update = () => {
+                const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+                bar.style.width = (scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0) + '%';
+            };
+            window.addEventListener('scroll', update, { passive: true });
+            update();
+        }
+
+        // Highlights the nav link matching whichever section is currently in view.
+        function initScrollSpy() {
+            if (window.__scrollSpyInit) return;
+            window.__scrollSpyInit = true;
+
+            const sections = document.querySelectorAll('main section[id]');
+            const links = document.querySelectorAll('.nav-link');
+            if (!sections.length || !links.length) return;
+
+            const setActive = (id) => {
+                links.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + id));
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) setActive(entry.target.id);
+                });
+            }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+
+            sections.forEach(section => observer.observe(section));
+        }
+
+        // Buttons that gently follow the cursor within their own bounds on hover.
+        function initMagnetic() {
+            document.querySelectorAll('.magnetic').forEach(el => {
+                if (el.dataset.magneticBound) return;
+                el.dataset.magneticBound = '1';
+
+                el.addEventListener('mousemove', (e) => {
+                    const rect = el.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    el.style.transform = `translate(${x * 0.25}px, ${y * 0.35}px)`;
+                });
+                el.addEventListener('mouseleave', () => {
+                    el.style.transform = 'translate(0, 0)';
+                });
+            });
+        }
+
+        // Soft radial glow in the hero that follows the cursor — a quiet bit of
+        // depth instead of a distracting animated background.
+        function initHeroSpotlight() {
+            const hero = document.getElementById('hero');
+            const spotlight = document.getElementById('hero-spotlight');
+            if (!hero || !spotlight || hero.dataset.spotlightBound) return;
+            hero.dataset.spotlightBound = '1';
+
+            hero.addEventListener('mousemove', (e) => {
+                const rect = hero.getBoundingClientRect();
+                spotlight.style.setProperty('--x', (e.clientX - rect.left) + 'px');
+                spotlight.style.setProperty('--y', (e.clientY - rect.top) + 'px');
+            });
+        }
+
+        // Counts numeric stats up from 0 once they scroll into view.
+        function initCountUp() {
+            const els = document.querySelectorAll('[data-countup]');
+            if (!els.length || window.__countUpInit) return;
+            window.__countUpInit = true;
+
+            const animate = (el) => {
+                const target = parseFloat(el.dataset.countup);
+                if (isNaN(target)) return;
+                const duration = 1100;
+                const start = performance.now();
+                const step = (now) => {
+                    const progress = Math.min((now - start) / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    el.textContent = Math.floor(eased * target);
+                    if (progress < 1) requestAnimationFrame(step);
+                    else el.textContent = target;
+                };
+                requestAnimationFrame(step);
+            };
+
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animate(entry.target);
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.4 });
+
+            els.forEach(el => observer.observe(el));
+        }
     </script>
 
     <!-- Livewire Scripts -->

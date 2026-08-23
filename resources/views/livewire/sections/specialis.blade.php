@@ -1,8 +1,8 @@
-<section id="specialis" class="py-24 md:py-28" style="background-color: var(--surface-alt);">
+<section id="specialis" class="py-24 md:py-28">
     <div class="container mx-auto px-6 md:px-12 lg:px-24">
         <!-- Section Header -->
         <div class="mb-14" data-aos="fade-up">
-            <p class="eyebrow mb-2">{!! bt('Specialties') !!}</p>
+            <p class="eyebrow mb-2"><span class="section-num">03</span> {!! bt('Specialties') !!}</p>
             <h2 class="text-3xl md:text-4xl font-semibold" style="color: var(--ink);">{!! bt('Specialties') !!}</h2>
             <p class="mt-3 max-w-2xl text-base md:text-lg" style="color: var(--ink-soft);">{!! bt('Areas of expertise where I deliver the most value and creative solutions.') !!}</p>
         </div>

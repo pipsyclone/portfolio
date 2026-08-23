@@ -22,7 +22,6 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ColorPicker;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Checkbox;
@@ -144,9 +143,13 @@ class Profile extends Page
                                             }),
                                         TextInput::make('about_title')
                                             ->label('Title'),
-                                        Textarea::make('about_description')
+                                        RichEditor::make('about_description')
                                             ->label('Description')
-                                            ->rows(6)
+                                            ->toolbarButtons([
+                                                ['bold', 'italic', 'underline', 'strike', 'link'],
+                                                ['h2', 'h3', 'blockquote', 'bulletList', 'orderedList'],
+                                                ['undo', 'redo'],
+                                            ])
                                             ->columnSpanFull(),
                                         Repeater::make('about_extra_information')
                                             ->defaultItems(1)

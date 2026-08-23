@@ -2,7 +2,7 @@
     <div class="container mx-auto px-6 md:px-12 lg:px-24">
         <!-- Section Header -->
         <div class="mb-14" data-aos="fade-up">
-            <p class="eyebrow mb-2">{!! bt('Certifications') !!}</p>
+            <p class="eyebrow mb-2"><span class="section-num">05</span> {!! bt('Certifications') !!}</p>
             <h2 class="text-3xl md:text-4xl font-semibold" style="color: var(--ink);">{!! bt('Certifications') !!}</h2>
             <p class="mt-3 max-w-2xl text-base md:text-lg" style="color: var(--ink-soft);">{!! bt('Licenses and certificates earned along the way.') !!}</p>
         </div>
@@ -37,8 +37,13 @@
                             <div class="flex items-start justify-between gap-3">
                                 <h3 class="text-base font-semibold leading-snug mb-1" style="color: var(--ink);">{{ $cert['title'] ?? '' }}</h3>
                                 @if($isExpired)
-                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold flex-shrink-0" style="background-color: color-mix(in srgb, #ef4444 12%, transparent); color: #dc2626;">
+                                    <span class="mono inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold flex-shrink-0 uppercase tracking-wide" style="background-color: color-mix(in srgb, #ef4444 12%, transparent); color: #dc2626;">
                                         {!! bt('Expired') !!}
+                                    </span>
+                                @else
+                                    <span class="mono inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold flex-shrink-0 uppercase tracking-wide" style="background-color: color-mix(in srgb, #10b981 12%, transparent); color: #059669;">
+                                        <i class="fas fa-shield-halved text-[9px]"></i>
+                                        {!! bt('Verified') !!}
                                     </span>
                                 @endif
                             </div>

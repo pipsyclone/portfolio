@@ -39,6 +39,13 @@
             @endif
         </div>
 
+        <!-- Security note -->
+        <div class="mono inline-flex items-center gap-2 px-3.5 py-2 rounded-lg mb-8 text-xs" style="background-color: color-mix(in srgb, var(--primary) 8%, transparent); border: 1px solid color-mix(in srgb, var(--primary) 18%, transparent); color: var(--ink-soft);">
+            <i class="fas fa-lock" style="color: var(--primary);"></i>
+            <span class="i18n-en">Assets & files are served through signed, time-limited URLs — nothing here is public by accident.</span>
+            <span class="i18n-id">Aset & file disajikan lewat URL bertanda tangan yang punya masa berlaku — tidak ada yang publik secara tidak sengaja.</span>
+        </div>
+
         <!-- Copyright -->
         <div class="pt-8 flex flex-col md:flex-row justify-between items-center text-sm gap-2" style="border-top: 1px solid var(--hairline); color: var(--ink-soft);">
             <p>&copy; {{ date('Y') }} {{ $user->name }}. {!! bt('All Rights Reserved.') !!}</p>
