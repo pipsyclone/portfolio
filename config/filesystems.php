@@ -47,6 +47,19 @@ return [
             'report' => false,
         ],
 
+        // Protected disk: files live outside the public webroot and can only be
+        // reached through Laravel's signed "serve" route below (no direct/guessable
+        // URLs, no directory listing). Used by every FileUpload field configured
+        // with ->disk('private').
+        'private' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private'),
+            'serve' => true,
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/private-storage',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

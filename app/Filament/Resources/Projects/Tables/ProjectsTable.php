@@ -32,7 +32,7 @@ class ProjectsTable
                     ->limit(50),
                 ImageColumn::make('image')
                     ->label('Image')
-                    ->disk('public')
+                    ->disk('private')
                     ->height(100)
                     ->getStateUsing(fn ($record) => safe_image_url($record->image)),
                 TextColumn::make('url')

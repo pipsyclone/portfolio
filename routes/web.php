@@ -4,7 +4,12 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\File;
 use App\Models\Visitor;
 
-Route::get('/backup/download/{file}', function ($file) {
+Route::get('/backup/download/{file}', function (string $file) {
+    // Database backups contain full application data — never expose them to
+    // anonymous visitors, and never trust the filename as given (path traversal).
+    abort_unless(auth()->check() && auth()->user()->can('viewAny', \App\Filament\Pages\DatabaseBackup::class), 403);
+
+    $file = basename($file);
     $path = storage_path('app/backups/' . $file);
     abort_unless(File::exists($path), 404);
     return response()->download($path);
@@ -16,11 +21,18 @@ Route::get('/view/cv', function () {
         abort(404);
     }
 
-    abort_unless(\Illuminate\Support\Facades\Storage::disk('public')->exists($user->cv_file), 404);
+    // cv_file is uploaded to the private disk, but keep a fallback to the
+    // public disk for any legacy records saved before the switch.
+    $disk = \Illuminate\Support\Facades\Storage::disk('private');
+    if (! $disk->exists($user->cv_file)) {
+        $disk = \Illuminate\Support\Facades\Storage::disk('public');
+    }
+
+    abort_unless($disk->exists($user->cv_file), 404);
 
     $filename = 'CV_' . str_replace(' ', '_', $user->name) . '.' . pathinfo($user->cv_file, PATHINFO_EXTENSION);
 
-    return response(\Illuminate\Support\Facades\Storage::disk('public')->get($user->cv_file), 200, [
+    return response($disk->get($user->cv_file), 200, [
         'Content-Type'        => 'application/pdf',
         'Content-Disposition' => 'inline; filename="' . $filename . '"',
     ]);

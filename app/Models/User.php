@@ -35,6 +35,7 @@ class User extends Authenticatable implements HasAvatar, FilamentUser
         'about_extra_information',
         'experience',
         'careers',
+        'certifications',
         'address',
         'specialis',
         'cv_file',
@@ -63,6 +64,7 @@ class User extends Authenticatable implements HasAvatar, FilamentUser
             'password' => 'hashed',
             'about_extra_information' => 'array',
             'careers' => 'array',
+            'certifications' => 'array',
         ];
     }
 

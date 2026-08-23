@@ -34,7 +34,8 @@ class ProjectsForm
                             ->label('Image')
                             ->required()
                             ->maxSize(2048)
-                            ->disk('public')
+                            ->disk('private')
+                            ->visibility('private')
                             ->directory('projects')
                             ->imageEditor(),
                         TextInput::make('url')

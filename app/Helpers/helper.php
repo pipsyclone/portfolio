@@ -22,9 +22,17 @@ if (! function_exists('safe_image_url')) {
         }
         // Jika path sudah mengandung '/', berarti sudah format folder/nama_file — pakai langsung
 
+        // File lama / field yang masih memakai disk publik (mis. foto profil).
         $public = \Illuminate\Support\Facades\Storage::disk('public');
         if ($public->exists($path)) {
             return $public->url($path);
+        }
+
+        // Field yang diunggah ke disk privat (di luar webroot) — sajikan lewat
+        // signed URL sementara supaya file tidak bisa ditebak/diakses langsung.
+        $private = \Illuminate\Support\Facades\Storage::disk('private');
+        if ($private->exists($path)) {
+            return $private->temporaryUrl($path, now()->addHours(6));
         }
 
         return $default;
@@ -191,14 +199,17 @@ if (! function_exists('fa_access_token')) {
 if (! function_exists('translate_text')) {
     /**
      * Translate database text dynamically using Google Translate and cache it forever.
+     *
+     * @param  string|null  $text
+     * @param  string|null  $targetLocale  Explicit target locale (defaults to the current app locale).
      */
-    function translate_text($text)
+    function translate_text($text, $targetLocale = null)
     {
         if (blank($text)) {
             return $text;
         }
 
-        $locale = app()->getLocale();
+        $locale = $targetLocale ?? app()->getLocale();
 
         $cacheKey = 'trans_' . md5($text) . '_' . $locale;
 
@@ -206,12 +217,76 @@ if (! function_exists('translate_text')) {
             try {
                 $tr = new \Stichoza\GoogleTranslate\GoogleTranslate();
                 // Set source to auto-detect
-                $tr->setSource(); 
+                $tr->setSource();
                 $tr->setTarget($locale);
                 return $tr->translate($text);
             } catch (\Exception $e) {
                 return $text;
             }
         });
+    }
+}
+
+if (! function_exists('bt')) {
+    /**
+     * Bilingual static UI text. Renders BOTH the English and Indonesian variant
+     * of a lang-file string inline (wrapped in .i18n-en / .i18n-id spans) so the
+     * frontend can switch the visible language instantly with CSS, with no
+     * server round-trip / page reload. Use as {!! bt('Key') !!}.
+     */
+    function bt(string $key): string
+    {
+        $en = $key; // In this project the English lang file is the identity map (key === source string).
+        $id = \Illuminate\Support\Facades\Lang::has($key, 'id')
+            ? \Illuminate\Support\Facades\Lang::get($key, [], 'id')
+            : $key;
+
+        return '<span class="i18n-en">' . e($en) . '</span><span class="i18n-id">' . e($id) . '</span>';
+    }
+}
+
+if (! function_exists('bt_variant')) {
+    /**
+     * Single-locale variant of a static UI string (English key or Indonesian
+     * lang-file lookup). Used for attributes like `placeholder` that can't hold
+     * two visible spans — pair with the .i18n-placeholder JS in landing.blade.php
+     * to still switch instantly on the client.
+     */
+    function bt_variant(string $key, string $locale): string
+    {
+        if ($locale === 'id') {
+            return \Illuminate\Support\Facades\Lang::has($key, 'id')
+                ? \Illuminate\Support\Facades\Lang::get($key, [], 'id')
+                : $key;
+        }
+
+        return $key;
+    }
+}
+
+if (! function_exists('bt_dynamic')) {
+    /**
+     * Bilingual dynamic (database-driven) text, machine-translated via
+     * translate_text(). Renders both language variants inline, same idea as
+     * bt() above, for content whose language can't be swapped client-side
+     * (career descriptions, headlines, project descriptions, etc.).
+     *
+     * @param  bool  $html  Set true for already-sanitized rich text (skips escaping).
+     */
+    function bt_dynamic(?string $text, bool $html = false): string
+    {
+        if (blank($text)) {
+            return '';
+        }
+
+        $en = translate_text($text, 'en');
+        $id = translate_text($text, 'id');
+
+        if (! $html) {
+            $en = e($en);
+            $id = e($id);
+        }
+
+        return '<span class="i18n-en">' . $en . '</span><span class="i18n-id">' . $id . '</span>';
     }
 }

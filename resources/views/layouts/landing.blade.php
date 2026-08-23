@@ -6,20 +6,25 @@
 @endphp
 
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="{{ str_replace('_', '-', $currentLocale) }}" data-locale="{{ $currentLocale }}" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <script>
-        // Prevent FOUC - apply theme before render
+        // Prevent FOUC - apply theme + language before first paint.
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
         }
+        var savedLocale = localStorage.getItem('locale');
+        if (savedLocale === 'en' || savedLocale === 'id') {
+            document.documentElement.setAttribute('data-locale', savedLocale);
+            document.documentElement.setAttribute('lang', savedLocale);
+        }
     </script>
-    
+
     <title>{{ $user->name ?? 'Portfolio' }} | {{ $user->specialis ?? 'Fullstack Web Developer' }}</title>
     <link rel="icon" href="{{ safe_image_url($settings->app_favicon) }}">
 
@@ -45,18 +50,15 @@
     <meta property="twitter:description" content="{{ $user->headline ?? 'Portfolio of John Doe, a passionate Fullstack Web Developer specializing in Laravel, Vue.js, and Tailwind CSS.' }}">
     <meta property="twitter:image" content="{{ safe_image_url($user->foto ?? 'images/seo-banner.jpg') }}">
 
-    <!-- Google Fonts: Inter + Poppins -->
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Animate.css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-
-    <!-- AOS CSS -->
+    <!-- AOS CSS (subtle scroll reveal only) -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <!-- Vite / Tailwind -->
@@ -68,165 +70,186 @@
     <style>
         :root {
             --primary: {{ $primaryColor }};
+            --ink: #222222;
+            --ink-soft: #6a6a6a;
+            --hairline: #e8e8e8;
+            --surface: #ffffff;
+            --surface-alt: #f7f7f7;
         }
-        html, body {
-            overflow-x: hidden;
-            width: 100%;
-            position: relative;
+        .dark {
+            --ink: #f5f5f5;
+            --ink-soft: #a3a3a3;
+            --hairline: #2c2c2c;
+            --surface: #161616;
+            --surface-alt: #1e1e1e;
         }
 
-        /* Light mode default */
+        html, body { overflow-x: hidden; width: 100%; }
+
         body {
-            font-family: 'Inter', 'Poppins', sans-serif;
-            background-color: #fafbff;
-            color: #1e293b;
-            transition: background-color 0.4s cubic-bezier(0.4,0,0.2,1), color 0.4s cubic-bezier(0.4,0,0.2,1);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--surface);
+            color: var(--ink);
+            transition: background-color 0.25s ease, color 0.25s ease;
         }
-        .dark body {
-            background-color: #0c111b;
-            color: #e2e8f0;
-        }
+
+        section { position: relative; }
+
+        /* ---- Language switch: both variants are rendered server-side, CSS just
+           toggles visibility, so switching is instant with zero network/render
+           work on the client. See bt()/bt_dynamic() in app/Helpers/helper.php. ---- */
+        html[data-locale="id"] .i18n-en { display: none; }
+        html:not([data-locale="id"]) .i18n-id { display: none; }
 
         /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #c7d2e0; border-radius: 99px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        .dark ::-webkit-scrollbar-thumb { background: #334155; }
-        .dark ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        ::-webkit-scrollbar-thumb { background: #d4d4d4; border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: #b5b5b5; }
+        .dark ::-webkit-scrollbar-thumb { background: #3a3a3a; }
+        .dark ::-webkit-scrollbar-thumb:hover { background: #4d4d4d; }
 
-        /* Glass panels */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
+        /* Flat card system used across every section — replaces the old blurred
+           glassmorphism panels with plain surfaces + a hairline border, closer to
+           how Airbnb builds cards: white, bordered, quiet shadow that only grows
+           on hover/interaction. */
+        .card {
+            background-color: var(--surface);
+            border: 1px solid var(--hairline);
+            transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
         }
-        .dark .glass-panel {
-            background: rgba(15, 23, 42, 0.55);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        .card-hover:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            transform: translateY(-3px);
+        }
+        .dark .card-hover:hover {
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
         }
 
-        /* Text primary color */
-        .text-gradient {
+        .eyebrow {
             color: var(--primary);
+            font-weight: 600;
+            font-size: 0.8125rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
         }
 
-        /* Vanta background container */
-        #vanta-bg {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0.4;
+        .btn-primary {
+            background-color: var(--primary);
+            color: #fff;
+            font-weight: 600;
+            transition: filter 0.2s ease, transform 0.2s ease;
         }
+        .btn-primary:hover { filter: brightness(0.92); transform: translateY(-1px); }
 
-        /* Smooth section transitions */
-        section {
-            position: relative;
-            z-index: 1;
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--hairline);
+            color: var(--ink);
+            font-weight: 600;
+            transition: border-color 0.2s ease, transform 0.2s ease;
         }
+        .btn-secondary:hover { border-color: var(--ink-soft); transform: translateY(-1px); }
 
-        /* Nav active link indicator */
+        /* Nav */
+        #navbar {
+            background-color: color-mix(in srgb, var(--surface) 92%, transparent);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+        #navbar.is-scrolled { border-bottom-color: var(--hairline); }
+
         .nav-link {
             position: relative;
-            padding-bottom: 2px;
+            color: var(--ink-soft);
         }
+        .nav-link:hover { color: var(--ink); }
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: -4px;
-            left: 50%;
-            transform: translateX(-50%) scaleX(0);
-            width: 100%;
+            left: 0.75rem; right: 0.75rem; bottom: 0.35rem;
             height: 2px;
             background: var(--primary);
             border-radius: 99px;
-            transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.25s ease;
         }
-        .nav-link:hover::after {
-            transform: translateX(-50%) scaleX(1);
+        .nav-link:hover::after { transform: scaleX(1); }
+
+        .lang-toggle {
+            background-color: var(--surface-alt);
+            border: 1px solid var(--hairline);
+        }
+        .lang-btn {
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: var(--ink-soft);
+            transition: color 0.2s ease, background-color 0.2s ease;
+        }
+        .lang-btn-active {
+            color: #fff;
+            background-color: var(--primary);
         }
 
-        /* Theme toggle */
         .theme-toggle-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            width: 40px; height: 40px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            background-color: var(--surface-alt);
+            border: 1px solid var(--hairline);
+            color: var(--ink-soft);
+            transition: color 0.2s ease, border-color 0.2s ease;
         }
-        .theme-toggle-btn:hover {
-            transform: rotate(15deg) scale(1.1);
-        }
-        .theme-toggle-btn .theme-icon {
-            transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
-        }
+        .theme-toggle-btn:hover { color: #f59e0b; }
     </style>
 </head>
-<body class="antialiased selection:bg-indigo-500/30 selection:text-indigo-900 dark:selection:bg-indigo-400/30 dark:selection:text-white">
-
-    <!-- Vanta.js Background -->
-    <div id="vanta-bg"></div>
+<body class="antialiased">
 
     <!-- Navbar -->
-    <nav class="fixed w-full z-50 py-5 transition-all duration-500" id="navbar">
+    <nav class="fixed w-full z-50" id="navbar">
         <div class="container mx-auto px-6 md:px-12 lg:px-24">
-            <div class="glass-panel rounded-2xl px-6 py-3 flex justify-between items-center">
-                <a href="#" class="text-xl font-bold text-slate-800 dark:text-white tracking-tight">
+            <div class="flex justify-between items-center h-[68px]">
+                <a href="#" class="text-lg font-bold tracking-tight" style="color: var(--ink);">
                     PORT<span style="color: var(--primary);">FOLIO</span>
                 </a>
 
                 <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center space-x-1">
-                    <a href="#hero" class="nav-link text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-3 py-2 rounded-lg hover:bg-slate-100/60 dark:hover:bg-white/5 transition-all">{{ __('Home') }}</a>
-                    <a href="#about" class="nav-link text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-3 py-2 rounded-lg hover:bg-slate-100/60 dark:hover:bg-white/5 transition-all">{{ __('About') }}</a>
-                    <a href="#tech" class="nav-link text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-3 py-2 rounded-lg hover:bg-slate-100/60 dark:hover:bg-white/5 transition-all">{{ __('Skills') }}</a>
-                    <a href="#specialis" class="nav-link text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-3 py-2 rounded-lg hover:bg-slate-100/60 dark:hover:bg-white/5 transition-all">{{ __('Specialties') }}</a>
-                    <a href="#careers" class="nav-link text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-3 py-2 rounded-lg hover:bg-slate-100/60 dark:hover:bg-white/5 transition-all">{{ __('Careers') }}</a>
-                    <a href="#projects" class="nav-link text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-3 py-2 rounded-lg hover:bg-slate-100/60 dark:hover:bg-white/5 transition-all">{{ __('Projects') }}</a>
-                    <a href="#contact" class="nav-link text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-3 py-2 rounded-lg hover:bg-slate-100/60 dark:hover:bg-white/5 transition-all">{{ __('Contact') }}</a>
+                <div class="hidden lg:flex items-center gap-1">
+                    <a href="#hero" class="nav-link text-sm font-medium px-3 py-2 rounded-lg">{!! bt('Home') !!}</a>
+                    <a href="#about" class="nav-link text-sm font-medium px-3 py-2 rounded-lg">{!! bt('About') !!}</a>
+                    <a href="#tech" class="nav-link text-sm font-medium px-3 py-2 rounded-lg">{!! bt('Skills') !!}</a>
+                    <a href="#specialis" class="nav-link text-sm font-medium px-3 py-2 rounded-lg">{!! bt('Specialties') !!}</a>
+                    <a href="#careers" class="nav-link text-sm font-medium px-3 py-2 rounded-lg">{!! bt('Careers') !!}</a>
+                    <a href="#certifications" class="nav-link text-sm font-medium px-3 py-2 rounded-lg">{!! bt('Certifications') !!}</a>
+                    <a href="#projects" class="nav-link text-sm font-medium px-3 py-2 rounded-lg">{!! bt('Projects') !!}</a>
+                    <a href="#contact" class="nav-link text-sm font-medium px-3 py-2 rounded-lg">{!! bt('Contact') !!}</a>
+                </div>
 
-                    <!-- Divider -->
-                    <div class="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-2"></div>
-
-                    <!-- Lang Toggle -->
-                    <div class="flex items-center bg-slate-100/80 dark:bg-slate-800/60 rounded-xl p-1 border border-slate-200/50 dark:border-slate-700/30">
-                        <a href="{{ route('lang.switch', 'id') }}" wire:navigate
-                           class="px-3 py-1.5 text-xs font-bold rounded-lg transition-all duration-300 {{ $currentLocale == 'id' ? 'text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white' }}"
-                           @if($currentLocale == 'id') style="background-color: var(--primary);" @endif>
-                            ID
-                        </a>
-                        <a href="{{ route('lang.switch', 'en') }}" wire:navigate
-                           class="px-3 py-1.5 text-xs font-bold rounded-lg transition-all duration-300 {{ $currentLocale == 'en' ? 'text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white' }}"
-                           @if($currentLocale == 'en') style="background-color: var(--primary);" @endif>
-                            EN
-                        </a>
+                <div class="hidden lg:flex items-center gap-3">
+                    <div class="lang-toggle flex items-center rounded-xl p-1">
+                        <button type="button" class="lang-btn lang-btn-desktop rounded-lg px-3 py-1.5" data-lang="id" onclick="switchLocale('id')">ID</button>
+                        <button type="button" class="lang-btn lang-btn-desktop rounded-lg px-3 py-1.5" data-lang="en" onclick="switchLocale('en')">EN</button>
                     </div>
 
-                    <!-- Theme Toggle -->
-                    <button id="theme-toggle" class="theme-toggle-btn bg-slate-100/80 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 hover:text-amber-500 dark:hover:text-amber-400 border border-slate-200/50 dark:border-slate-700/30 focus:outline-none">
+                    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
                         <i class="fas fa-moon text-sm theme-icon" id="theme-icon-desktop"></i>
                     </button>
 
                     <a href="{{ route('view.cv') }}" target="_blank"
-                        class="hidden lg:flex items-center gap-2 px-5 py-2 rounded-xl text-white shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 focus:outline-none" style="background-color: var(--primary);">
+                        class="btn-primary flex items-center gap-2 px-5 py-2.5 rounded-xl">
                         <i class="fas fa-file-pdf text-sm"></i>
-                        <span class="text-sm font-bold">{{ __('View CV') }}</span>
+                        <span class="text-sm">{!! bt('View CV') !!}</span>
                     </a>
                 </div>
 
                 <!-- Mobile Actions -->
-                <div class="md:hidden flex items-center space-x-3">
-                    <button id="theme-toggle-mobile" class="theme-toggle-btn w-9 h-9 bg-slate-100/80 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 hover:text-amber-500 dark:hover:text-amber-400 border border-slate-200/50 dark:border-slate-700/30 focus:outline-none">
+                <div class="lg:hidden flex items-center space-x-3">
+                    <button id="theme-toggle-mobile" class="theme-toggle-btn w-9 h-9" aria-label="Toggle dark mode">
                         <i class="fas fa-moon text-sm theme-icon" id="theme-icon-mobile"></i>
                     </button>
-                    <button class="w-9 h-9 rounded-xl bg-slate-100/80 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 border border-slate-200/50 dark:border-slate-700/30 flex items-center justify-center focus:outline-none" id="mobile-menu-btn">
+                    <button class="theme-toggle-btn w-9 h-9" id="mobile-menu-btn" aria-label="Open menu">
                         <i class="fas fa-bars text-sm"></i>
                     </button>
                 </div>
@@ -235,37 +258,30 @@
     </nav>
 
     <!-- Mobile Menu -->
-    <div class="fixed inset-0 z-[60] bg-white/98 dark:bg-slate-950/98 backdrop-blur-2xl hidden flex-col items-center justify-center space-y-5 transition-all" id="mobile-menu">
-        <button class="absolute top-6 right-6 w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center focus:outline-none z-50" id="mobile-close-btn">
+    <div class="fixed inset-0 z-[60] hidden flex-col items-center justify-center space-y-4 transition-all" id="mobile-menu" style="background-color: var(--surface);">
+        <button class="absolute top-6 right-6 w-10 h-10 rounded-xl flex items-center justify-center z-50 theme-toggle-btn" id="mobile-close-btn" aria-label="Close menu">
             <i class="fas fa-times"></i>
         </button>
 
         <!-- Lang Toggle Mobile -->
-        <div class="flex items-center bg-slate-100 dark:bg-slate-800/80 rounded-xl p-1.5 border border-slate-200/50 dark:border-slate-700/30 mb-4">
-            <a href="{{ route('lang.switch', 'id') }}" wire:navigate
-               class="px-5 py-2 text-sm font-bold rounded-lg transition-all duration-300 {{ $currentLocale == 'id' ? 'text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white' }}"
-               @if($currentLocale == 'id') style="background-color: var(--primary);" @endif>
-                ID
-            </a>
-            <a href="{{ route('lang.switch', 'en') }}" wire:navigate
-               class="px-5 py-2 text-sm font-bold rounded-lg transition-all duration-300 {{ $currentLocale == 'en' ? 'text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white' }}"
-               @if($currentLocale == 'en') style="background-color: var(--primary);" @endif>
-                EN
-            </a>
+        <div class="lang-toggle flex items-center rounded-xl p-1.5 mb-4">
+            <button type="button" class="lang-btn lang-btn-mobile rounded-lg px-5 py-2 text-sm" data-lang="id" onclick="switchLocale('id')">ID</button>
+            <button type="button" class="lang-btn lang-btn-mobile rounded-lg px-5 py-2 text-sm" data-lang="en" onclick="switchLocale('en')">EN</button>
         </div>
 
-        <a href="#hero" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('Home') }}</a>
-        <a href="#about" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('About') }}</a>
-        <a href="#tech" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('Skills') }}</a>
-        <a href="#specialis" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('Specialties') }}</a>
-        <a href="#careers" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('Careers') }}</a>
-        <a href="#projects" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('Projects') }}</a>
-        <a href="#contact" class="text-lg font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors mobile-link">{{ __('Contact') }}</a>
+        <a href="#hero" class="text-lg font-medium mobile-link" style="color: var(--ink);">{!! bt('Home') !!}</a>
+        <a href="#about" class="text-lg font-medium mobile-link" style="color: var(--ink);">{!! bt('About') !!}</a>
+        <a href="#tech" class="text-lg font-medium mobile-link" style="color: var(--ink);">{!! bt('Skills') !!}</a>
+        <a href="#specialis" class="text-lg font-medium mobile-link" style="color: var(--ink);">{!! bt('Specialties') !!}</a>
+        <a href="#careers" class="text-lg font-medium mobile-link" style="color: var(--ink);">{!! bt('Careers') !!}</a>
+        <a href="#certifications" class="text-lg font-medium mobile-link" style="color: var(--ink);">{!! bt('Certifications') !!}</a>
+        <a href="#projects" class="text-lg font-medium mobile-link" style="color: var(--ink);">{!! bt('Projects') !!}</a>
+        <a href="#contact" class="text-lg font-medium mobile-link" style="color: var(--ink);">{!! bt('Contact') !!}</a>
 
         <a href="{{ route('view.cv') }}" target="_blank"
-            class="flex items-center gap-2 px-8 py-3.5 mt-2 text-white font-bold rounded-xl shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl focus:outline-none" style="background-color: var(--primary);">
+            class="btn-primary flex items-center gap-2 px-8 py-3.5 mt-3 rounded-xl">
             <i class="fas fa-file-pdf text-sm"></i>
-            <span>{{ __('View CV') }}</span>
+            <span>{!! bt('View CV') !!}</span>
         </a>
     </div>
 
@@ -276,53 +292,16 @@
     <!-- AOS JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <!-- Vanta.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
-
     <script data-navigate-once>
-        let vantaEffect = null;
-
         // Inisialisasi AOS
         function initAOS() {
             AOS.init({
                 once: true,
-                offset: 50,
-                duration: 800,
-                easing: 'ease-in-out-cubic',
+                offset: 40,
+                duration: 500,
+                easing: 'ease-out-cubic',
             });
             setTimeout(() => AOS.refresh(), 100);
-        }
-
-        // Inisialisasi / update Vanta.js
-        function initVanta() {
-            if (vantaEffect) vantaEffect.destroy();
-
-            const isDark = document.documentElement.classList.contains('dark');
-            const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#38bdf8';
-
-            // Convert hex ke int untuk Vanta
-            function hexToInt(hex) {
-                return parseInt(hex.replace('#', ''), 16);
-            }
-
-            vantaEffect = VANTA.GLOBE({
-                el: "#vanta-bg",
-                mouseControls: true,
-                touchControls: true,
-                gyroControls: false,
-                minHeight: 200.00,
-                minWidth: 200.00,
-                scale: 1.00,
-                scaleMobile: 1.00,
-                color: hexToInt(primaryColor),
-                color2: hexToInt(isDark ? "fafbff" : "0c111b"),
-                backgroundColor: isDark ? 0x0c111b : 0xfafbff,
-                points: 8.00,
-                maxDistance: 22.00,
-                spacing: 18.00,
-                showDots: true,
-            })
         }
 
         // Sync icon toggle (satu icon bergantian)
@@ -347,20 +326,46 @@
             document.documentElement.classList.toggle('dark');
             localStorage.setItem('color-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
             syncThemeIcon();
-            initVanta();
+        }
+
+        // Language: both EN/ID strings are already in the DOM (see bt()/bt_dynamic()),
+        // so switching is a pure CSS attribute flip — no reload, no flicker.
+        function switchLocale(locale) {
+            if (locale !== 'en' && locale !== 'id') return;
+            document.documentElement.setAttribute('data-locale', locale);
+            document.documentElement.setAttribute('lang', locale);
+            localStorage.setItem('locale', locale);
+            syncLangButtons();
+            syncPlaceholders();
+
+            // Sync the session server-side in the background (best effort, no UI
+            // impact) so a later real page load / the CV route / SEO crawlers see
+            // a consistent locale too.
+            fetch('{{ url('lang') }}/' + locale, { credentials: 'same-origin' }).catch(() => {});
+        }
+
+        function syncLangButtons() {
+            const current = document.documentElement.getAttribute('data-locale') || 'en';
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('lang-btn-active', btn.dataset.lang === current);
+            });
+        }
+
+        // Inputs can't hold two visible language variants like text does, so their
+        // placeholder is swapped directly via data-ph-en / data-ph-id attributes.
+        function syncPlaceholders() {
+            const current = document.documentElement.getAttribute('data-locale') || 'en';
+            document.querySelectorAll('.i18n-placeholder').forEach(el => {
+                const value = current === 'id' ? el.dataset.phId : el.dataset.phEn;
+                if (value !== undefined) el.setAttribute('placeholder', value);
+            });
         }
 
         document.addEventListener('livewire:navigated', () => {
-            // Re-apply theme since livewire navigate might replace html class attribute
-            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-
             initAOS();
-            initVanta();
             syncThemeIcon();
+            syncLangButtons();
+            syncPlaceholders();
 
             // Mobile menu
             const mobileBtn = document.getElementById('mobile-menu-btn');
@@ -407,13 +412,7 @@
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
             if (!nav) return;
-            if (window.scrollY > 50) {
-                nav.classList.add('py-2');
-                nav.classList.remove('py-5');
-            } else {
-                nav.classList.remove('py-2');
-                nav.classList.add('py-5');
-            }
+            nav.classList.toggle('is-scrolled', window.scrollY > 20);
         });
     </script>
 

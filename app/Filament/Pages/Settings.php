@@ -102,7 +102,8 @@ class Settings extends Page
                             ->schema([
                                 FileUpload::make('app_logo')
                                     ->label('Logo Aplikasi')
-                                    ->disk('public')
+                                    ->disk('private')
+                                    ->visibility('private')
                                     ->directory('settings')
                                     ->image()
                                     ->multiple()
@@ -115,11 +116,12 @@ class Settings extends Page
                                         'max' => 'Ukuran file tidak boleh lebih dari 2MB.',
                                     ])
                                     ->deleteUploadedFileUsing(function (string $file) {
-                                        Storage::disk('public')->delete($file);
+                                        Storage::disk('private')->delete($file);
                                     }),
                                 FileUpload::make('app_favicon')
                                     ->label('Favicon Aplikasi')
-                                    ->disk('public')
+                                    ->disk('private')
+                                    ->visibility('private')
                                     ->directory('settings')
                                     ->image()
                                     ->maxSize(2048)
@@ -128,10 +130,14 @@ class Settings extends Page
                                     ->validationMessages([
                                         'image' => 'File yang diunggah harus berupa gambar.',
                                         'max' => 'Ukuran file tidak boleh lebih dari 2MB.',
-                                    ]),
+                                    ])
+                                    ->deleteUploadedFileUsing(function (string $file) {
+                                        Storage::disk('private')->delete($file);
+                                    }),
                                 FileUpload::make('app_background_login_image')
                                     ->label('Background Login')
-                                    ->disk('public')
+                                    ->disk('private')
+                                    ->visibility('private')
                                     ->directory('settings')
                                     ->image()
                                     ->maxSize(2048)
@@ -140,7 +146,10 @@ class Settings extends Page
                                     ->validationMessages([
                                         'image' => 'File yang diunggah harus berupa gambar.',
                                         'max' => 'Ukuran file tidak boleh lebih dari 2MB.',
-                                    ]),
+                                    ])
+                                    ->deleteUploadedFileUsing(function (string $file) {
+                                        Storage::disk('private')->delete($file);
+                                    }),
                             ]),
                     ]),
                 Section::make('Media Sosial')
@@ -224,7 +233,7 @@ class Settings extends Page
     {
         $data = $this->form->getState();
         $setting = Setting::first();
-        $disk = Storage::disk('public');
+        $disk = Storage::disk('private');
 
         // File single fields
         $singleFileFields = ['app_favicon', 'app_background_login_image', 'app_stempel'];

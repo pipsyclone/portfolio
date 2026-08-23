@@ -57,6 +57,7 @@ class Profile extends Page
             'about_extra_information' => $user?->about_extra_information,
             'experience' => $user?->experience,
             'careers' => $user?->careers,
+            'certifications' => $user?->certifications,
             'address' => $user?->address,
             'specialis' => $user?->specialis,
             'cv_file' => $user?->cv_file,
@@ -132,13 +133,14 @@ class Profile extends Page
                                             ->numeric(),
                                         FileUpload::make('about_image')
                                             ->label('About Image')
-                                            ->disk('public')
+                                            ->disk('private')
+                                            ->visibility('private')
                                             ->directory('about-images')
                                             ->image()
                                             ->imageEditor()
                                             ->maxSize(2048)
                                             ->deleteUploadedFileUsing(function (string $file) {
-                                                Storage::disk('public')->delete($file);
+                                                Storage::disk('private')->delete($file);
                                             }),
                                         TextInput::make('about_title')
                                             ->label('Title'),
@@ -160,20 +162,21 @@ class Profile extends Page
                                             ->deleteAction(
                                                 fn ($action) => $action->after(function (array $state) {
                                                     if (! empty($state['logo'])) {
-                                                        Storage::disk('public')->delete($state['logo']);
+                                                        Storage::disk('private')->delete($state['logo']);
                                                     }
                                                 }),
                                             )
                                             ->schema([
                                                 FileUpload::make('logo')
                                                     ->label('Logo')
-                                                    ->disk('public')
+                                                    ->disk('private')
+                                                    ->visibility('private')
                                                     ->directory('careers-logo')
                                                     ->image()
                                                     ->imageEditor()
                                                     ->maxSize(2048)
                                                     ->deleteUploadedFileUsing(function (string $file) {
-                                                        Storage::disk('public')->delete($file);
+                                                        Storage::disk('private')->delete($file);
                                                     }),
                                                 Grid::make()
                                                     ->columns(2)
@@ -217,6 +220,73 @@ class Profile extends Page
                                                     ])
                                             ])
                                     ]),
+                                Tab::make('Certifications')
+                                    ->schema([
+                                        Repeater::make('certifications')
+                                            ->defaultItems(0)
+                                            ->reorderable()
+                                            ->deleteAction(
+                                                fn ($action) => $action->after(function (array $state) {
+                                                    if (! empty($state['file'])) {
+                                                        Storage::disk('private')->delete($state['file']);
+                                                    }
+                                                }),
+                                            )
+                                            ->schema([
+                                                Grid::make()
+                                                    ->columns(2)
+                                                    ->schema([
+                                                        TextInput::make('title')
+                                                            ->label('Certification Title')
+                                                            ->required(),
+                                                        TextInput::make('issuer')
+                                                            ->label('Issuing Organization')
+                                                            ->required(),
+                                                    ]),
+                                                FileUpload::make('file')
+                                                    ->label('Certificate File')
+                                                    ->disk('private')
+                                                    ->visibility('private')
+                                                    ->directory('certifications')
+                                                    ->acceptedFileTypes(['image/*', 'application/pdf'])
+                                                    ->maxSize(5120)
+                                                    ->helperText('Image or PDF. Max 5MB.')
+                                                    ->deleteUploadedFileUsing(function (string $file) {
+                                                        Storage::disk('private')->delete($file);
+                                                    }),
+                                                Grid::make()
+                                                    ->columns(2)
+                                                    ->schema([
+                                                        TextInput::make('credential_id')
+                                                            ->label('Credential ID'),
+                                                        TextInput::make('credential_url')
+                                                            ->label('Credential URL')
+                                                            ->url(),
+                                                    ]),
+                                                Grid::make()
+                                                    ->columns(2)
+                                                    ->schema([
+                                                        DatePicker::make('issued_at')
+                                                            ->label('Issue Date')
+                                                            ->required(),
+                                                        Grid::make()
+                                                            ->columns(1)
+                                                            ->schema([
+                                                                DatePicker::make('expired_at')
+                                                                    ->label('Expiry Date')
+                                                                    ->disabled(fn (Get $get) => $get('no_expiry')),
+                                                                Checkbox::make('no_expiry')
+                                                                    ->label('Does Not Expire')
+                                                                    ->live()
+                                                                    ->afterStateUpdated(function ($state, $set) {
+                                                                        if ($state) {
+                                                                            $set('expired_at', null);
+                                                                        }
+                                                                    }),
+                                                            ])
+                                                    ])
+                                            ])
+                                    ]),
                                 Tab::make('Contact')
                                     ->schema([
                                         Textinput::make('address')
@@ -226,13 +296,14 @@ class Profile extends Page
                                     ->schema([
                                         FileUpload::make('cv_file')
                                             ->label('Curriculum Vitae')
-                                            ->disk('public')
+                                            ->disk('private')
+                                            ->visibility('private')
                                             ->directory('cv')
                                             ->acceptedFileTypes(['application/pdf'])
                                             ->dehydrated(fn ($state) => filled($state))
                                             ->maxSize(10240)
                                             ->deleteUploadedFileUsing(function (string $file) {
-                                                Storage::disk('public')->delete($file);
+                                                Storage::disk('private')->delete($file);
                                             }),
                                     ]),
                             ]),
@@ -287,7 +358,7 @@ class Profile extends Page
 
         // Hash password baru
         if (!empty($data['password'])) {
-             $data['password'] = Hash::make($data['password']);
+            $data['password'] = Hash::make($data['password']);
         } else {
             unset($data['password']); // Jangan update password jika tidak diisi
         }
