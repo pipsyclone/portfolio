@@ -198,7 +198,7 @@ if (! function_exists('fa_access_token')) {
 
 if (! function_exists('translate_text')) {
     /**
-     * Translate database text dynamically using Google Translate and cache it forever.
+     * Translate database text dynamically using the official DeepL API and cache it forever.
      *
      * @param  string|null  $text
      * @param  string|null  $targetLocale  Explicit target locale (defaults to the current app locale).
@@ -213,17 +213,64 @@ if (! function_exists('translate_text')) {
 
         $cacheKey = 'trans_' . md5($text) . '_' . $locale;
 
-        return \Illuminate\Support\Facades\Cache::rememberForever($cacheKey, function () use ($text, $locale) {
-            try {
-                $tr = new \Stichoza\GoogleTranslate\GoogleTranslate();
-                // Set source to auto-detect
-                $tr->setSource();
-                $tr->setTarget($locale);
-                return $tr->translate($text);
-            } catch (\Exception $e) {
+        // Only successful translations are cached forever. A failed attempt
+        // (e.g. a transient API error or quota issue) must NOT be written to
+        // a permanent cache, otherwise the untranslated fallback gets stuck
+        // there forever and the string never gets a real chance to translate
+        // again.
+        $cached = \Illuminate\Support\Facades\Cache::get($cacheKey);
+        if ($cached !== null) {
+            return $cached;
+        }
+
+        // Skip re-attempting while a recent failure is in its cooldown
+        // window, so an outage doesn't hammer the API on every request.
+        if (\Illuminate\Support\Facades\Cache::has($cacheKey . '_cooldown')) {
+            return $text;
+        }
+
+        $apiKey = config('services.deepl.key');
+
+        if (blank($apiKey)) {
+            \Illuminate\Support\Facades\Log::warning('translate_text: DEEPL_API_KEY is not configured.');
+
+            return $text;
+        }
+
+        // DeepL requires a regional variant for English as a target
+        // language, and uses its own two-letter codes otherwise.
+        $targetLang = match (strtolower($locale)) {
+            'en' => 'EN-US',
+            'id' => 'ID',
+            default => strtoupper($locale),
+        };
+
+        try {
+            $translator = new \DeepL\Translator($apiKey);
+
+            $result = $translator->translateText($text, null, $targetLang);
+            $translated = $result->text;
+
+            if (blank($translated)) {
                 return $text;
             }
-        });
+
+            \Illuminate\Support\Facades\Cache::forever($cacheKey, $translated);
+
+            return $translated;
+        } catch (\Exception $e) {
+            // Briefly cache the failure so a rate-limit / outage doesn't
+            // cause every single request to re-hammer the API, while still
+            // allowing a retry soon after.
+            \Illuminate\Support\Facades\Cache::put($cacheKey . '_cooldown', true, now()->addMinutes(2));
+
+            \Illuminate\Support\Facades\Log::warning('translate_text failed', [
+                'locale' => $locale,
+                'error' => $e->getMessage(),
+            ]);
+
+            return $text;
+        }
     }
 }
 
